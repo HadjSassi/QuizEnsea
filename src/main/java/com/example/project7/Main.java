@@ -184,34 +184,35 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static Stage stage= null;
+    public static Stage stage = null;
     private double x, y;
     Stage window;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Boarder.fxml"));
-        window=primaryStage;
-        this.stage=primaryStage;
-        Scene scene =new Scene(root);
+        window = primaryStage;
+        this.stage = primaryStage;
+        Scene scene = new Scene(root);
         window.setScene(scene);
         //set stage borderless
-       window.initStyle(StageStyle.TRANSPARENT);
+        window.initStyle(StageStyle.TRANSPARENT);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
-                }
-            });
-            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    primaryStage.setX(event.getScreenX() - x);
-                    primaryStage.setY(event.getScreenY() - y);
-                }
-            });
-            //todo j'ai commenté cella tu dois l'uncommenté!
-//        primaryStage.getIcons().add((new Image( getClass().getResource("/com/example/project7/images/0mahdi.png").toURI().toString())));
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getSceneX();
+                y = event.getSceneY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage.setX(event.getScreenX() - x);
+                primaryStage.setY(event.getScreenY() - y);
+            }
+        });
+        primaryStage.setFullScreen(true);
+        primaryStage.getIcons().add((new Image(getClass().getResource("/com/example/project7/images/0mahdi.png").toURI().toString())));
         primaryStage.show();
         scene.setFill(Color.TRANSPARENT);
     }
