@@ -1,0 +1,74 @@
+.text-field {
+    -fx-background-color: -fx-text-box-border, white ;
+    -fx-background-insets: 0, 0 0 3 0 ;
+    -fx-background-radius: 0.7em ;
+    -fx-border-width: 2px;
+}
+.text-field:focused {
+    -fx-background-color: -fx-focus-color, white ;
+}
+
+.text-field:empty .text {
+    -fx-effect: null ;
+}
+.text-area {
+    -fx-background-color: -fx-text-box-border, white ;
+    -fx-background-insets: 0, 0 0 3 0 ;
+    -fx-background-radius: 0.5em ;
+    -fx-border-width: 0px;
+}
+.text-area:focused {
+    -fx-background-color: -fx-focus-color, white ;
+}
+
+.text-area:empty .text {
+    -fx-effect: null ;}
+
+.radio-button .radio {
+    -fx-background-color: white;
+    -fx-background-image: null;
+    -fx-border-radius: 5px;
+}
+.radio-button .dot {
+    -fx-background-radius: 5px;
+    -fx-padding: 3px;
+}
+.button
+{
+    -fx-background-color :  transparent;
+    -fx-text-fill : #000000;
+}
+.button1:hover{
+    -fx-background-color : #4CAF50;
+}
+.button1:pressed
+{
+    -fx-background-color : #A5D6A7;
+}
+.button2:hover{
+    -fx-background-color : #fb3232;
+}
+.button2:pressed
+{
+    -fx-background-color : #fa8f8b;
+}
+.button3:hover{
+    -fx-background-color : #FFC107;
+}
+.button3:pressed
+{
+    -fx-background-color : #FFE082;
+}
+.button4:hover{
+    -fx-background-color : #03A9F4;
+}
+.button4:pressed
+{
+    -fx-background-color : #81D4FA;
+}
+.label{
+     -fx-text-fill: white;
+ }
+#labelStatus{
+    -fx-text-fill: #4FD0FF;
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="all" prefHeight="604.0" prefWidth="1050.0" style="-fx-background-radius: 1em;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.BorderController">
+   <children>
+      <AnchorPane fx:id="border" prefHeight="31.0" prefWidth="1050.0" style="-fx-background-color: linear-gradient(to right, #212121, #272727, #2d2d2d, #333333, #393939, #484848, #585858, #696969, #888888, #a9a9a9, #cbcbcb, #eeeeee);" AnchorPane.bottomAnchor="573.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="31.0" fitWidth="131.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@images/0mahdi.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="97.0" layoutY="-1.0" prefHeight="31.0" prefWidth="192.0" text="Bibliothéque" textFill="WHITE" AnchorPane.topAnchor="-1.0">
+               <font>
+                  <Font name="Cambria" size="21.0" />
+               </font>
+            </Label>
+            <Button layoutX="1011.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksClose" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/style.css" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="2.0">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/close-window-64.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="979.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksMaximize" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/style.css" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="2.0">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/maximize-window.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="947.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksMinimize" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/style.css" AnchorPane.rightAnchor="71.0" AnchorPane.topAnchor="2.0">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/minimize-window.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="mainscreen" layoutY="31.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="573.0" prefWidth="1050.0" style="-fx-background-color: BBBBBB;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0" />
+   </children>
+</AnchorPane>
