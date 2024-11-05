@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -16,7 +17,6 @@ import java.util.ResourceBundle;
 
 
 public class InterfaceController implements Initializable {
-
     @FXML
     private javafx.scene.control.Button g1;
     @FXML
