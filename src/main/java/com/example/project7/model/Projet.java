@@ -7,17 +7,17 @@ public class Projet {
     private String nomProjet;
     private String localisationProjet;
     private TypeProjet typeProjet;
-    private Devoir devoir;
+    private Controle devoir;
 
     public Projet(String nomProjet, String localisationProjet, TypeProjet typeProjet) {
         this.nomProjet = nomProjet;
         this.localisationProjet = localisationProjet;
         this.typeProjet = typeProjet;
-        this.devoir = new Devoir();
+        this.devoir = new Controle();
     }
 }
 
-class Devoir {
+class Controle {
     //todo mazelet n7ess elli mazelet fiha des méthodes nejem nzidouhom w nest7a9ouhom nerja3lek marra o5ra inchallah
 
     private String nomDevoir;
@@ -26,7 +26,7 @@ class Devoir {
     private FormatQuestion formatQuestion;
     private ArrayList<Section> sections;
 
-    public Devoir() {
+    public Controle() {
         this.nomDevoir = nomDevoir;
         this.typeDevoir = typeDevoir;
         this.fontDevoir = new FontDevoir();

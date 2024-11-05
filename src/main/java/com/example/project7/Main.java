@@ -211,7 +211,8 @@ public class Main extends Application {
                 primaryStage.setY(event.getScreenY() - y);
             }
         });
-        primaryStage.setFullScreen(true);
+        //primaryStage.setFullScreen(true);
+        primaryStage.setMaximized(true);
         primaryStage.getIcons().add((new Image(getClass().getResource("/com/example/project7/images/0mahdi.png").toURI().toString())));
         primaryStage.show();
         scene.setFill(Color.TRANSPARENT);
