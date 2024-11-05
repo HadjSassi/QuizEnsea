@@ -1,0 +1,45 @@
+.root{
+    -fx-background-color:#EAEEF4;
+}o
+
+
+
+.side_ankerpane{
+    -fx-background-color:#353A56;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+}
+.inner_pane{
+    -fx-background-color:#748CF1;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #748CF1;
+
+}
+.most_inner_pane{
+    -fx-background-color:#6780E2;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #748CF1;
+}
+.side_ankerpane1 {
+    -fx-background-color: #353A56; /* Couleur de fond */
+    -fx-border-width: 2px; /* Épaisseur de la bordure */
+    -fx-border-radius: 20px; /* Arrondi des coins */
+    -fx-background-radius: 20px; /* Arrondi des coins de fond */
+    -fx-border-style: solid; /* Style de la bordure */
+    -fx-border-color: #FFFFFF; /* Couleur de la bordure (bleu) */
+}
+#btn_workbench{
+    -fx-background-color:#141313;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+    -fx-border-style: solid;
+    -fx-border-color: #141313;
+}

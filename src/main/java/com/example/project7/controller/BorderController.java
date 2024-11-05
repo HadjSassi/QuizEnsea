@@ -77,7 +77,7 @@ public class BorderController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         FxmlLoader object = new FxmlLoader();
-        AnchorPane view = object.getPane("Interface");
+        AnchorPane view = object.getPane("Barre");
         mainscreen.getChildren().removeAll();
         mainscreen.getChildren().setAll(view);
        // makeStageDragable();

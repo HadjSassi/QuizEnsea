@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="1143.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox fx:id="side_ankerpane" prefHeight="601.0" prefWidth="240.0" styleClass="side_ankerpane" stylesheets="@Style.css">
+         <children>
+            <AnchorPane prefHeight="601.0" prefWidth="310.0" style="-fx-background-color: #353A56;" styleClass="side_ankerpane" stylesheets="@Style.css">
+               <children>
+                  <JFXButton layoutX="96.0" layoutY="127.0" text="Home" textAlignment="JUSTIFY" textFill="WHITE" AnchorPane.topAnchor="129.1428565979004">
+                     <font>
+                        <Font name="Century Gothic" size="22.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="97.0" layoutY="187.0" text="New" textFill="WHITE">
+                     <font>
+                        <Font name="Century Gothic" size="22.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="91.0" layoutY="248.0" text="Open" textFill="WHITE">
+                     <font>
+                        <Font name="Century Gothic" size="22.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="88.0" layoutY="310.0" text="Settings" textFill="WHITE">
+                     <font>
+                        <Font name="Century Gothic" size="22.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="97.0" layoutY="362.0" text="Help" textFill="WHITE">
+                     <font>
+                        <Font name="Century Gothic" size="22.0" />
+                     </font>
+                  </JFXButton>
+                  <FontAwesomeIcon fill="WHITE" glyphName="HOME" layoutX="49.0" layoutY="160.0" size="2em" text="" textAlignment="JUSTIFY" wrappingWidth="95.0" AnchorPane.topAnchor="129.1428565979004">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </FontAwesomeIcon>
+                  <FontAwesomeIcon fill="WHITE" glyphName="PLUS" layoutX="50.0" layoutY="221.0" size="2em" />
+                  <FontAwesomeIcon fill="WHITE" glyphName="FOLDER_OPEN" layoutX="45.0" layoutY="279.0" size="2em" />
+                  <FontAwesomeIcon fill="WHITE" glyphName="QUESTION" layoutX="54.0" layoutY="396.0" size="2em" />
+                  <FontAwesomeIcon fill="WHITE" glyphName="COGS" layoutX="45.0" layoutY="344.0" size="2em" />
+                  <Pane layoutX="18.0" layoutY="30.0" prefHeight="44.0" prefWidth="200.0" styleClass="inner_pane" stylesheets="@Style.css">
+                     <children>
+                        <Label text="hello world" textFill="WHITE">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                     </children></Pane>
+                  <Label layoutX="44.0" layoutY="446.0" prefHeight="92.0" prefWidth="152.0" text="©2024&#10;Nissrine El khatib&#10;Mahdi Hadj Sassi&#10;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</HBox>
