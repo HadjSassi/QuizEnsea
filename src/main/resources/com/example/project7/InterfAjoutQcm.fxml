@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="806.0" prefWidth="1218.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Project">
+   <children>
+      <AnchorPane layoutX="26.0" layoutY="54.0" prefHeight="460.0" prefWidth="1099.0" style="-fx-border-color: #588157;">
+         <children>
+            <TextArea layoutX="266.0" layoutY="31.0" prefHeight="39.0" prefWidth="537.0" style="-fx-background-color: #A3B18A;" />
+            <TextArea layoutX="266.0" layoutY="208.0" prefHeight="80.0" prefWidth="221.0" style="-fx-background-color: #A3B18A;" />
+            <ImageView fitHeight="36.0" fitWidth="36.0" layoutX="445.0" layoutY="394.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/img_12.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="48.0" fitWidth="36.0" layoutX="398.0" layoutY="394.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/img_11.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="590.0" layoutY="218.0" text="Veuillez entrer la &#10;mauvaise réponse :">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextArea layoutX="785.0" layoutY="208.0" prefHeight="80.0" prefWidth="221.0" style="-fx-background-color: #A3B18A;" />
+            <Label layoutX="49.0" layoutY="304.0" text="Veuillez entrer un&#10;barème speciale &#10;(optionel):">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="590.0" layoutY="304.0" text="Veuillez entrer un&#10;barème speciale &#10;(optionel):">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextArea layoutX="785.0" layoutY="314.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #A3B18A;" />
+            <ImageView fitHeight="48.0" fitWidth="36.0" layoutX="934.0" layoutY="394.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/img_11.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="36.0" fitWidth="36.0" layoutX="981.0" layoutY="394.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/img_12.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="35.0" layoutY="36.0" text="Saisir la Question :">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="371.0" layoutY="156.0" text="(Autre option)">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextArea layoutX="268.0" layoutY="157.0" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: #A3B18A;" />
+            <Label layoutX="36.0" layoutY="91.0" prefHeight="36.0" prefWidth="232.0" text="Le barème de notation:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <RadioButton layoutX="265.0" layoutY="124.0" mnemonicParsing="false" text="2" />
+            <RadioButton layoutX="265.0" layoutY="91.0" mnemonicParsing="false" text="1" />
+            <Label layoutX="908.0" layoutY="155.0" text="(Autre option)">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextArea layoutX="785.0" layoutY="157.0" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: #A3B18A;" />
+            <Label layoutX="552.0" layoutY="91.0" prefHeight="36.0" prefWidth="232.0" text="Le barème de notation:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <RadioButton layoutX="781.0" layoutY="124.0" mnemonicParsing="false" text="-1" />
+            <RadioButton layoutX="781.0" layoutY="91.0" mnemonicParsing="false" text="0" />
+            <TextArea layoutX="266.0" layoutY="313.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #A3B18A;" />
+            <Label layoutX="44.0" layoutY="218.0" text="Veuillez entrer la  &#10;réponse correcte  :">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="36.0" fitWidth="27.0" layoutX="521.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/img_14.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="21.0" fitWidth="29.0" layoutX="10.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/img_13.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="-3.0" prefHeight="33.0" prefWidth="1225.0" style="-fx-background-color: #1a4301;">
+         <children>
+            <Label layoutX="14.0" layoutY="4.0" text="QCM" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="23.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <JFXButton layoutX="984.0" layoutY="544.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #1a4301;" text="Ajouter une Question" textFill="WHITE" />
+      <JFXButton layoutX="1068.0" layoutY="738.0" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: #A3B18A;" text="Cancel" />
+      <ImageView fitHeight="91.0" fitWidth="97.0" layoutX="277.0" layoutY="380.0" pickOnBounds="true" preserveRatio="true" />
+      <JFXButton layoutX="926.0" layoutY="738.0" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: #1a4301;" text="Valider" textFill="WHITE" />
+      <JFXButton layoutX="984.0" layoutY="594.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #1a4301;" text="Supprimer la Question" textFill="WHITE" />
+      <ImageView fitHeight="36.0" fitWidth="36.0" layoutX="940.0" layoutY="596.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/img_12.png" />
+         </image>
+      </ImageView>
+      <Group layoutX="186.0" layoutY="452.0" />
+      <ImageView fitHeight="48.0" fitWidth="36.0" layoutX="941.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/img_11.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
