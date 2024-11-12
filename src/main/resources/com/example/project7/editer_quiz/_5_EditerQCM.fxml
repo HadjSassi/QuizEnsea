@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
@@ -9,88 +10,62 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="806.0" prefWidth="1218.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Project">
+<AnchorPane fx:id="sectionPane" prefHeight="452.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="26.0" layoutY="54.0" prefHeight="460.0" prefWidth="1099.0" style="-fx-border-color: #A53860;">
+      <VBox prefHeight="452.0" prefWidth="796.0" AnchorPane.leftAnchor="0.0">
          <children>
-            <TextArea layoutX="266.0" layoutY="31.0" prefHeight="39.0" prefWidth="537.0" style="-fx-background-color: #A53860;" />
-            <TextArea layoutX="266.0" layoutY="208.0" prefHeight="80.0" prefWidth="221.0" style="-fx-background-color: #A53860;" />
-            <Label layoutX="590.0" layoutY="218.0" text="Veuillez entrer la &#10;mauvaise réponse :">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <TextArea layoutX="785.0" layoutY="208.0" prefHeight="80.0" prefWidth="221.0" style="-fx-background-color: #A53860;" />
-            <Label layoutX="49.0" layoutY="304.0" text="Veuillez entrer un&#10;barème speciale &#10;(optionel):">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="590.0" layoutY="304.0" text="Veuillez entrer un&#10;barème speciale &#10;(optionel):">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <TextArea layoutX="785.0" layoutY="314.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #A53860;" />
-            <Label layoutX="35.0" layoutY="36.0" text="Saisir la Question :">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <TextArea layoutX="270.0" layoutY="123.0" prefHeight="39.0" prefWidth="90.0" style="-fx-background-color: #A53860;" />
-            <Label layoutX="38.0" layoutY="91.0" prefHeight="91.0" prefWidth="232.0" text="Le barème de la&#10;bonne réponse :">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <TextArea layoutX="785.0" layoutY="123.0" prefHeight="39.0" prefWidth="90.0" style="-fx-background-color: #A53860;" />
-            <Label layoutX="590.0" layoutY="102.0" prefHeight="70.0" prefWidth="232.0" text="Le barème de la &#10;mauvaise réponse :">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <TextArea layoutX="266.0" layoutY="313.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #A53860;" />
-            <Label layoutX="44.0" layoutY="218.0" text="Veuillez entrer la  &#10;réponse correcte  :">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="48.0" fitWidth="36.0" layoutX="437.0" layoutY="386.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../img/img_16.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="48.0" fitWidth="36.0" layoutX="942.0" layoutY="386.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../img/img_16.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="28.0" layoutX="978.0" layoutY="390.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../img/img_21.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="80.0" fitWidth="28.0" layoutX="473.0" layoutY="390.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../img/img_21.png" />
-               </image>
-            </ImageView>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+               <children>
+                  <Label text="Saisir la Question :">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextArea prefHeight="100.0" prefWidth="509.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="706.0" spacing="100.0">
+               <children>
+                  <Label prefHeight="34.0" prefWidth="282.0" text="Les Bonnes Réponses: ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="20.0" prefWidth="267.0" text="Les Mauvais Réponses:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets right="50.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="231.0" prefWidth="756.0" spacing="20.0">
+               <children>
+                  <TableView prefHeight="231.0" prefWidth="380.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="Réponse" />
+                      <TableColumn prefWidth="75.0" text="Baréme" />
+                        <TableColumn prefWidth="75.0" text="Actions" />
+                    </columns>
+                  </TableView>
+                  <TableView prefHeight="231.0" prefWidth="392.0">
+                    <columns>
+                        <TableColumn prefWidth="75.0" text="Actions" />
+                        <TableColumn prefWidth="75.0" text="Baréme" />
+                        <TableColumn prefWidth="75.0" text="Réponse" />
+                    </columns>
+                  </TableView>
+               </children>
+            </HBox>
          </children>
-      </AnchorPane>
-      <JFXButton layoutX="984.0" layoutY="544.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #A53860;" text="Ajouter une Question" textFill="WHITE" />
-      <JFXButton layoutX="1068.0" layoutY="738.0" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: fff0f3;" text="Cancel" />
-      <JFXButton layoutX="926.0" layoutY="738.0" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: #450920;" text="Valider" textFill="WHITE" />
-      <JFXButton layoutX="984.0" layoutY="594.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #A53860;" text="Supprimer la Question" textFill="WHITE" />
-      <Group layoutX="186.0" layoutY="452.0" />
-      <ImageView fitHeight="48.0" fitWidth="36.0" layoutX="942.0" layoutY="546.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../img/img_16.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="80.0" fitWidth="28.0" layoutX="946.0" layoutY="600.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../img/img_21.png" />
-         </image>
-      </ImageView>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </VBox>
    </children>
 </AnchorPane>
