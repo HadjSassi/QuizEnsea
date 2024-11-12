@@ -1,55 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
 <AnchorPane fx:id="anchorpane1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.InterfaceController">
     <children>
         <AnchorPane fx:id="anchorpane2" prefHeight="576.0" prefWidth="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="794.0" AnchorPane.topAnchor="0.0">
             <children>
-                <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #212121;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Label layoutX="54.0" layoutY="456.0" prefHeight="92.0" prefWidth="152.0" text="©2024&#10;Nissrine El khatib&#10;Mahdi Hadj Sassi&#10;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" />
-            <Pane layoutX="28.0" layoutY="40.0" prefHeight="44.0" prefWidth="200.0">
+                <VBox alignment="CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: linear-gradient(to bottom,#eeeeee,#A53960);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label text="hello world" textFill="WHITE">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Pane>
-            <JFXButton layoutX="107.0" layoutY="372.0" text="Help" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic" size="22.0" />
-               </font>
-            </JFXButton>
-            <JFXButton layoutX="98.0" layoutY="320.0" text="Settings" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic" size="22.0" />
-               </font>
-            </JFXButton>
-            <JFXButton layoutX="101.0" layoutY="258.0" text="Open" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic" size="22.0" />
-               </font>
-            </JFXButton>
-            <JFXButton layoutX="107.0" layoutY="197.0" text="New" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic" size="22.0" />
-               </font>
-            </JFXButton>
-            <JFXButton layoutX="106.0" layoutY="137.0" text="Home" textAlignment="JUSTIFY" textFill="WHITE">
-               <font>
-                  <Font name="Century Gothic" size="22.0" />
-               </font>
-            </JFXButton>
+                  <AnchorPane prefHeight="278.0" prefWidth="256.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="256.0">
+                           <children>
+                              <ImageView fitHeight="139.0" fitWidth="178.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/ensea.png" />
+                                 </image>
+                              </ImageView>
+                              <Label style="-fx-text-fill: #A53960;" text="AMC" textFill="#f8f8f8">
+                                 <font>
+                                    <Font size="37.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="256.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/home.png" />
+                                       </image>
+                                    </ImageView>
+                                    <JFXButton text="Home" textAlignment="JUSTIFY" textFill="WHITE">
+                                       <font>
+                                          <Font name="Century Gothic" size="22.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="39.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/plus.png" />
+                                       </image>
+                                    </ImageView>
+                                    <JFXButton prefHeight="44.0" prefWidth="91.0" text="New" textFill="WHITE">
+                                       <font>
+                                          <Font name="Century Gothic" size="22.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/open.png" />
+                                       </image>
+                                    </ImageView>
+                                    <JFXButton text="Open" textFill="WHITE">
+                                       <font>
+                                          <Font name="Century Gothic" size="22.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/params.png" />
+                                       </image>
+                                    </ImageView>
+                                    <JFXButton prefHeight="44.0" prefWidth="105.0" text="Setting" textFill="WHITE">
+                                       <font>
+                                          <Font name="Century Gothic" size="22.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/help.png" />
+                                       </image>
+                                    </ImageView>
+                                    <JFXButton prefHeight="44.0" prefWidth="90.0" text="Help" textFill="WHITE">
+                                       <font>
+                                          <Font name="Century Gothic" size="22.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="94.0" prefWidth="256.0">
+                     <children>
+                        <VBox alignment="BOTTOM_CENTER" layoutY="52.0" prefHeight="70.0" prefWidth="256.0">
+                           <children>
+                              <Label prefHeight="92.0" prefWidth="116.0" text="©2024&#10;Nissrine El khatib&#10;Mahdi Hadj Sassi&#10;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </children></VBox>
 
 
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="anchorpane3" layoutX="256.0" prefHeight="576.0" prefWidth="796.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="256.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane fx:id="anchorpane3" layoutX="256.0" prefHeight="600.0" prefWidth="794.0" />
     </children>
 </AnchorPane>

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -7,16 +12,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="all" prefHeight="604.0" prefWidth="1050.0" style="-fx-background-radius: 1em;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.BorderController">
+<AnchorPane fx:id="all" prefHeight="604.0" prefWidth="1050.0" style="-fx-background-radius: 1em;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.BorderController">
    <children>
-      <AnchorPane fx:id="border" prefHeight="31.0" prefWidth="1050.0" style="-fx-background-color: linear-gradient(to right, #212121, #272727, #2d2d2d, #333333, #393939, #484848, #585858, #696969, #888888, #a9a9a9, #cbcbcb, #eeeeee);" AnchorPane.bottomAnchor="573.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="border" prefHeight="31.0" prefWidth="1050.0" style="-fx-background-color: linear-gradient(to right,#eeeeee,#A53960);" AnchorPane.bottomAnchor="573.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="31.0" fitWidth="131.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ImageView fitHeight="31.0" fitWidth="131.0" layoutX="14.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-2.0" AnchorPane.topAnchor="2.0">
                <image>
-                  <Image url="@images/0mahdi.png" />
+                  <Image url="@images/ensea2.png" />
                </image>
             </ImageView>
-            <Label layoutX="97.0" layoutY="-1.0" prefHeight="31.0" prefWidth="192.0" text="Bibliothéque" textFill="WHITE" AnchorPane.topAnchor="-1.0">
+            <Label layoutX="52.0" layoutY="-1.0" prefHeight="31.0" prefWidth="192.0" style="-fx-text-fill: #A53960;" text="ENSEA AMC" textFill="WHITE" AnchorPane.topAnchor="-1.0">
                <font>
                   <Font name="Cambria" size="21.0" />
                </font>
