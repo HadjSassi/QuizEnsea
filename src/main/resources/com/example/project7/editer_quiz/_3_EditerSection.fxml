@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="806.0" prefWidth="1218.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Project">
+   <children>
+      <Label layoutX="50.0" layoutY="105.0" text="Identifiant du Section :">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="50.0" layoutY="175.0" text="Type du Section :">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="958.0" layoutY="384.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #A53860;" text="Ajouter une Section" textFill="WHITE" />
+      <JFXButton layoutX="1068.0" layoutY="738.0" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: fff0f3;" text="Cancel" />
+      <TextArea layoutX="277.0" layoutY="101.0" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #A3B18A;" />
+      <ImageView fitHeight="91.0" fitWidth="97.0" layoutX="277.0" layoutY="380.0" pickOnBounds="true" preserveRatio="true" />
+      <JFXButton layoutX="926.0" layoutY="738.0" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: #450920;" text="Terminer" textFill="WHITE" />
+      <JFXButton layoutX="958.0" layoutY="433.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #A53860;" text="Supprimer une Section" textFill="WHITE" />
+      <SplitMenuButton layoutX="277.0" layoutY="171.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #A3B18A;" text="QCM (a choix multiple)&#10;">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+      </SplitMenuButton>
+      <Group layoutX="186.0" layoutY="452.0" />
+      <AnchorPane layoutX="97.0" layoutY="316.0" prefHeight="200.0" prefWidth="641.0">
+         <children>
+            <AnchorPane layoutX="-46.0" layoutY="-40.0" prefHeight="496.0" prefWidth="824.0" style="-fx-border-color: #450920;" />
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="48.0" fitWidth="36.0" layoutX="915.0" layoutY="386.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../img/img_16.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="80.0" fitWidth="28.0" layoutX="919.0" layoutY="437.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../img/img_21.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

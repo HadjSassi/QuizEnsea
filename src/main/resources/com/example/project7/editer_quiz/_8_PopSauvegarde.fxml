@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="471.0" prefWidth="710.0" style="-fx-background-color: #344E41;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Project">
+   <children>
+      <ImageView fitHeight="91.0" fitWidth="97.0" layoutX="277.0" layoutY="380.0" pickOnBounds="true" preserveRatio="true" />
+      <Group layoutX="186.0" layoutY="452.0" />
+      <JFXButton layoutX="406.0" layoutY="211.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #ffffffff;" text="Supprimer" />
+      <Label layoutX="160.0" layoutY="83.0" prefHeight="112.0" prefWidth="492.0" text="Êtes-vous sûr de vouloir &#10;continuer à suivre ce projet ?" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="105.0" layoutY="210.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #ffffffff;" text="Modifier" />
+      <JFXButton layoutX="248.0" layoutY="267.0" prefHeight="39.0" prefWidth="221.0" style="-fx-background-color: #ffffffff;" text="Ajouter " />
+      <ImageView fitHeight="48.0" fitWidth="36.0" layoutX="206.0" layoutY="269.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/img_11.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="36.0" layoutX="363.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/img_12.png" />
+         </image>
+      </ImageView>
+      <JFXButton layoutX="517.0" layoutY="418.0" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #ffffffff;" text="OK" />
+      <JFXButton layoutX="605.0" layoutY="418.0" prefHeight="39.0" prefWidth="80.0" style="-fx-background-color: #ffffffff;" text="Cancel" />
+   </children>
+</AnchorPane>
