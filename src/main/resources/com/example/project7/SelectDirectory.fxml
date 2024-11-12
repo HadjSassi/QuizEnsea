@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="407.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.SelectDirectory">
+   <children>
+      <AnchorPane prefHeight="28.0" prefWidth="501.0" style="-fx-background-color: #1a4301;">
+         <children>
+            <Label layoutX="14.0" layoutY="1.0" text="Select  Project File Directory" textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="29.0" fitWidth="28.0" layoutX="31.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/img_5.png" />
+         </image>
+      </ImageView>
+      <JFXButton layoutX="302.0" layoutY="346.0" prefHeight="39.0" prefWidth="56.0" style="-fx-background-color: #1a4301;" text="OK" textFill="WHITE" />
+      <JFXButton layoutX="377.0" layoutY="346.0" prefHeight="39.0" prefWidth="86.0" style="-fx-background-color: #A3B18A;" text="Cancel" textFill="WHITE" />
+      <JFXButton layoutX="37.0" layoutY="97.0" prefHeight="39.0" prefWidth="246.0" text="Documents" />
+      <JFXButton layoutX="31.0" layoutY="175.0" prefHeight="39.0" prefWidth="246.0" text="Desktop" />
+      <JFXButton layoutX="31.0" layoutY="214.0" prefHeight="39.0" prefWidth="246.0" text="Pictures" />
+      <JFXButton layoutX="37.0" layoutY="136.0" prefHeight="39.0" prefWidth="246.0" text="Downolad" />
+   </children>
+</AnchorPane>
