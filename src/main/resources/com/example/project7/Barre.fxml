@@ -12,7 +12,7 @@
     <children>
         <AnchorPane fx:id="anchorpane2" prefHeight="576.0" prefWidth="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="794.0" AnchorPane.topAnchor="0.0">
             <children>
-                <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #3A5A40;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #283618;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Label layoutX="54.0" layoutY="456.0" prefHeight="92.0" prefWidth="152.0" text="©2024&#10;Nissrine El khatib&#10;Mahdi Hadj Sassi&#10;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" />
             <Pane layoutX="28.0" layoutY="40.0" prefHeight="44.0" prefWidth="200.0">
                <children>
