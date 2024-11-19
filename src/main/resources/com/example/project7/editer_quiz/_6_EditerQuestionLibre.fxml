@@ -8,8 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.editer_quiz.">
+<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQuestion">
    <children>
       <VBox prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -53,7 +52,7 @@
                         <Insets top="40.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField promptText="Veuillez entrer la question" GridPane.columnIndex="1">
+                  <TextField fx:id="enonceQuestion" promptText="Veuillez entrer la question" GridPane.columnIndex="1">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -61,27 +60,27 @@
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField promptText="Veuillez entrer le scoring totale" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="scoringTotale" promptText="Veuillez entrer le scoring totale" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField promptText="Score" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id="nombreScore" promptText="Score" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets right="200.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField promptText="Nombre de lignes" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TextField fx:id="nombreLignes" promptText="Nombre de lignes" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="200.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField promptText="La taille" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <TextField fx:id="tailleLigne" promptText="La taille entre Ligne" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets right="200.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField promptText="Veuillez entrer le Rappel de question" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <TextField fx:id="rappelQuestion" promptText="Veuillez entrer le Rappel de question" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
@@ -90,8 +89,8 @@
             </GridPane>
             <HBox alignment="CENTER" prefHeight="68.0" prefWidth="794.0" spacing="50.0">
                <children>
-                  <JFXButton prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Ajouter" textFill="WHITE" />
-                  <JFXButton prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
+                  <JFXButton fx:id="ajouterQuestion" onAction="#ajouterQuestion" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Ajouter" textFill="WHITE" />
+                  <JFXButton fx:id="cancelQuestion" onAction="#cancelQuestion" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
                </children>
                <padding>
                   <Insets top="30.0" />

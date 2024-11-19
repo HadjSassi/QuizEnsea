@@ -10,40 +10,32 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditerQCM implements Initializable {
+public class EditerQCU implements Initializable {
 
     @FXML
     private TextField enonceQuestion;
 
     @FXML
-    private TextField baremePosDefault;
+    private TextField baremePos;
+
+    @FXML
+    private TextField reponseCorrect;
 
     @FXML
     private TextField baremeNegDefault;
 
     @FXML
-    private Button ajouterBonneReponse;
-
-    @FXML
     private Button ajouterMauvaiseReponse;
-
-    @FXML
-    private TableView<Void> correctTableView;
 
     @FXML
     private TableView<Void> incorrectTableView;
 
     @FXML
-    private Button ajouterQcm;
+    private Button ajouterQcu;
 
     @FXML
-    private Button cancelQcm;
+    private Button cancelQcu;
 
-
-    @FXML
-    public void handleClicksAddGoodResponce(ActionEvent event) {
-        //todo insert a new line in the correctTable View
-    }
 
 
     @FXML
@@ -53,12 +45,12 @@ public class EditerQCM implements Initializable {
 
 
     @FXML
-    public void handleClicksAddQCM(ActionEvent event) {
+    public void handleClicksAddQCU(ActionEvent event) {
         //todo save in the database and return the previous interface which is the Editer Projet.
     }
 
     @FXML
-    public void handleClicksCancelQCM(ActionEvent event) {
+    public void handleClicksCancelQCU(ActionEvent event) {
         //todo cancel the creation of the question and get back to the editer projet
     }
 

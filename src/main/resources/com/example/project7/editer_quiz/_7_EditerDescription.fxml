@@ -10,70 +10,52 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerDescription">
    <children>
       <VBox layoutX="-6.0" layoutY="-1.0" prefHeight="600.0" prefWidth="803.0">
          <children>
-            <GridPane prefHeight="334.0" prefWidth="803.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="396.0" minWidth="10.0" prefWidth="285.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="563.0" minWidth="10.0" prefWidth="518.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="189.0" minHeight="10.0" prefHeight="185.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="161.0" minHeight="10.0" prefHeight="81.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="115.0" minHeight="8.0" prefHeight="31.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <HBox alignment="CENTER" prefHeight="354.0" prefWidth="803.0">
                <children>
-                  <Label prefHeight="125.0" prefWidth="214.0" text=" Saisir la description :&#10;&quot;Mettez # si vous voulez &#10; écrire un code dans&#10; votre description &quot;" GridPane.halignment="CENTER">
-                     <GridPane.margin>
-                        <Insets left="50.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <TextField prefHeight="145.0" prefWidth="499.0" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets right="40.0" top="20.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <JFXButton style="-fx-background-color: #A53860;" text="Ajouter une image" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <ImageView fitHeight="37.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../../../../img/img_5.png" />
-                     </image>
-                     <GridPane.margin>
-                        <Insets right="30.0" />
-                     </GridPane.margin>
-                  </ImageView>
-                  <ImageView fitHeight="32.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <image>
-                        <Image url="@../../../../img/img_16.png" />
-                     </image>
-                     <GridPane.margin>
-                        <Insets left="400.0" />
-                     </GridPane.margin>
-                  </ImageView>
-                  <ImageView fitHeight="29.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <image>
-                        <Image url="@../../../../img/img_21.png" />
-                     </image>
-                     <GridPane.margin>
-                        <Insets left="450.0" />
-                     </GridPane.margin>
-                  </ImageView>
+                  <Label prefHeight="125.0" prefWidth="214.0" text=" Saisir la description :&#10;&quot;Mettez # si vous voulez &#10; écrire un code dans&#10; votre description &quot;" />
+                  <TextArea fx:id="descriptionTextArea" prefHeight="255.0" prefWidth="460.0" promptText="Veuilez Saisir La description">
+                     <HBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                     </HBox.margin>
+                  </TextArea>
                </children>
-               <padding>
-                  <Insets top="20.0" />
-               </padding>
-            </GridPane>
-            <HBox alignment="CENTER" prefHeight="133.0" prefWidth="803.0" spacing="50.0">
+            </HBox>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="773.0" text="Veuillez ajouter les images et leurs légendes" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="57.0" prefWidth="803.0">
                <children>
-                  <JFXButton prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #69243D;" text="Valider" textFill="WHITE" />
-                  <JFXButton prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
+                  <Button fx:id="addImageButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClickAddImage" prefHeight="31.0" prefWidth="167.0" text="Ajouter Une image">
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
-               <padding>
-                  <Insets left="400.0" top="200.0" />
-               </padding>
+            </HBox>
+            <TableView fx:id="tableViewImages" prefHeight="261.0" prefWidth="763.0">
+              <columns>
+                <TableColumn prefWidth="272.0" text="Chemin d'image" />
+                <TableColumn prefWidth="349.0" text="Légende d'image" />
+                  <TableColumn prefWidth="141.0" text="Action sur Image" />
+              </columns>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="30.0" />
+               </VBox.margin>
+            </TableView>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="803.0" spacing="50.0">
+               <children>
+                  <JFXButton fx:id="ajouterDescription" onAction="#handleClickAddDescription" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #69243D;" text="Ajouter" textFill="WHITE" />
+                  <JFXButton fx:id="cancelDescription" onAction="#handleClickCancelDescription" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="30.0" top="30.0" />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>

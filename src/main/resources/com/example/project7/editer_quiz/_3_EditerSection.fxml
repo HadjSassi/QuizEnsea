@@ -24,7 +24,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="identifiantSection" prefHeight="31.0" prefWidth="196.0" GridPane.columnIndex="1" />
+                  <TextField fx:id="identifiantSection" prefHeight="31.0" prefWidth="196.0" promptText="Veuillez Saisir l'identificant de la section !" GridPane.columnIndex="1" />
                   <Label text="Identifiant du Section :">
                      <font>
                         <Font size="20.0" />

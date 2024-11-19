@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Project">
+<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerProjet">
    <children>
       <VBox prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -24,6 +24,7 @@
                 <RowConstraints maxHeight="451.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="73.0" valignment="CENTER" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="65.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="65.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label prefHeight="12.0" prefWidth="249.0" text="                 Nom du Devoir :">
@@ -36,10 +37,9 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="39.0" prefWidth="432.0" GridPane.columnIndex="1" />
-                  <TextField prefHeight="39.0" prefWidth="432.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField prefHeight="39.0" prefWidth="432.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField prefHeight="39.0" prefWidth="432.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="nomDevoir" prefHeight="39.0" prefWidth="432.0" promptText="Veuillez Saisir le nom de devoir" GridPane.columnIndex="1" />
+                  <TextField fx:id="typeDevoir" prefHeight="39.0" prefWidth="432.0" promptText="Veuillez saisir le type de devoir" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="formatQuestion" prefHeight="39.0" prefWidth="432.0" promptText="Veuillez préciser la format des question !" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label prefHeight="30.0" prefWidth="163.0" text="  Date du Devoir :" GridPane.rowIndex="2">
                      <font>
                         <Font size="20.0" />
@@ -50,15 +50,26 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <MenuButton fx:id="ajouterSection" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClicksAddSection" prefHeight="31.0" prefWidth="273.0" text="Ajouter Question ou Description" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                    <items>
+                      <MenuItem fx:id="ajouterQCU" mnemonicParsing="false" text="Ajouter QCU" />
+                      <MenuItem fx:id="ajouterQCM" mnemonicParsing="false" text="AjouterQCM" />
+                        <MenuItem fx:id="ajouterQuestionLibre" mnemonicParsing="false" text="AjouterQuestionLibre" />
+                        <MenuItem fx:id="ajouterDescription" mnemonicParsing="false" text="AjouterDescription" />
+                    </items>
+                  </MenuButton>
+                  <DatePicker fx:id="dateDevoir" prefHeight="31.0" prefWidth="452.0" promptText="Veuillez Choisir la date du devoir" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <VBox.margin>
                   <Insets right="50.0" top="20.0" />
                </VBox.margin>
             </GridPane>
-            <TableView prefHeight="244.0" prefWidth="707.0">
+            <TableView fx:id="tableSection" prefHeight="272.0" prefWidth="694.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn prefWidth="75.0" text="Num°" />
+                <TableColumn prefWidth="59.0" text="Type" />
+                  <TableColumn prefWidth="445.0" text="Enoncé de section" />
+                  <TableColumn prefWidth="114.0" text="Action" />
               </columns>
                <VBox.margin>
                   <Insets left="50.0" right="50.0" />
@@ -66,9 +77,8 @@
             </TableView>
             <HBox alignment="CENTER" prefHeight="68.0" prefWidth="794.0" spacing="50.0">
                <children>
-                  <JFXButton prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #f5f3f4;" text="Ajouter" />
-                  <JFXButton prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Terminer" textFill="WHITE" />
-                  <JFXButton prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
+                  <JFXButton fx:id="terminer" onAction="#handleClicksSaveProject" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Terminer" textFill="WHITE" />
+                  <JFXButton fx:id="cancel" onAction="#handleClicksCancelProject" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
                </children>
             </HBox>
          </children>
