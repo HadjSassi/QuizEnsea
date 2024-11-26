@@ -65,7 +65,7 @@ public class InterfaceController implements Initializable {
     @FXML
     void handleClicksOpen(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
-        Parent view = object.getPane("SettingInterf");
+        Parent view = object.getPane("openinterf");
         //view.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         anchorpane3.getChildren().removeAll();
         anchorpane3.getChildren().setAll(view);
