@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import com.jfoenix.controls.*?>
@@ -22,7 +23,7 @@
                                     <Image url="@images/ensea.png" />
                                  </image>
                               </ImageView>
-                              <Label style="-fx-text-fill: #A53960;" text="AMC" textFill="#f8f8f8">
+                              <Label style="-fx-text-fill: #A53960;" text="AMC" textFill="WHITE">
                                  <font>
                                     <Font size="37.0" />
                                  </font>
@@ -33,7 +34,7 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="256.0">
+                        <VBox alignment="CENTER" layoutY="-42.0" prefHeight="200.0" prefWidth="256.0">
                            <children>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
@@ -93,15 +94,21 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="40.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@images/help.png" />
                                        </image>
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
                                     </ImageView>
-                                    <JFXButton prefHeight="44.0" prefWidth="90.0" text="Help" textFill="WHITE">
+                                    <JFXButton prefHeight="44.0" prefWidth="86.0" text="Help" textFill="WHITE">
                                        <font>
                                           <Font name="Century Gothic" size="22.0" />
                                        </font>
+                                       <padding>
+                                          <Insets right="20.0" />
+                                       </padding>
                                     </JFXButton>
                                  </children>
                               </HBox>
@@ -111,9 +118,9 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="94.0" prefWidth="256.0">
                      <children>
-                        <VBox alignment="BOTTOM_CENTER" layoutY="52.0" prefHeight="70.0" prefWidth="256.0">
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="122.0" prefWidth="256.0">
                            <children>
-                              <Label prefHeight="92.0" prefWidth="116.0" text="©2024&#10;Nissrine El khatib&#10;Mahdi Hadj Sassi&#10;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" />
+                              <Label prefHeight="122.0" prefWidth="156.0" text="©2024&#10;Nissrine El khatib&#10;Mahdi Hadj Sassi&#10;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" />
                            </children>
                         </VBox>
                      </children>
