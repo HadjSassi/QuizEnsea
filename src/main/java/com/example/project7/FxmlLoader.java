@@ -6,7 +6,7 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 
 public class FxmlLoader {
-    private AnchorPane view;
+    private FXMLLoader loader;
 
     public AnchorPane getPane(String fileName){
         try {
@@ -15,11 +15,16 @@ public class FxmlLoader {
                 throw new java.io.FileNotFoundException("FXML file can't be found");
             }
 
-            view = new FXMLLoader().load(fileUrl);
+            loader = new FXMLLoader(fileUrl);
+            return loader.load();
         }catch (Exception e){
             System.out.println("No page "+fileName+" please check sample.App.FxmlLoader.");
             e.printStackTrace();
         }
-        return view;
+        return null;
+    }
+
+    public Object getController() {
+        return loader != null ? loader.getController() : null;
     }
 }

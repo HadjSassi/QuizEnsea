@@ -10,53 +10,49 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorpane3" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerSection">
-   <children>
-      <VBox prefHeight="600.0" prefWidth="794.0">
-         <children>
-            <GridPane alignment="CENTER" hgap="100.0" prefHeight="103.0" prefWidth="575.0">
-              <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="290.0" minWidth="10.0" prefWidth="290.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="337.0" minWidth="10.0" prefWidth="285.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <TextField fx:id="identifiantSection" prefHeight="31.0" prefWidth="196.0" promptText="Veuillez Saisir l'identificant de la section !" GridPane.columnIndex="1" />
-                  <Label text="Identifiant du Section :">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Label text="Type du Section :" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <SplitMenuButton fx:id="typeSection" mnemonicParsing="false" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #A3B18A;" text="QCM (a choix multiple)&#10;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="Action 1" />
-                        <MenuItem mnemonicParsing="false" text="Action 2" />
-                     </items>
-                  </SplitMenuButton>
-               </children>
-            </GridPane>
-            <AnchorPane fx:id="sectionPane" prefHeight="452.0" prefWidth="794.0" />
-            <HBox alignment="CENTER" prefHeight="73.0" prefWidth="774.0" spacing="100.0">
-               <children>
-                  <JFXButton fx:id="ajouterSection" onAction="#handleClicksAddSection" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: #450920;" text="Ajouter" textFill="WHITE" />
-                  <JFXButton fx:id="cancelSection" onAction="#handleClicksCancel" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: fff0f3;" text="Cancel" />
-               </children>
+<AnchorPane fx:id="anchorpane3" prefHeight="708.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerSection">
+    <children>
+        <VBox prefHeight="709.0" prefWidth="794.0">
+            <children>
+                <GridPane alignment="CENTER" hgap="100.0" prefHeight="103.0" prefWidth="575.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="290.0" minWidth="10.0" prefWidth="290.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="337.0" minWidth="10.0" prefWidth="285.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <TextField fx:id="identifiantSection" prefHeight="31.0" prefWidth="196.0" promptText="Veuillez Saisir l'identificant de la section !" GridPane.columnIndex="1" />
+                        <Label text="Identifiant du Section :">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <Label text="Type du Section :" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <SplitMenuButton fx:id="typeSection" mnemonicParsing="false" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #A3B18A;" text="Please Select type of the Section " GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCU" text="QCU" />
+                                <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCM" text="QCM" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeQuestion" text="Free Question" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeDescription" text="Description" />
+                            </items>
+                        </SplitMenuButton>
+                    </children>
+                </GridPane>
+                <AnchorPane fx:id="sectionPane" prefHeight="562.0" prefWidth="794.0">
                <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-         <padding>
-            <Insets bottom="10.0" top="10.0" />
-         </padding>
-      </VBox>
-   </children>
+                  <Insets top="10.0" />
+               </VBox.margin></AnchorPane>
+            </children>
+            <padding>
+                <Insets bottom="10.0" top="10.0" />
+            </padding>
+        </VBox>
+    </children>
 </AnchorPane>

@@ -1,10 +1,17 @@
 package com.example.project7.controller.edition;
 
+import com.example.project7.FxmlLoader;
 import com.example.project7.model.Section;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,26 +41,45 @@ public class EditerProjet implements Initializable {
     @FXML
     private MenuButton ajouterSection;
 
-    @FXML
-    private MenuItem ajouterQCU;
-
-    @FXML
-    private MenuItem ajouterQCM;
-
-    @FXML
-    private MenuItem ajouterQuestionLibre;
-
-    @FXML
-    private MenuItem ajouterDescription;
 
     @FXML
     private TableView<RowTableSection> tableSection;
 
+    private AnchorPane parentPane;
+
+    public void setParentPane(AnchorPane parentPane) {
+        this.parentPane = parentPane;
+    }
+
 
     @FXML
     public void handleClicksAddSection(ActionEvent event) {
-        //todo show the previous type of the project
+        try {
+            FxmlLoader object = new FxmlLoader();
+            Parent view = object.getPane("editer_quiz/_3_EditerSection");
+
+            Scene popupScene = new Scene(view);
+            Stage popupStage = new Stage();
+
+            popupStage.setTitle("Ajouter une Section");
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.initStyle(StageStyle.TRANSPARENT);
+            popupStage.initOwner(terminer.getScene().getWindow());
+            popupStage.setScene(popupScene);
+            popupStage.setResizable(false);
+
+            EditerSection controller = (EditerSection) object.getController();
+            if (controller != null) {
+                controller.setParentPane(parentPane);
+            }
+
+            popupStage.showAndWait();
+        } catch (Exception e) {
+            System.out.println("Erreur lors de l'ouverture de la popup : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     public void handleClicksSaveProject(ActionEvent event) {
@@ -63,7 +89,11 @@ public class EditerProjet implements Initializable {
 
     @FXML
     public void handleClicksCancelProject(ActionEvent event) {
-        //todo show a pop up for confirming the cancel
+        //todo show a pop up for confirming the cancel and get back to the acceuil!!!!
+        FxmlLoader object = new FxmlLoader();
+        Parent view = object.getPane("Home");
+        parentPane.getChildren().removeAll();
+        parentPane.getChildren().setAll(view);
     }
 
     @Override

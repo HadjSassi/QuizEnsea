@@ -35,24 +35,14 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="979.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksMaximize" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/style.css" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="2.0">
-               <graphic>
-                  <ImageView fitHeight="16.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/maximize-window.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button layoutX="947.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksMinimize" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/style.css" AnchorPane.rightAnchor="71.0" AnchorPane.topAnchor="2.0">
+            <Button layoutX="947.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksMinimize" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/style.css" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="2.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/minimize-window.png" />
                      </image>
                   </ImageView>
-               </graphic>
-            </Button>
+               </graphic></Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainscreen" layoutY="31.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="573.0" prefWidth="1050.0" style="-fx-background-color: BBBBBB;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0" />

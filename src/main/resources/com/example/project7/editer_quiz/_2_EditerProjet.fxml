@@ -50,14 +50,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <MenuButton fx:id="ajouterSection" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClicksAddSection" prefHeight="31.0" prefWidth="273.0" text="Ajouter Question ou Description" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-                    <items>
-                      <MenuItem fx:id="ajouterQCU" mnemonicParsing="false" text="Ajouter QCU" />
-                      <MenuItem fx:id="ajouterQCM" mnemonicParsing="false" text="AjouterQCM" />
-                        <MenuItem fx:id="ajouterQuestionLibre" mnemonicParsing="false" text="AjouterQuestionLibre" />
-                        <MenuItem fx:id="ajouterDescription" mnemonicParsing="false" text="AjouterDescription" />
-                    </items>
-                  </MenuButton>
+                  <Button mnemonicParsing="false" onAction="#handleClicksAddSection" text="Ajouter Question ou Description" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                   <DatePicker fx:id="dateDevoir" prefHeight="31.0" prefWidth="452.0" promptText="Veuillez Choisir la date du devoir" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <VBox.margin>

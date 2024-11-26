@@ -212,7 +212,7 @@ public class Main extends Application {
             }
         });
         //primaryStage.setFullScreen(true);
-        primaryStage.setMaximized(true);
+        primaryStage.setMaximized(false);
         primaryStage.getIcons().add((new Image(getClass().getResource("/com/example/project7/images/ensea2.png").toURI().toString())));
         primaryStage.show();
         scene.setFill(Color.TRANSPARENT);

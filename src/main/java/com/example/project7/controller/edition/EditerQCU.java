@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -51,7 +52,8 @@ public class EditerQCU implements Initializable {
 
     @FXML
     public void handleClicksCancelQCU(ActionEvent event) {
-        //todo cancel the creation of the question and get back to the editer projet
+        Stage stage = (Stage) cancelQcu.getScene().getWindow();
+        stage.close();
     }
 
     @Override

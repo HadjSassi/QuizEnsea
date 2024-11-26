@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -44,8 +45,8 @@ public class EditerQuestion implements Initializable {
 
     @FXML
     public void cancelQuestion(ActionEvent event) {
-        //todo  get back to the previous interface
-    }
+        Stage stage = (Stage) cancelQuestion.getScene().getWindow();
+        stage.close();    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

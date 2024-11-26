@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,8 +41,8 @@ public class EditerDescription implements Initializable {
 
     @FXML
     public void handleClickCancelDescription(ActionEvent event) {
-        //todo cancel modification of the description and quit
-    }
+        Stage stage = (Stage) cancelDescription.getScene().getWindow();
+        stage.close();    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
