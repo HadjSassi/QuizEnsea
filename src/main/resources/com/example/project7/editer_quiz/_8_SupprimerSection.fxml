@@ -13,12 +13,12 @@
    <children>
       <VBox layoutX="-3.0" prefHeight="289.0" prefWidth="507.0" style="-fx-background-color: EFD1DC;">
          <children>
-            <Label text="Est-ce que vous êtes sûr de&#10; supprimer cette section ?">
+            <Label prefHeight="83.0" prefWidth="367.0" text="Are you sure you want to delete&#10; this section?" textAlignment="CENTER">
                <VBox.margin>
                   <Insets left="80.0" top="60.0" />
                </VBox.margin>
                <font>
-                  <Font name="Century Gothic" size="26.0" />
+                  <Font name="Times New Roman" size="26.0" />
                </font>
             </Label>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
@@ -26,8 +26,8 @@
                   <Insets top="50.0" />
                </VBox.margin>
                <children>
-                  <JFXButton fx:id="confirmerSuppression" onAction="#confimerSuppression" prefHeight="39.0" prefWidth="65.0" style="-fx-background-color: #B33D68;" text="OUI" textFill="WHITE" />
-                  <JFXButton fx:id="cancelSuppression" onAction="#cancelSuppression" prefHeight="39.0" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="NON" />
+                  <JFXButton fx:id="confirmerSuppression" onAction="#confimerSuppression" prefHeight="39.0" prefWidth="65.0" style="-fx-background-color: #B33D68;" text="Yes" textFill="WHITE" />
+                  <JFXButton fx:id="cancelSuppression" onAction="#cancelSuppression" prefHeight="39.0" prefWidth="65.0" style="-fx-background-color: #FFFFFF;" text="No" />
                </children>
                <padding>
                   <Insets left="170.0" top="20.0" />

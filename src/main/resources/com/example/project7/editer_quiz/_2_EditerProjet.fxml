@@ -27,31 +27,31 @@
                   <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="65.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label prefHeight="12.0" prefWidth="249.0" text="                 Nom du Devoir :">
+                  <Label prefHeight="12.0" prefWidth="249.0" text="            Assignment Name :">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="30.0" prefWidth="241.0" text="                Type du Devoir :" GridPane.rowIndex="1">
+                  <Label prefHeight="30.0" prefWidth="241.0" text="            Assignment Type :" GridPane.rowIndex="1">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="nomDevoir" prefHeight="39.0" prefWidth="432.0" promptText="Veuillez Saisir le nom de devoir" GridPane.columnIndex="1" />
-                  <TextField fx:id="typeDevoir" prefHeight="39.0" prefWidth="432.0" promptText="Veuillez saisir le type de devoir" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="formatQuestion" prefHeight="39.0" prefWidth="432.0" promptText="Veuillez préciser la format des question !" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label prefHeight="30.0" prefWidth="163.0" text="  Date du Devoir :" GridPane.rowIndex="2">
+                  <TextField fx:id="nomDevoir" prefHeight="39.0" prefWidth="432.0" promptText="Please enter the assignment name" GridPane.columnIndex="1" />
+                  <TextField fx:id="typeDevoir" prefHeight="39.0" prefWidth="432.0" promptText="Please enter the assignment type" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="formatQuestion" prefHeight="39.0" prefWidth="432.0" promptText="Please specify the question format !" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label prefHeight="30.0" prefWidth="238.0" text="           Assignment Date :" GridPane.rowIndex="2">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="60.0" prefWidth="210.0" text="Format Des Questions :" GridPane.rowIndex="3">
+                  <Label prefHeight="60.0" prefWidth="210.0" text="       Question Format :" GridPane.rowIndex="3">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#handleClicksAddSection" text="Ajouter Question ou Description" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <DatePicker fx:id="dateDevoir" prefHeight="31.0" prefWidth="452.0" promptText="Veuillez Choisir la date du devoir" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#handleClicksAddSection" text="Add Question or Description" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <DatePicker fx:id="dateDevoir" prefHeight="31.0" prefWidth="452.0" promptText="Please choose the assignment date" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <VBox.margin>
                   <Insets right="50.0" top="20.0" />
@@ -59,9 +59,9 @@
             </GridPane>
             <TableView fx:id="tableSection" prefHeight="272.0" prefWidth="694.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="Num°" />
+                <TableColumn prefWidth="75.0" text="No°" />
                 <TableColumn prefWidth="59.0" text="Type" />
-                  <TableColumn prefWidth="445.0" text="Enoncé de section" />
+                  <TableColumn prefWidth="445.0" text="Section Statement" />
                   <TableColumn prefWidth="114.0" text="Action" />
               </columns>
                <VBox.margin>
@@ -70,7 +70,7 @@
             </TableView>
             <HBox alignment="CENTER" prefHeight="68.0" prefWidth="794.0" spacing="50.0">
                <children>
-                  <JFXButton fx:id="terminer" onAction="#handleClicksSaveProject" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Terminer" textFill="WHITE" />
+                  <JFXButton fx:id="terminer" onAction="#handleClicksSaveProject" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Done" textFill="WHITE" />
                   <JFXButton fx:id="cancel" onAction="#handleClicksCancelProject" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
                </children>
             </HBox>

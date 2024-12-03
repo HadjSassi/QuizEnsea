@@ -25,17 +25,17 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Nom Projet :">
+                  <Label text="Project Name:">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label text="Type de projet :" GridPane.rowIndex="2">
+                  <Label text="Project Type :" GridPane.rowIndex="2">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label text="Localisation de projet :" GridPane.rowIndex="1">
+                  <Label text="Project Location :" GridPane.rowIndex="1">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -50,15 +50,22 @@
                         <Insets bottom="15.0" right="30.0" top="20.0" />
                      </GridPane.margin>
                   </MenuButton>
-                  <TextField fx:id="name" promptText="Veuillez Saisir le nom de projet" GridPane.columnIndex="1">
+                  <TextField fx:id="name" promptText="Please enter the project name" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets right="30.0" />
                      </GridPane.margin>
                   </TextField>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <TextField fx:id="location" prefHeight="31.0" prefWidth="357.0" promptText="Veuillez Choisir la localisation de projet" />
-                        <Button mnemonicParsing="false" text="Button" />
+                        <TextField fx:id="location" prefHeight="31.0" prefWidth="357.0" promptText="Please choose the project location" />
+                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="60.0">
+                           <graphic>
+                              <ImageView fitHeight="28.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../img/img_5.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                      </children>
                      <GridPane.margin>
                         <Insets right="30.0" />

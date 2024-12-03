@@ -29,30 +29,30 @@
                   <Insets left="10.0" right="10.0" top="20.0" />
                </padding>
                <children>
-                  <Label prefHeight="27.0" prefWidth="151.0" text="Saisir la Question :" GridPane.halignment="CENTER">
+                  <Label prefHeight="27.0" prefWidth="183.0" text="Enter the Question :" GridPane.halignment="CENTER">
                      <GridPane.margin>
-                        <Insets left="100.0" />
+                        <Insets left="130.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="Scoring Totale : " GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <Label text="Total Scoring :" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets left="120.0" />
+                        <Insets left="150.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="         Le nombre de Score :" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <Label prefHeight="27.0" prefWidth="185.0" text="The Number of Score :" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <GridPane.margin>
-                        <Insets left="40.0" />
+                        <Insets left="90.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="Veuillez entrer le nombre de lignes :" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Label text="Veuillez entrer la Taille entre ligne :" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Label text="Saisir le Rappel de Question :" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <Label text="(Qui se trouve à droite du Box)" textFill="#c60e5e" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+                  <Label text="Please enter the number of lines :" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <Label text="Please enter the size between lines :" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <Label text="Enter the Question Reminder :" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <Label text="(Which is located to the right of the box)" textFill="#c60e5e" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="enonceQuestion" promptText="Veuillez entrer la question" GridPane.columnIndex="1">
+                  <TextField fx:id="enonceQuestion" promptText="Please enter the question" GridPane.columnIndex="1">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -60,7 +60,7 @@
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="scoringTotale" promptText="Veuillez entrer le scoring totale" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="scoringTotale" promptText="Please enter the total scoring" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
@@ -70,17 +70,17 @@
                         <Insets right="200.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="nombreLignes" promptText="Nombre de lignes" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TextField fx:id="nombreLignes" promptText="Number of lines" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="200.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="tailleLigne" promptText="La taille entre Ligne" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <TextField fx:id="tailleLigne" promptText="The size between lines" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets right="200.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="rappelQuestion" promptText="Veuillez entrer le Rappel de question" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <TextField fx:id="rappelQuestion" promptText="Please enter the question reminder" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
@@ -89,7 +89,7 @@
             </GridPane>
             <HBox alignment="CENTER" prefHeight="68.0" prefWidth="794.0" spacing="50.0">
                <children>
-                  <JFXButton fx:id="ajouterQuestion" onAction="#ajouterQuestion" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Ajouter" textFill="WHITE" />
+                  <JFXButton fx:id="ajouterQuestion" onAction="#ajouterQuestion" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Add" textFill="WHITE" />
                   <JFXButton fx:id="cancelQuestion" onAction="#cancelQuestion" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
                </children>
                <padding>

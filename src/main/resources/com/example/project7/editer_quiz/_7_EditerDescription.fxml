@@ -16,22 +16,25 @@
          <children>
             <HBox alignment="CENTER" prefHeight="354.0" prefWidth="803.0">
                <children>
-                  <Label prefHeight="125.0" prefWidth="214.0" text=" Saisir la description :&#10;&quot;Mettez # si vous voulez &#10; écrire un code dans&#10; votre description &quot;" />
-                  <TextArea fx:id="descriptionTextArea" prefHeight="255.0" prefWidth="460.0" promptText="Veuilez Saisir La description">
+                  <Label prefHeight="125.0" prefWidth="214.0" text="Enter the description: &#10;'Put # if you want to &#10;write code in your &#10;description.'">
+                     <font>
+                        <Font size="19.0" />
+                     </font></Label>
+                  <TextArea fx:id="descriptionTextArea" prefHeight="255.0" prefWidth="460.0" promptText="Please enter the description">
                      <HBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                      </HBox.margin>
                   </TextArea>
                </children>
             </HBox>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="773.0" text="Veuillez ajouter les images et leurs légendes" textAlignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="773.0" text="Please add the images and their captions" textAlignment="CENTER">
                <VBox.margin>
                   <Insets left="30.0" />
                </VBox.margin>
             </Label>
             <HBox alignment="CENTER" prefHeight="57.0" prefWidth="803.0">
                <children>
-                  <Button fx:id="addImageButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClickAddImage" prefHeight="31.0" prefWidth="167.0" text="Ajouter Une image">
+                  <Button fx:id="addImageButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClickAddImage" prefHeight="31.0" prefWidth="167.0" text="Add an imag">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
@@ -40,9 +43,9 @@
             </HBox>
             <TableView fx:id="tableViewImages" prefHeight="261.0" prefWidth="763.0">
               <columns>
-                <TableColumn prefWidth="272.0" text="Chemin d'image" />
-                <TableColumn prefWidth="349.0" text="Légende d'image" />
-                  <TableColumn prefWidth="141.0" text="Action sur Image" />
+                <TableColumn prefWidth="272.0" text="Image path" />
+                <TableColumn prefWidth="317.0" text="Image caption" />
+                  <TableColumn prefWidth="173.0" text="Action on Image" />
               </columns>
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="30.0" />
@@ -50,7 +53,7 @@
             </TableView>
             <HBox alignment="CENTER" prefHeight="52.0" prefWidth="803.0" spacing="50.0">
                <children>
-                  <JFXButton fx:id="ajouterDescription" onAction="#handleClickAddDescription" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #69243D;" text="Ajouter" textFill="WHITE" />
+                  <JFXButton fx:id="ajouterDescription" onAction="#handleClickAddDescription" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #69243D;" text="Add" textFill="WHITE" />
                   <JFXButton fx:id="cancelDescription" onAction="#handleClickCancelDescription" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
                </children>
                <VBox.margin>
