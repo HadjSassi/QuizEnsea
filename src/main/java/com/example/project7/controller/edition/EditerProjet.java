@@ -1,7 +1,10 @@
 package com.example.project7.controller.edition;
 
 import com.example.project7.FxmlLoader;
+import com.example.project7.model.Projet;
 import com.example.project7.model.Section;
+import com.example.project7.model.TypeDevoir;
+import com.example.project7.model.TypeNumero;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,11 +17,14 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class EditerProjet implements Initializable {
 
     private static Section dernierSection;
+
+    private Projet projet;
 
     @FXML
     private Button terminer;
@@ -30,17 +36,19 @@ public class EditerProjet implements Initializable {
     private TextField nomDevoir;
 
     @FXML
-    private TextField typeDevoir;
+    private MenuButton typeDevoir;
 
     @FXML
     private DatePicker dateDevoir;
 
     @FXML
-    private TextField formatQuestion;
+    private TextField formatQuestionText;
+
+    @FXML
+    private MenuButton formatQuestionNumber;
 
     @FXML
     private MenuButton ajouterSection;
-
 
     @FXML
     private TableView<RowTableSection> tableSection;
@@ -51,6 +59,10 @@ public class EditerProjet implements Initializable {
         this.parentPane = parentPane;
     }
 
+    public void setProjet(Projet projet) {
+        this.projet = projet;
+        nomDevoir.setText(this.projet.getNomProjet());
+    }
 
     @FXML
     public void handleClicksAddSection(ActionEvent event) {
@@ -80,26 +92,62 @@ public class EditerProjet implements Initializable {
         }
     }
 
-
-    @FXML
-    public void handleClicksSaveProject(ActionEvent event) {
-        //todo save in the database and show pop up if the user wants to export it in pdf or latex
-    }
-
-
     @FXML
     public void handleClicksCancelProject(ActionEvent event) {
-        //todo show a pop up for confirming the cancel and get back to the acceuil!!!!
-        FxmlLoader object = new FxmlLoader();
-        Parent view = object.getPane("Home");
-        parentPane.getChildren().removeAll();
-        parentPane.getChildren().setAll(view);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Cancel");
+        alert.setHeaderText("Are you sure to cancel the modifications ?");
+        alert.setContentText("All modifications will be lost!");
+
+        ButtonType buttonTypeYes = new ButtonType("Oui");
+        ButtonType buttonTypeNo = new ButtonType("Non");
+
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == buttonTypeYes) {
+                FxmlLoader object = new FxmlLoader();
+                Parent view = object.getPane("Home");
+                parentPane.getChildren().removeAll();
+                parentPane.getChildren().setAll(view);
+            }
+        });
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        dateDevoir.setValue(LocalDate.now());
+
+        formatQuestionText.setText("Question :");
+
+        for (TypeDevoir type : TypeDevoir.values()) {
+            MenuItem menuItem = new MenuItem(type.getNomDevoir());
+            menuItem.setOnAction(event -> typeDevoir.setText(type.getNomDevoir()));
+            typeDevoir.getItems().add(menuItem);
+        }
+
+        if (!typeDevoir.getItems().isEmpty()) {
+            typeDevoir.setText(typeDevoir.getItems().get(0).getText());
+        }
+
+        for (TypeNumero typeNumero : TypeNumero.values()) {
+            MenuItem menuItem = new MenuItem(typeNumero.getValue());
+            menuItem.setOnAction(event -> formatQuestionNumber.setText(typeNumero.getValue()));
+            formatQuestionNumber.getItems().add(menuItem);
+        }
+
+        if (!formatQuestionNumber.getItems().isEmpty()) {
+            formatQuestionNumber.setText(formatQuestionNumber.getItems().get(0).getText());
+        }
     }
+
+    @FXML
+    public void handleClicksSaveProject(ActionEvent event) {
+        //todo save in the database and show pop up if the user wants to export it in pdf or latex
+
+    }
+
 }
 
 class RowTableSection {

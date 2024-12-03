@@ -29,4 +29,40 @@ public class Projet {
         this.date = date;
         this.devoir = new ArrayList<>();
     }
+
+    public int getIdProjet() {
+        return idProjet;
+    }
+
+    public String getNomProjet() {
+        return nomProjet;
+    }
+
+    public String getLocalisationProjet() {
+        return localisationProjet;
+    }
+
+    public TypeProjet getTypeProjet() {
+        return typeProjet;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public ArrayList<Controle> getDevoir() {
+        return devoir;
+    }
+
+    @Override
+    public String toString() {
+        return "Projet{" +
+                "idProjet=" + idProjet +
+                ", nomProjet='" + nomProjet + '\'' +
+                ", localisationProjet='" + localisationProjet + '\'' +
+                ", typeProjet=" + typeProjet +
+                ", date=" + date +
+                ", devoir=" + devoir +
+                '}';
+    }
 }

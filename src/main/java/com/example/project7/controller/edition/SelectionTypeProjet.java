@@ -1,12 +1,16 @@
 package com.example.project7.controller.edition;
 
 import com.example.project7.FxmlLoader;
+import com.example.project7.model.Projet;
+import com.example.project7.model.TypeDevoir;
+import com.example.project7.model.TypeProjet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
@@ -42,6 +46,15 @@ public class SelectionTypeProjet implements Initializable {
         this.parentPane = parentPane;
     }
 
+    private TypeProjet getTypeProjetByName(String name) {
+        for (TypeProjet type : TypeProjet.values()) {
+            if (type.getNomProjet().equalsIgnoreCase(name)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
     @FXML
     public void handleClicksCreate(ActionEvent event) {
         boolean correctName = verifyProjectName();
@@ -51,12 +64,19 @@ public class SelectionTypeProjet implements Initializable {
             String projectName = name.getText().trim();
             String projectLocation = location.getText().trim();
             String projectType = typeProject.getText();
-            if (insertProjectIntoDatabase(projectName, projectLocation, projectType)) {
-                if (createProjectDirectory(projectLocation, projectName)) {
+            TypeProjet selectedType = getTypeProjetByName(projectType);
+
+            //todo you need to remove the true || in the two next lines, they're just to make thnigs faster!!!!!
+            if (true || insertProjectIntoDatabase(projectName, projectLocation, projectType)) {
+                if (true || createProjectDirectory(projectLocation, projectName)) {
                     FxmlLoader object = new FxmlLoader();
                     Parent view = object.getPane("editer_quiz/_2_EditerProjet");
                     EditerProjet controller = (EditerProjet) object.getController();
+                    Projet projet = new Projet(projectName, projectLocation, selectedType);
+
+
                     if (controller != null) {
+                        controller.setProjet(projet);
                         controller.setParentPane(parentPane);
                     }
                     if (parentPane != null) {
@@ -113,6 +133,14 @@ public class SelectionTypeProjet implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        for (TypeProjet type : TypeProjet.values()) {
+            MenuItem menuItem = new MenuItem(type.getNomProjet());
+            menuItem.setOnAction(event -> typeProject.setText(type.getNomProjet()));
+            typeProject.getItems().add(menuItem);
+        }
+        if (!typeProject.getItems().isEmpty()) {
+            typeProject.setText(typeProject.getItems().get(0).getText());
+        }
 
     }
 

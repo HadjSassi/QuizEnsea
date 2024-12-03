@@ -2,7 +2,7 @@ package com.example.project7.model;
 
 public enum TypeProjet {
 
-    ExempleProjet("Basic Model");
+    BasicModel("Basic Model");
 
     private final String nomProjet;
 
