@@ -55,15 +55,30 @@
                         <Insets right="30.0" />
                      </GridPane.margin>
                   </TextField>
+                  <Label fx:id="locationLabel" prefHeight="21.0" prefWidth="448.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets top="100.0" />
+                     </GridPane.margin>
+                  </Label>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <TextField fx:id="location" prefHeight="31.0" prefWidth="357.0" promptText="Veuillez Choisir la localisation de projet" />
-                        <Button mnemonicParsing="false" text="Button" />
+                        <Button mnemonicParsing="false" onAction="#handleLocationBrowse" text="Button" />
                      </children>
                      <GridPane.margin>
                         <Insets right="30.0" />
                      </GridPane.margin>
                   </HBox>
+                  <Label fx:id="nameLabel" prefHeight="21.0" prefWidth="448.0" textFill="RED" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets top="100.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="typeLabel" prefHeight="21.0" prefWidth="448.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets top="100.0" />
+                     </GridPane.margin>
+                  </Label>
                </children>
                <VBox.margin>
                   <Insets right="20.0" top="20.0" />

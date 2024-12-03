@@ -43,41 +43,44 @@ public class BorderController implements Initializable {
     }
 
 
-//    private void makeStageDragable() {
-//        mainscreen.setOnMousePressed((event) -> {
-//            xOffSet = event.getSceneX();
-//            yOffSet = event.getSceneY();
-//        });
-//        mainscreen.setOnMouseDragged((event) -> {
-//            sample.App.Main.stage.setX(event.getScreenX() - xOffSet);
-//            sample.App.Main.stage.setY(event.getScreenY() - yOffSet);
-//            sample.App.Main.stage.setOpacity(0.9f);
-//        });
-//        mainscreen.setOnDragDone((event) -> {
-//            sample.App.Main.stage.setOpacity(1.0f);
-//        });
-//        mainscreen.setOnMouseReleased((event) -> {
-//            sample.App.Main.stage.setOpacity(1.0f);
-//        });
-//        border.setOnMousePressed((event) -> {
-//            xOffSet = event.getSceneX();
-//            yOffSet = event.getSceneY();
-//        });
-//        border.setOnMouseDragged((event) -> {
-//            sample.App.Main.stage.setX(event.getScreenX() - xOffSet);
-//            sample.App.Main.stage.setY(event.getScreenY() - yOffSet);
-//            sample.App.Main.stage.setOpacity(0.9f);
-//        });
-//        border.setOnDragDone((event) -> {
-//            sample.App.Main.stage.setOpacity(1.0f);
-//        });
-//        border.setOnMouseReleased((event) -> {
-//            sample.App.Main.stage.setOpacity(1.0f);
-//        });}
+    /*
+    private void makeStageDragable() {
+        mainscreen.setOnMousePressed((event) -> {
+            xOffSet = event.getSceneX();
+            yOffSet = event.getSceneY();
+        });
+        mainscreen.setOnMouseDragged((event) -> {
+            sample.App.Main.stage.setX(event.getScreenX() - xOffSet);
+            sample.App.Main.stage.setY(event.getScreenY() - yOffSet);
+            sample.App.Main.stage.setOpacity(0.9f);
+        });
+        mainscreen.setOnDragDone((event) -> {
+            sample.App.Main.stage.setOpacity(1.0f);
+        });
+        mainscreen.setOnMouseReleased((event) -> {
+            sample.App.Main.stage.setOpacity(1.0f);
+        });
+        border.setOnMousePressed((event) -> {
+            xOffSet = event.getSceneX();
+            yOffSet = event.getSceneY();
+        });
+        border.setOnMouseDragged((event) -> {
+            sample.App.Main.stage.setX(event.getScreenX() - xOffSet);
+            sample.App.Main.stage.setY(event.getScreenY() - yOffSet);
+            sample.App.Main.stage.setOpacity(0.9f);
+        });
+        border.setOnDragDone((event) -> {
+            sample.App.Main.stage.setOpacity(1.0f);
+        });
+        border.setOnMouseReleased((event) -> {
+            sample.App.Main.stage.setOpacity(1.0f);
+        });
+    }
+    */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         FxmlLoader object = new FxmlLoader();
-//        AnchorPane view = object.getPane("Interface");
         AnchorPane view = object.getPane("Barre");
         mainscreen.getChildren().removeAll();
         mainscreen.getChildren().setAll(view);

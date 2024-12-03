@@ -20,16 +20,7 @@ import java.util.ResourceBundle;
 public class InterfaceController implements Initializable {
 
     @FXML
-    private AnchorPane anchorpane1;
-
-    @FXML
-    private BorderPane mainPane;
-
-    @FXML
     private AnchorPane anchorpane3;
-
-    @FXML
-    private AnchorPane anchorpane2;
 
     @FXML
     public Label name;
