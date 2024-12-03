@@ -120,7 +120,7 @@
                      <children>
                         <VBox alignment="BOTTOM_CENTER" prefHeight="122.0" prefWidth="256.0">
                            <children>
-                              <Label prefHeight="122.0" prefWidth="156.0" text="©2024&#10;Nissrine El khatib&#10;Mahdi Hadj Sassi&#10;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="122.0" prefWidth="156.0" text="©2024&#10;Nissrine El khatib&#10;Mahdi Hadj Sassi&#10;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true" />
                            </children>
                         </VBox>
                      </children>
