@@ -79,6 +79,7 @@ public class EditerProjet implements Initializable {
             popupStage.initOwner(terminer.getScene().getWindow());
             popupStage.setScene(popupScene);
             popupStage.setResizable(false);
+            popupScene.getStylesheets().add(getClass().getResource("/com/example/project7/css/styles.css").toExternalForm());
 
             EditerSection controller = (EditerSection) object.getController();
             if (controller != null) {

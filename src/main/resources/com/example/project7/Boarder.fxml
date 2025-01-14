@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="all" prefHeight="604.0" prefWidth="1050.0" style="-fx-background-radius: 1em;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.BorderController">
+<AnchorPane fx:id="all" prefHeight="604.0" prefWidth="1050.0" style="-fx-background-radius: 1em;" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.BorderController">
    <children>
       <AnchorPane fx:id="border" prefHeight="31.0" prefWidth="1050.0" style="-fx-background-color: linear-gradient(to right,#eeeeee,#A53960);" AnchorPane.bottomAnchor="573.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -26,7 +26,7 @@
                   <Font name="Cambria" size="21.0" />
                </font>
             </Label>
-            <Button layoutX="1011.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksClose" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/style.css" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="2.0">
+            <Button layoutX="1011.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksClose" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/toRestore/style.css" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="2.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -35,7 +35,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="947.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksMinimize" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/style.css" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="2.0">
+            <Button layoutX="947.0" layoutY="2.0" mnemonicParsing="false" onAction="#handleClicksMinimize" prefHeight="20.0" prefWidth="20.0" stylesheets="@css/toRestore/style.css" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="2.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>

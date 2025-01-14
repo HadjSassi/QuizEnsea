@@ -65,4 +65,34 @@ public class Projet {
                 ", devoir=" + devoir +
                 '}';
     }
+
+
+    //todo remove this part it's just for the test !
+
+
+    public void setIdProjet(int idProjet) {
+        this.idProjet = idProjet;
+    }
+
+    public void setNomProjet(String nomProjet) {
+        this.nomProjet = nomProjet;
+    }
+
+    public void setLocalisationProjet(String localisationProjet) {
+        this.localisationProjet = localisationProjet;
+    }
+
+    public void setTypeProjet(TypeProjet typeProjet) {
+        this.typeProjet = typeProjet;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setDevoir(ArrayList<Controle> devoir) {
+        this.devoir = devoir;
+    }
+
+    //todo the part ends here
 }

@@ -1,0 +1,13 @@
+.text-field-danger {
+    -fx-background-color: #ff0017; /* Light red background */
+    -fx-border-color: #f5c6cb;    /* Red border */
+    -fx-text-fill: #721c24;       /* Dark red text */
+}
+
+.error {
+    -fx-background-color: rgba(255, 0, 0, 0.3); /* Rouge clair pour indiquer une erreur */
+}
+
+.valid {
+    -fx-background-color: transparent; /* Arrière-plan transparent pour conserver l'apparence par défaut */
+}

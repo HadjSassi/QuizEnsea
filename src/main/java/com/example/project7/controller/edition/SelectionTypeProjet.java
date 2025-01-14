@@ -2,7 +2,6 @@ package com.example.project7.controller.edition;
 
 import com.example.project7.FxmlLoader;
 import com.example.project7.model.Projet;
-import com.example.project7.model.TypeDevoir;
 import com.example.project7.model.TypeProjet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,11 +15,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import mysql_connection.MySqlConnection;
-
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class SelectionTypeProjet implements Initializable {
@@ -73,7 +72,13 @@ public class SelectionTypeProjet implements Initializable {
                     Parent view = object.getPane("editer_quiz/_2_EditerProjet");
                     EditerProjet controller = (EditerProjet) object.getController();
                     Projet projet = new Projet(projectName, projectLocation, selectedType);
-
+                    //todo remove this section it's just for the test !
+                    projet.setIdProjet(1);
+                    projet.setNomProjet("Test1");
+                    projet.setLocalisationProjet("C:\\Users\\mahdi\\Desktop\\ENSEA\\2024-2025\\Project\\Nissrine");
+                    projet.setTypeProjet(selectedType);
+                    projet.setDate(new Date());
+                    //todo the part ends here
 
                     if (controller != null) {
                         controller.setProjet(projet);
