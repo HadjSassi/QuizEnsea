@@ -36,6 +36,12 @@ public class EditerQuestion implements Initializable {
     @FXML
     private Button cancelQuestion;
 
+    private String identifierSection;
+
+    public void setIdentifiantSection(String identifierSection) {
+        this.identifierSection = identifierSection;
+    }
+
 
     @FXML
     public void ajouterQuestion(ActionEvent event) {

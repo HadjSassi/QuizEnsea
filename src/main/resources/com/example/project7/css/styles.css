@@ -1,7 +1,7 @@
 .text-field-danger {
-    -fx-background-color: #ff0017; /* Light red background */
+    -fx-background-color: #721c24; /* Light red background */
     -fx-border-color: #f5c6cb;    /* Red border */
-    -fx-text-fill: #721c24;       /* Dark red text */
+    -fx-text-fill: white;       /* Dark red text */
 }
 
 .error {

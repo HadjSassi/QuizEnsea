@@ -29,6 +29,13 @@ public class EditerDescription implements Initializable {
     @FXML
     private Button cancelDescription;
 
+    private String identifierSection;
+
+    public void setIdentifiantSection(String identifierSection) {
+        this.identifierSection = identifierSection;
+    }
+
+
     @FXML
     public void handleClickAddImage(ActionEvent event) {
         //todo open the explorer to select an image, and to save it in the tableview with empty legend that can be modified.

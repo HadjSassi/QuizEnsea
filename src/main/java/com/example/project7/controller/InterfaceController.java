@@ -26,7 +26,6 @@ public class InterfaceController implements Initializable {
     public Label name;
 
 
-    //todo for the Acceuil Window
     @FXML
     void handleClicksAccueil(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
@@ -52,7 +51,6 @@ public class InterfaceController implements Initializable {
     }
 
 
-    //todo for the open window
     @FXML
     void handleClicksOpen(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
@@ -64,7 +62,6 @@ public class InterfaceController implements Initializable {
 
 
 
-    //todo for the settings window
     @FXML
     void handleClicksSetting(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
@@ -75,7 +72,6 @@ public class InterfaceController implements Initializable {
     }
 
 
-    //todo for the help window
     @FXML
     void handleClicksHelp(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();

@@ -4,7 +4,7 @@ public enum TypeDevoir {
 
     Controle_Continue("Contrôle Continu"),
     Examen_Finale("Examen Final"),
-    Test_Evaluation("Test d'Évaluation"),
+    Test_Evaluation("Évaluation"),
     Examen_TP("Examen TP"),
     Test_de_niveau("Test de Niveau");
 

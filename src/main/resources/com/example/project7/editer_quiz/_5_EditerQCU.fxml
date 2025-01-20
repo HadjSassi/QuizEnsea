@@ -27,7 +27,7 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Le barème de la réponse correcte:" />
-                  <TextField fx:id="baremePos" prefHeight="31.0" prefWidth="78.0" promptText="Baréme" />
+                  <TextField fx:id="baremePos" onKeyTyped="#handleInputNumber" prefHeight="31.0" prefWidth="78.0" promptText="Baréme" />
                   <TextField fx:id="reponseCorrect" prefHeight="31.0" prefWidth="390.0" promptText="Veuillez saisir la bonne réponse !" />
                </children>
             </HBox>
@@ -44,7 +44,7 @@
                <children>
                   <Label alignment="CENTER" prefHeight="21.0" prefWidth="793.0" text="Secteur des mauvaies réponses" textAlignment="CENTER" GridPane.columnSpan="2" />
                   <Label prefHeight="42.0" prefWidth="317.0" text="Le barème de la réponse incorrecte par défaut :" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <TextField fx:id="baremeNegDefault" alignment="CENTER" prefHeight="31.0" prefWidth="332.0" promptText="Baréme par défault de la mauvaise réponse !" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="baremeNegDefault" alignment="CENTER" onKeyTyped="#handleInputNumber" prefHeight="31.0" prefWidth="332.0" promptText="Baréme par défault de la mauvaise réponse !" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
@@ -54,11 +54,11 @@
             </GridPane>
             <HBox prefHeight="302.0" prefWidth="774.0" spacing="10.0">
                <children>
-                  <TableView fx:id="incorrectTableView" prefHeight="233.0" prefWidth="775.0">
+                  <TableView fx:id="incorrectTableView" editable="true" prefHeight="233.0" prefWidth="775.0">
                      <columns>
-                        <TableColumn prefWidth="601.0" text="Réponse" />
-                        <TableColumn prefWidth="94.0" text="Baréme" />
-                        <TableColumn prefWidth="79.0" text="Action" />
+                        <TableColumn fx:id="responseColumn" prefWidth="601.0" text="Réponse" />
+                        <TableColumn fx:id="scoreColumn" prefWidth="94.0" text="Baréme" />
+                        <TableColumn fx:id="actionColumn" prefWidth="79.0" text="Action" />
                      </columns>
                   </TableView>
                </children>

@@ -15,8 +15,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mysql_connection.MySqlConnection;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -115,12 +120,66 @@ public class EditerProjet implements Initializable {
         });
     }
 
+    private void insertControleData() {
+        //todo you need to correct the Controle table you need to put two other field one of the formatOfQuesiton number and text
+
+
+        String checkControleQuery = "SELECT COUNT(*) FROM Controle WHERE projetId = ?";
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement checkStatement = connection.prepareStatement(checkControleQuery)) {
+
+            // Set the current projetId as the parameter
+            checkStatement.setInt(1, projet.getIdProjet());
+
+            // Execute the query
+            try (ResultSet resultSet = checkStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int rowCount = resultSet.getInt(1); // Get the count of rows found
+
+                    if (rowCount == 0) {
+                        // If no row is found, insert a new row
+                        String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, fontDevoir, formatQuestion, projetId, creationDate) " +
+                                "VALUES (?, ?, ?, ?, ?, CURRENT_DATE)";
+
+                        try (PreparedStatement insertStatement = connection.prepareStatement(insertControleQuery)) {
+                            // Set the parameters for insertion
+                            insertStatement.setString(1, nomDevoir.getText());
+                            insertStatement.setString(2, typeDevoir.getText());
+                            insertStatement.setInt(3, 1); // FontDevoir ID (change if necessary)
+                            insertStatement.setInt(4, 1); // FormatQuestion ID (change if necessary)
+                            insertStatement.setInt(5, projet.getIdProjet()); // Use the current projetId
+
+                            // Execute the insert statement
+                            int rowsAffected = insertStatement.executeUpdate();
+                            if (rowsAffected > 0) {
+                                System.out.println("Controle data inserted successfully!");
+                            } else {
+                                System.err.println("Failed to insert Controle data.");
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            System.err.println("Error inserting data into Controle table: " + e.getMessage());
+                        }
+                    } else {
+                        System.out.println("Controle data already exists for this Projet.");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error checking Controle table: " + e.getMessage());
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         dateDevoir.setValue(LocalDate.now());
 
         formatQuestionText.setText("Question :");
+
+        insertControleData();
 
         for (TypeDevoir type : TypeDevoir.values()) {
             MenuItem menuItem = new MenuItem(type.getNomDevoir());
@@ -141,6 +200,8 @@ public class EditerProjet implements Initializable {
         if (!formatQuestionNumber.getItems().isEmpty()) {
             formatQuestionNumber.setText(formatQuestionNumber.getItems().get(0).getText());
         }
+
+
     }
 
     @FXML

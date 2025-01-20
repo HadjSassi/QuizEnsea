@@ -7,13 +7,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EditerSection implements Initializable {
+
+    private static int numberOfSection = 0;
+
+    private Object currentController;
 
     @FXML
     private TextField identifiantSection;
@@ -36,6 +41,38 @@ public class EditerSection implements Initializable {
         this.parentPane = parentPane;
     }
 
+    private Object getCurrentController() {
+        return currentController;
+    }
+
+    @FXML
+    public void handleInputIdentifier(KeyEvent event) {
+
+        String identifierText = identifiantSection.getText();
+        updateSectionIdentifiant(identifierText);
+
+        if (identifiantSection.getText().trim().equals("")) {
+            String sectionId = "Section#" + numberOfSection;
+            updateSectionIdentifiant(sectionId);
+            identifiantSection.setText(sectionId);
+        }
+
+    }
+
+    private void updateSectionIdentifiant(String identifierText) {
+        Object controller = getCurrentController();  // Assume this method retrieves the current controller
+
+        if (controller instanceof EditerQCU) {
+            ((EditerQCU) controller).setIdentifiantSection(identifierText);
+        } else if (controller instanceof EditerQCM) {
+            ((EditerQCM) controller).setIdentifiantSection(identifierText);
+        } else if (controller instanceof EditerQuestion) {
+            ((EditerQuestion) controller).setIdentifiantSection(identifierText);
+        } else if (controller instanceof EditerDescription) {
+            ((EditerDescription) controller).setIdentifiantSection(identifierText);
+        }
+    }
+
     private void loadContentToSectionPane(String fxmlFileName) {
         try {
             FxmlLoader loader = new FxmlLoader();
@@ -43,6 +80,13 @@ public class EditerSection implements Initializable {
 
             if (newContent != null) {
                 sectionPane.getChildren().setAll(newContent);
+
+                String sectionId = "Section#" + numberOfSection;
+
+                currentController = loader.getController();
+                updateSectionIdentifiant(sectionId);
+                identifiantSection.setText(sectionId);
+
             } else {
                 System.err.println("Le contenu pour " + fxmlFileName + " n'a pas pu être chargé.");
             }
@@ -76,18 +120,14 @@ public class EditerSection implements Initializable {
         loadContentToSectionPane("_7_EditerDescription");
     }
 
-
-    @FXML
-    public void handleClicksCancel(ActionEvent event) {
-        Stage stage = (Stage) cancelSection.getScene().getWindow();
-        stage.close();
-    }
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        numberOfSection++;
         loadContentToSectionPane("_5_EditerQCU");
     }
 
+    public static int getNumberOfSection(){
+        return numberOfSection;
+    }
 
 }

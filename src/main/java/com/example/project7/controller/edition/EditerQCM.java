@@ -40,6 +40,13 @@ public class EditerQCM implements Initializable {
     @FXML
     private Button cancelQcm;
 
+    private String identifierSection;
+
+    public void setIdentifiantSection(String identifierSection) {
+        this.identifierSection = identifierSection;
+    }
+
+
 
     @FXML
     public void handleClicksAddGoodResponce(ActionEvent event) {
