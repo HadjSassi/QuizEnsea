@@ -67,6 +67,7 @@ public class EditerProjet implements Initializable {
     public void setProjet(Projet projet) {
         this.projet = projet;
         nomDevoir.setText(this.projet.getNomProjet());
+        this.insertControleData();
     }
 
     @FXML
@@ -129,32 +130,25 @@ public class EditerProjet implements Initializable {
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkControleQuery)) {
 
-            // Set the current projetId as the parameter
             checkStatement.setInt(1, projet.getIdProjet());
 
-            // Execute the query
             try (ResultSet resultSet = checkStatement.executeQuery()) {
                 if (resultSet.next()) {
                     int rowCount = resultSet.getInt(1); // Get the count of rows found
 
                     if (rowCount == 0) {
-                        // If no row is found, insert a new row
                         String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, fontDevoir, formatQuestion, projetId, creationDate) " +
                                 "VALUES (?, ?, ?, ?, ?, CURRENT_DATE)";
 
                         try (PreparedStatement insertStatement = connection.prepareStatement(insertControleQuery)) {
-                            // Set the parameters for insertion
                             insertStatement.setString(1, nomDevoir.getText());
                             insertStatement.setString(2, typeDevoir.getText());
                             insertStatement.setInt(3, 1); // FontDevoir ID (change if necessary)
                             insertStatement.setInt(4, 1); // FormatQuestion ID (change if necessary)
                             insertStatement.setInt(5, projet.getIdProjet()); // Use the current projetId
 
-                            // Execute the insert statement
                             int rowsAffected = insertStatement.executeUpdate();
-                            if (rowsAffected > 0) {
-                                System.out.println("Controle data inserted successfully!");
-                            } else {
+                            if (!(rowsAffected > 0)) {
                                 System.err.println("Failed to insert Controle data.");
                             }
                         } catch (SQLException e) {
@@ -179,7 +173,6 @@ public class EditerProjet implements Initializable {
 
         formatQuestionText.setText("Question :");
 
-        insertControleData();
 
         for (TypeDevoir type : TypeDevoir.values()) {
             MenuItem menuItem = new MenuItem(type.getNomDevoir());

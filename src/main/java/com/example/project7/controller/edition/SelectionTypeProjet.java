@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import mysql_connection.MySqlConnection;
+
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -66,12 +67,14 @@ public class SelectionTypeProjet implements Initializable {
             TypeProjet selectedType = getTypeProjetByName(projectType);
 
             //todo you need to remove the true || in the two next lines, they're just to make thnigs faster!!!!!
-            if (true || insertProjectIntoDatabase(projectName, projectLocation, projectType)) {
+
+            int idProjet = insertProjectIntoDatabase(projectName, projectLocation, projectType);
+            if (true || idProjet != -1) {
                 if (true || createProjectDirectory(projectLocation, projectName)) {
                     FxmlLoader object = new FxmlLoader();
                     Parent view = object.getPane("editer_quiz/_2_EditerProjet");
                     EditerProjet controller = (EditerProjet) object.getController();
-                    Projet projet = new Projet(projectName, projectLocation, selectedType);
+                    Projet projet = new Projet(idProjet,projectName, projectLocation, selectedType, new Date());
                     //todo remove this section it's just for the test !
                     projet.setIdProjet(1);
                     projet.setNomProjet("Test1");
@@ -97,11 +100,12 @@ public class SelectionTypeProjet implements Initializable {
         }
     }
 
-    private boolean insertProjectIntoDatabase(String projectName, String projectLocation, String projectType) {
+    private int insertProjectIntoDatabase(String projectName, String projectLocation, String projectType) {
         String query = "INSERT INTO Projet (nomProjet, localisationProjet, typeProjet) VALUES (?, ?, ?)";
+        int generatedId = -1;
 
         try (Connection connection = MySqlConnection.getOracleConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, projectName);
             preparedStatement.setString(2, projectLocation);
@@ -109,12 +113,18 @@ public class SelectionTypeProjet implements Initializable {
 
             int rowsAffected = preparedStatement.executeUpdate();
 
-            return rowsAffected > 0;
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        generatedId = generatedKeys.getInt(1);
+                    }
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return generatedId;
     }
 
     private boolean createProjectDirectory(String location, String projectName) {
