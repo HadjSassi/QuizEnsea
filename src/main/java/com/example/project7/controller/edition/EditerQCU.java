@@ -1,6 +1,8 @@
 package com.example.project7.controller.edition;
 
+import com.example.project7.model.QCM;
 import com.example.project7.model.Reponse;
+import com.example.project7.model.Section;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,8 +22,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.converter.IntegerStringConverter;
+import mysql_connection.MySqlConnection;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class EditerQCU implements Initializable {
@@ -53,10 +60,16 @@ public class EditerQCU implements Initializable {
     @FXML
     private Button cancelQcu;
 
-    private String identifierSection;
+    private Section section;
 
-    public void setIdentifiantSection(String identifierSection) {
-        this.identifierSection = identifierSection;
+    private QCM qcu;
+
+    public void setControle(Section section) {
+        this.section = section;
+    }
+
+    public void setSection(Section identifierSection) {
+        this.section = identifierSection;
     }
 
     private boolean verifyQuesstion() {
@@ -139,12 +152,105 @@ public class EditerQCU implements Initializable {
 
     @FXML
     public void handleClicksAddQCU(ActionEvent event) {
-        boolean correctQuestion = verifyQuesstion();
-        boolean correctReponseCorrect = verifyReponseCorrect();
-        int baremePos = verifyBaremePos();
-        int baremeNeg = verifyBaremeNeg();
-        ObservableList<Reponse> reponsesList = incorrectTableView.getItems();
+        createSection();
+        createQCU();
+        createQCUResponse();
+        Stage stage = (Stage) cancelQcu.getScene().getWindow();
+        stage.close();
     }
+
+    private void createSection() {
+        String insertSectionQuery = "INSERT INTO Section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement insertStatement = connection.prepareStatement(insertSectionQuery)) {
+
+            insertStatement.setString(1, this.section.getIdSection());
+            insertStatement.setInt(2, this.section.getOrdreSection());
+            insertStatement.setInt(3, this.section.getDevoir().getIdControle());
+
+            int rowsAffected = insertStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error inserting Section data: " + e.getMessage());
+        }
+    }
+
+    private void createQCU() {
+        String insertQCUQuery = "INSERT INTO QCM (question, isQcu, sectionID) VALUES (?, ?, ?)";
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement insertStatement = connection.prepareStatement(insertQCUQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            insertStatement.setString(1, enonceQuestion.getText());
+            insertStatement.setBoolean(2, true);
+            insertStatement.setString(3, this.section.getIdSection());
+
+            int rowsAffected = insertStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        String idQCU = String.valueOf(generatedKeys.getInt(1));
+                        qcu = new QCM();
+                        qcu.setQCU(true);
+                        qcu.setIdSection(idQCU);
+                    }
+                }
+            } else {
+                System.err.println("Failed to insert QCU data.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error inserting QCU data: " + e.getMessage());
+        }
+    }
+
+    private void createQCUResponse() {
+        createQCUCorrectResponse();
+        createQCUInCorrectResponse();
+    }
+
+    private void createQCUInCorrectResponse() {
+        String insertIncorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement insertStatement = connection.prepareStatement(insertIncorrectResponseQuery)) {
+
+            for (Reponse response : incorrectTableView.getItems()) {
+                insertStatement.setInt(1, Integer.parseInt(qcu.getIdSection()));
+                insertStatement.setString(2, response.getResponse());
+                insertStatement.setInt(3, response.getScore());
+                insertStatement.setBoolean(4, false);
+
+                insertStatement.addBatch();
+            }
+
+            insertStatement.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error inserting incorrect responses: " + e.getMessage());
+        }
+    }
+
+    private void createQCUCorrectResponse() {
+        String insertCorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement insertStatement = connection.prepareStatement(insertCorrectResponseQuery)) {
+
+            insertStatement.setInt(1, Integer.parseInt(qcu.getIdSection()));
+            insertStatement.setString(2, reponseCorrect.getText());
+            insertStatement.setInt(3, Integer.parseInt(baremePos.getText()));
+            insertStatement.setBoolean(4, true);
+
+            insertStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error inserting correct response: " + e.getMessage());
+        }
+    }
+
 
     @FXML
     public void handleClicksCancelQCU(ActionEvent event) {

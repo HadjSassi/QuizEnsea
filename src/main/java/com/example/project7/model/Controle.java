@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Controle {
     //todo mazelet n7ess elli mazelet fiha des méthodes nejem nzidouhom w nest7a9ouhom nerja3lek marra o5ra inchallah
 
+    private int idControle;
     private String nomDevoir;
     private TypeDevoir typeDevoir;
     private FontDevoir fontDevoir;
@@ -49,5 +50,13 @@ public class Controle {
 
     public void removeSection (Section section) {
         this.sections.remove(section);
+    }
+
+    public int getIdControle() {
+        return idControle;
+    }
+
+    public void setIdControle(int idControle) {
+        this.idControle = idControle;
     }
 }

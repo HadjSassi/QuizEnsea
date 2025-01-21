@@ -1,6 +1,8 @@
 package com.example.project7.controller.edition;
 
 import com.example.project7.FxmlLoader;
+import com.example.project7.model.Controle;
+import com.example.project7.model.Section;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,9 +11,14 @@ import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import mysql_connection.MySqlConnection;
 
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class EditerSection implements Initializable {
@@ -19,6 +26,10 @@ public class EditerSection implements Initializable {
     private static int numberOfSection = 0;
 
     private Object currentController;
+
+    private AnchorPane parentPane;
+
+    private Controle devoir;
 
     @FXML
     private TextField identifiantSection;
@@ -35,7 +46,12 @@ public class EditerSection implements Initializable {
     @FXML
     private AnchorPane sectionPane;
 
-    private AnchorPane parentPane;
+    public void setDevoir(Controle devoir) {
+        this.devoir = devoir;
+        updateSectionIdentifiant( identifiantSection.getText());
+        initializeNumberOfSection();
+        numberOfSection++;
+    }
 
     public void setParentPane(AnchorPane parentPane) {
         this.parentPane = parentPane;
@@ -48,8 +64,7 @@ public class EditerSection implements Initializable {
     @FXML
     public void handleInputIdentifier(KeyEvent event) {
 
-        String identifierText = identifiantSection.getText();
-        updateSectionIdentifiant(identifierText);
+        updateSectionIdentifiant( identifiantSection.getText());
 
         if (identifiantSection.getText().trim().equals("")) {
             String sectionId = "Section#" + numberOfSection;
@@ -60,16 +75,19 @@ public class EditerSection implements Initializable {
     }
 
     private void updateSectionIdentifiant(String identifierText) {
-        Object controller = getCurrentController();  // Assume this method retrieves the current controller
-
+        Object controller = getCurrentController();
+        Section section = new Section();
+        section.setDevoir(this.devoir);
+        section.setIdSection(identifierText);
+        section.setOrdreSection(numberOfSection);
         if (controller instanceof EditerQCU) {
-            ((EditerQCU) controller).setIdentifiantSection(identifierText);
+            ((EditerQCU) controller).setSection(section);
         } else if (controller instanceof EditerQCM) {
-            ((EditerQCM) controller).setIdentifiantSection(identifierText);
+            ((EditerQCM) controller).setSection(section);
         } else if (controller instanceof EditerQuestion) {
-            ((EditerQuestion) controller).setIdentifiantSection(identifierText);
+            ((EditerQuestion) controller).setSection(section);
         } else if (controller instanceof EditerDescription) {
-            ((EditerDescription) controller).setIdentifiantSection(identifierText);
+            ((EditerDescription) controller).setSection(section);
         }
     }
 
@@ -122,16 +140,33 @@ public class EditerSection implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        numberOfSection++;
         loadContentToSectionPane("_5_EditerQCU");
     }
 
-    public static int getNumberOfSection(){
+    private void initializeNumberOfSection() {
+        String countQuery = "SELECT COUNT(*) AS sectionCount FROM section WHERE controleId = ?";
+        numberOfSection = 0;
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement statement = connection.prepareStatement(countQuery)) {
+
+            statement.setInt(1, this.devoir.getIdControle());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    numberOfSection = resultSet.getInt("sectionCount");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error retrieving section count: " + e.getMessage());
+        }
+    }
+
+    public static int getNumberOfSection() {
         return numberOfSection;
     }
 
-
-    public static void cancelSection(){
+    public static void cancelSection() {
         numberOfSection--;
     }
 

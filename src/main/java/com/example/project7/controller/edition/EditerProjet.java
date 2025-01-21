@@ -1,10 +1,7 @@
 package com.example.project7.controller.edition;
 
 import com.example.project7.FxmlLoader;
-import com.example.project7.model.Projet;
-import com.example.project7.model.Section;
-import com.example.project7.model.TypeDevoir;
-import com.example.project7.model.TypeNumero;
+import com.example.project7.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,6 +27,8 @@ public class EditerProjet implements Initializable {
     private static Section dernierSection;
 
     private Projet projet;
+
+    private Controle devoir;
 
     @FXML
     private Button terminer;
@@ -90,6 +89,7 @@ public class EditerProjet implements Initializable {
             EditerSection controller = (EditerSection) object.getController();
             if (controller != null) {
                 controller.setParentPane(parentPane);
+                controller.setDevoir(devoir);
             }
 
             popupStage.showAndWait();
@@ -122,10 +122,9 @@ public class EditerProjet implements Initializable {
     }
 
     private void insertControleData() {
-        //todo you need to correct the Controle table you need to put two other field one of the formatOfQuesiton number and text
+        devoir = new Controle();
 
-
-        String checkControleQuery = "SELECT COUNT(*) FROM Controle WHERE projetId = ?";
+        String checkControleQuery = "SELECT idControle FROM Controle WHERE projetId = ?";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkControleQuery)) {
@@ -134,31 +133,37 @@ public class EditerProjet implements Initializable {
 
             try (ResultSet resultSet = checkStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    int rowCount = resultSet.getInt(1); // Get the count of rows found
+                    int idControl = resultSet.getInt("idControle");
+                    devoir.setIdControle(idControl);
+                    System.out.println("Existing Controle found with idControle: " + idControl);
+                } else {
+                    String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, fontDevoir, fontSize, formatQuestionNumber, formatQuestionTexte, projetId, creationDate) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)";
 
-                    if (rowCount == 0) {
-                        String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, fontDevoir, fontSize, formatQuestionNumber, formatQuestionTexte, projetId, creationDate) " +
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)";
+                    try (PreparedStatement insertStatement = connection.prepareStatement(insertControleQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                        insertStatement.setString(1, nomDevoir.getText());
+                        insertStatement.setString(2, typeDevoir.getText());
+                        insertStatement.setString(3, "Times New Roman");
+                        insertStatement.setInt(4, 15);
+                        insertStatement.setInt(5, 1);
+                        insertStatement.setString(6, "Question");
+                        insertStatement.setInt(7, projet.getIdProjet());
 
-                        try (PreparedStatement insertStatement = connection.prepareStatement(insertControleQuery)) {
-                            insertStatement.setString(1, nomDevoir.getText());
-                            insertStatement.setString(2, typeDevoir.getText());
-                            insertStatement.setString(3, "Times New Roman");
-                            insertStatement.setInt(4, 15);
-                            insertStatement.setInt(5, 1);
-                            insertStatement.setString(6, "Question");
-                            insertStatement.setInt(7, projet.getIdProjet()); // Use the current projetId
-
-                            int rowsAffected = insertStatement.executeUpdate();
-                            if (!(rowsAffected > 0)) {
-                                System.err.println("Failed to insert Controle data.");
+                        int rowsAffected = insertStatement.executeUpdate();
+                        if (rowsAffected > 0) {
+                            try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
+                                if (generatedKeys.next()) {
+                                    int idControl = generatedKeys.getInt(1);
+                                    devoir.setIdControle(idControl);
+                                    System.out.println("New Controle created with idControle: " + idControl);
+                                }
                             }
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                            System.err.println("Error inserting data into Controle table: " + e.getMessage());
+                        } else {
+                            System.err.println("Failed to insert Controle data.");
                         }
-                    } else {
-                        System.out.println("Controle data already exists for this Projet.");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        System.err.println("Error inserting data into Controle table: " + e.getMessage());
                     }
                 }
             }

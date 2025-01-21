@@ -1,5 +1,6 @@
 package com.example.project7.controller.edition;
 
+import com.example.project7.model.Section;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,9 +30,9 @@ public class EditerDescription implements Initializable {
     @FXML
     private Button cancelDescription;
 
-    private String identifierSection;
+    private Section identifierSection;
 
-    public void setIdentifiantSection(String identifierSection) {
+    public void setSection(Section identifierSection) {
         this.identifierSection = identifierSection;
     }
 
