@@ -54,22 +54,6 @@ public class Projet {
         return devoir;
     }
 
-    @Override
-    public String toString() {
-        return "Projet{" +
-                "idProjet=" + idProjet +
-                ", nomProjet='" + nomProjet + '\'' +
-                ", localisationProjet='" + localisationProjet + '\'' +
-                ", typeProjet=" + typeProjet +
-                ", date=" + date +
-                ", devoir=" + devoir +
-                '}';
-    }
-
-
-    //todo remove this part it's just for the test !
-
-
     public void setIdProjet(int idProjet) {
         this.idProjet = idProjet;
     }
@@ -94,5 +78,16 @@ public class Projet {
         this.devoir = devoir;
     }
 
-    //todo the part ends here
+    @Override
+    public String toString() {
+        return "Projet{" +
+                "idProjet=" + idProjet +
+                ", nomProjet='" + nomProjet + '\'' +
+                ", localisationProjet='" + localisationProjet + '\'' +
+                ", typeProjet=" + typeProjet +
+                ", date=" + date +
+                ", devoir=" + devoir +
+                '}';
+    }
+
 }

@@ -261,9 +261,7 @@ public class EditerProjet implements Initializable {
             }
         });
 
-        //todo remove this line below it's just for testing
-        this.devoir = new Controle();
-        this.devoir.setIdControle(1);
+
         loadSectionData(); // Load data into TableView
     }
 
@@ -274,34 +272,36 @@ public class EditerProjet implements Initializable {
     }
 
     private void loadSectionData() {
-        String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question " +
-                "FROM section " +
-                "JOIN qcm ON section.idSection = qcm.sectionID " +
-                "WHERE section.controleID = ? " + // Filter by controleId
-                "ORDER BY section.ordreSection";
+        if (this.devoir != null) {
+            String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question " +
+                    "FROM section " +
+                    "JOIN qcm ON section.idSection = qcm.sectionID " +
+                    "WHERE section.controleID = ? " + // Filter by controleId
+                    "ORDER BY section.ordreSection";
 
-        ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
+            ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (Connection connection = MySqlConnection.getOracleConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setInt(1, devoir.getIdControle()); // Use the current controle ID
+                statement.setInt(1, devoir.getIdControle()); // Use the current controle ID
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    String idSection = resultSet.getString("idSection");
-                    String type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
-                    String question = resultSet.getString("question");
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String idSection = resultSet.getString("idSection");
+                        String type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
+                        String question = resultSet.getString("question");
 
-                    sectionData.add(new RowTableSection(idSection, type, question));
+                        sectionData.add(new RowTableSection(idSection, type, question));
+                    }
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println("Error loading section data: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Error loading section data: " + e.getMessage());
-        }
 
-        tableSection.setItems(sectionData);
+            tableSection.setItems(sectionData);
+        }
     }
 
     public void fetchAndUpdateTableView() {

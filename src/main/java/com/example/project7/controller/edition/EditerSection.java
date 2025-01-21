@@ -151,8 +151,7 @@ public class EditerSection implements Initializable {
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement statement = connection.prepareStatement(countQuery)) {
 
-            //todo remove this line below
-            this.devoir = new Controle();
+
             this.devoir.setIdControle(1);
 
             statement.setInt(1, this.devoir.getIdControle());

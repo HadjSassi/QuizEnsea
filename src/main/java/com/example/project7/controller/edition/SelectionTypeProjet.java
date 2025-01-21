@@ -66,23 +66,14 @@ public class SelectionTypeProjet implements Initializable {
             String projectType = typeProject.getText();
             TypeProjet selectedType = getTypeProjetByName(projectType);
 
-            //todo you need to remove the true || in the two next lines, they're just to make thnigs faster!!!!!
-            //int idProjet = insertProjectIntoDatabase(projectName, projectLocation, projectType);
-            //todo remove the comment of the line above and remove the line below
-            int idProjet = 0;
-            if (true || idProjet != -1) {
-                if (true || createProjectDirectory(projectLocation, projectName)) {
+            int idProjet = insertProjectIntoDatabase(projectName, projectLocation, projectType);
+
+            if (idProjet != -1) {
+                if (createProjectDirectory(projectLocation, projectName)) {
                     FxmlLoader object = new FxmlLoader();
                     Parent view = object.getPane("editer_quiz/_2_EditerProjet");
                     EditerProjet controller = (EditerProjet) object.getController();
                     Projet projet = new Projet(idProjet,projectName, projectLocation, selectedType, new Date());
-                    //todo remove this section it's just for the test !
-                    projet.setIdProjet(1);
-                    projet.setNomProjet("Test1");
-                    projet.setLocalisationProjet("C:\\Users\\mahdi\\Desktop\\ENSEA\\2024-2025\\Project\\Nissrine");
-                    projet.setTypeProjet(selectedType);
-                    projet.setDate(new Date());
-                    //todo the part ends here
 
                     if (controller != null) {
                         controller.setProjet(projet);
