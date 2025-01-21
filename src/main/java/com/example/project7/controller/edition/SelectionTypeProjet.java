@@ -67,8 +67,9 @@ public class SelectionTypeProjet implements Initializable {
             TypeProjet selectedType = getTypeProjetByName(projectType);
 
             //todo you need to remove the true || in the two next lines, they're just to make thnigs faster!!!!!
-
-            int idProjet = insertProjectIntoDatabase(projectName, projectLocation, projectType);
+            //int idProjet = insertProjectIntoDatabase(projectName, projectLocation, projectType);
+            //todo remove the comment of the line above and remove the line below
+            int idProjet = 0;
             if (true || idProjet != -1) {
                 if (true || createProjectDirectory(projectLocation, projectName)) {
                     FxmlLoader object = new FxmlLoader();

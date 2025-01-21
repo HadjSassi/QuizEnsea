@@ -130,4 +130,9 @@ public class EditerSection implements Initializable {
         return numberOfSection;
     }
 
+
+    public static void cancelSection(){
+        numberOfSection--;
+    }
+
 }

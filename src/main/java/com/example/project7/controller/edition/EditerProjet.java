@@ -137,15 +137,17 @@ public class EditerProjet implements Initializable {
                     int rowCount = resultSet.getInt(1); // Get the count of rows found
 
                     if (rowCount == 0) {
-                        String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, fontDevoir, formatQuestion, projetId, creationDate) " +
-                                "VALUES (?, ?, ?, ?, ?, CURRENT_DATE)";
+                        String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, fontDevoir, fontSize, formatQuestionNumber, formatQuestionTexte, projetId, creationDate) " +
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)";
 
                         try (PreparedStatement insertStatement = connection.prepareStatement(insertControleQuery)) {
                             insertStatement.setString(1, nomDevoir.getText());
                             insertStatement.setString(2, typeDevoir.getText());
-                            insertStatement.setInt(3, 1); // FontDevoir ID (change if necessary)
-                            insertStatement.setInt(4, 1); // FormatQuestion ID (change if necessary)
-                            insertStatement.setInt(5, projet.getIdProjet()); // Use the current projetId
+                            insertStatement.setString(3, "Times New Roman");
+                            insertStatement.setInt(4, 15);
+                            insertStatement.setInt(5, 1);
+                            insertStatement.setString(6, "Question");
+                            insertStatement.setInt(7, projet.getIdProjet()); // Use the current projetId
 
                             int rowsAffected = insertStatement.executeUpdate();
                             if (!(rowsAffected > 0)) {

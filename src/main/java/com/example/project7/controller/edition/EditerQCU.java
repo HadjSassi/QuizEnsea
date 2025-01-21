@@ -148,6 +148,7 @@ public class EditerQCU implements Initializable {
 
     @FXML
     public void handleClicksCancelQCU(ActionEvent event) {
+        EditerSection.cancelSection();
         Stage stage = (Stage) cancelQcu.getScene().getWindow();
         stage.close();
     }
