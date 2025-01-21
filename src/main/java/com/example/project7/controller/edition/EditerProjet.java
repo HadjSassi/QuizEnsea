@@ -2,13 +2,17 @@ package com.example.project7.controller.edition;
 
 import com.example.project7.FxmlLoader;
 import com.example.project7.model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -52,10 +56,19 @@ public class EditerProjet implements Initializable {
     private MenuButton formatQuestionNumber;
 
     @FXML
-    private MenuButton ajouterSection;
+    private TableView<RowTableSection> tableSection;
 
     @FXML
-    private TableView<RowTableSection> tableSection;
+    private TableColumn<RowTableSection, String> numCol;
+
+    @FXML
+    private TableColumn<RowTableSection, Integer> typeCol;
+
+    @FXML
+    private TableColumn<RowTableSection, Integer> enonceCol;
+
+    @FXML
+    private TableColumn<RowTableSection, Void> actionCol;
 
     private AnchorPane parentPane;
 
@@ -89,7 +102,9 @@ public class EditerProjet implements Initializable {
             EditerSection controller = (EditerSection) object.getController();
             if (controller != null) {
                 controller.setParentPane(parentPane);
+                devoir.setController(this);
                 controller.setDevoir(devoir);
+
             }
 
             popupStage.showAndWait();
@@ -202,6 +217,54 @@ public class EditerProjet implements Initializable {
         }
 
 
+        numCol.setCellValueFactory(new PropertyValueFactory<>("idSection"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        enonceCol.setCellValueFactory(new PropertyValueFactory<>("question"));
+
+        actionCol.setCellFactory(col -> new TableCell<RowTableSection, Void>() {
+            private final Button modifierButton = new Button("↑");
+            private final Button supprimerButton = new Button("X");
+            private final Button deplacerButton = new Button("↓");
+
+            {
+                modifierButton.setOnAction(event -> {
+                    RowTableSection section = getTableView().getItems().get(getIndex());
+                    System.out.println("Modifier section: " + section.getIdSection());
+                    // Add your modification logic here
+                });
+
+                supprimerButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+
+                supprimerButton.setOnAction(event -> {
+                    RowTableSection section = getTableView().getItems().get(getIndex());
+                    System.out.println("Supprimer section: " + section.getIdSection());
+                    // Add your deletion logic here
+                });
+
+                deplacerButton.setOnAction(event -> {
+                    RowTableSection section = getTableView().getItems().get(getIndex());
+                    System.out.println("Déplacer section: " + section.getIdSection());
+                    // Add your moving logic here
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    // Add buttons to the cell
+                    HBox buttons = new HBox(5, modifierButton, supprimerButton, deplacerButton);
+                    setGraphic(buttons);
+                }
+            }
+        });
+
+        //todo remove this line below it's just for testing
+        this.devoir = new Controle();
+        this.devoir.setIdControle(1);
+        loadSectionData(); // Load data into TableView
     }
 
     @FXML
@@ -210,20 +273,71 @@ public class EditerProjet implements Initializable {
 
     }
 
+    private void loadSectionData() {
+        String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question " +
+                "FROM section " +
+                "JOIN qcm ON section.idSection = qcm.sectionID " +
+                "WHERE section.controleID = ? " + // Filter by controleId
+                "ORDER BY section.ordreSection";
+
+        ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, devoir.getIdControle()); // Use the current controle ID
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String idSection = resultSet.getString("idSection");
+                    String type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
+                    String question = resultSet.getString("question");
+
+                    sectionData.add(new RowTableSection(idSection, type, question));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error loading section data: " + e.getMessage());
+        }
+
+        tableSection.setItems(sectionData);
+    }
+
+    public void fetchAndUpdateTableView() {
+        // Define the query to fetch section data from the database
+        String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question " +
+                "FROM section " +
+                "JOIN qcm ON section.idSection = qcm.sectionID " +
+                "WHERE section.controleID = ? " + // Filter by controleId
+                "ORDER BY section.ordreSection";
+
+        ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
+
+        // Execute the query and load data into the ObservableList
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, devoir.getIdControle()); // Use the current controle ID
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String idSection = resultSet.getString("idSection");
+                    String type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
+                    String question = resultSet.getString("question");
+
+                    sectionData.add(new RowTableSection(idSection, type, question));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error loading section data: " + e.getMessage());
+        }
+
+        // Set the ObservableList to the TableView to refresh the data
+        tableSection.setItems(sectionData);
+    }
+
 }
 
-class RowTableSection {
-    //todo i don't know if this is correct or not you need to verify the correct format
-    private Integer numeroSection;
-    private String typeSection;
-    private String enonceSection;
-    private ActionTableSection actionTableSection;
-}
 
-class ActionTableSection {
-    //todo also i don't know if am correct here or not
-    private Button supprimerSection;
-    private Button modifierSection;
-    private Button deplacerTopSection;
-    private Button deplacerBasSection;
-}

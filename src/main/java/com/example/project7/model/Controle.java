@@ -1,16 +1,17 @@
 package com.example.project7.model;
 
+import com.example.project7.controller.edition.EditerProjet;
+
 import java.util.ArrayList;
 
 public class Controle {
-    //todo mazelet n7ess elli mazelet fiha des méthodes nejem nzidouhom w nest7a9ouhom nerja3lek marra o5ra inchallah
-
     private int idControle;
     private String nomDevoir;
     private TypeDevoir typeDevoir;
     private FontDevoir fontDevoir;
     private FormatQuestion formatQuestion;
     private ArrayList<Section> sections;
+    private EditerProjet controller;
 
     public Controle() {
         this.nomDevoir = nomDevoir;
@@ -58,5 +59,12 @@ public class Controle {
 
     public void setIdControle(int idControle) {
         this.idControle = idControle;
+    }
+
+    public void setController(EditerProjet controller) {
+        this.controller = controller;
+    }
+    public EditerProjet getController() {
+        return controller;
     }
 }

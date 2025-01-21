@@ -68,8 +68,11 @@ public class EditerQCU implements Initializable {
         this.section = section;
     }
 
-    public void setSection(Section identifierSection) {
-        this.section = identifierSection;
+    public void setSection(Section section) {
+        this.section = section;
+        System.out.println("Houni cv");
+        if (this.section.getDevoir() != null)
+            System.out.println(this.section.getDevoir().getController());
     }
 
     private boolean verifyQuesstion() {
@@ -152,9 +155,12 @@ public class EditerQCU implements Initializable {
 
     @FXML
     public void handleClicksAddQCU(ActionEvent event) {
+        System.out.println("inchallah cv houni");
+        System.out.println(this.section.getDevoir().getController());
         createSection();
         createQCU();
         createQCUResponse();
+        this.section.getDevoir().getController().fetchAndUpdateTableView();
         Stage stage = (Stage) cancelQcu.getScene().getWindow();
         stage.close();
     }

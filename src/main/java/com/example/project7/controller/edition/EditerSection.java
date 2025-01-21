@@ -48,7 +48,7 @@ public class EditerSection implements Initializable {
 
     public void setDevoir(Controle devoir) {
         this.devoir = devoir;
-        updateSectionIdentifiant( identifiantSection.getText());
+        updateSection( identifiantSection.getText());
         initializeNumberOfSection();
         numberOfSection++;
     }
@@ -64,22 +64,23 @@ public class EditerSection implements Initializable {
     @FXML
     public void handleInputIdentifier(KeyEvent event) {
 
-        updateSectionIdentifiant( identifiantSection.getText());
+        updateSection( identifiantSection.getText());
 
         if (identifiantSection.getText().trim().equals("")) {
             String sectionId = "Section#" + numberOfSection;
-            updateSectionIdentifiant(sectionId);
+            updateSection(sectionId);
             identifiantSection.setText(sectionId);
         }
 
     }
 
-    private void updateSectionIdentifiant(String identifierText) {
+    private void updateSection(String identifierText) {
         Object controller = getCurrentController();
         Section section = new Section();
         section.setDevoir(this.devoir);
         section.setIdSection(identifierText);
         section.setOrdreSection(numberOfSection);
+
         if (controller instanceof EditerQCU) {
             ((EditerQCU) controller).setSection(section);
         } else if (controller instanceof EditerQCM) {
@@ -102,7 +103,7 @@ public class EditerSection implements Initializable {
                 String sectionId = "Section#" + numberOfSection;
 
                 currentController = loader.getController();
-                updateSectionIdentifiant(sectionId);
+                updateSection(sectionId);
                 identifiantSection.setText(sectionId);
 
             } else {
@@ -149,6 +150,10 @@ public class EditerSection implements Initializable {
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement statement = connection.prepareStatement(countQuery)) {
+
+            //todo remove this line below
+            this.devoir = new Controle();
+            this.devoir.setIdControle(1);
 
             statement.setInt(1, this.devoir.getIdControle());
             try (ResultSet resultSet = statement.executeQuery()) {

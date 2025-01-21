@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerProjet">
+<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerProjet">
    <children>
       <VBox prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -64,10 +60,10 @@
             </GridPane>
             <TableView fx:id="tableSection" prefHeight="272.0" prefWidth="694.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="Num°" />
-                <TableColumn prefWidth="59.0" text="Type" />
-                  <TableColumn prefWidth="445.0" text="Enoncé de section" />
-                  <TableColumn prefWidth="114.0" text="Action" />
+                <TableColumn fx:id="numCol" prefWidth="75.0" text="Num°" />
+                <TableColumn fx:id="typeCol" prefWidth="59.0" text="Type" />
+                  <TableColumn fx:id="enonceCol" prefWidth="445.0" text="Enoncé de section" />
+                  <TableColumn fx:id="actionCol" prefWidth="114.0" text="Action" />
               </columns>
                <VBox.margin>
                   <Insets left="50.0" right="50.0" />
