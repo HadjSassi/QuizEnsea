@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQCU">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQCU">
    <children>
       <VBox layoutX="-2.0" layoutY="-1.0" prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -56,9 +51,9 @@
                <children>
                   <TableView fx:id="incorrectTableView" editable="true" prefHeight="233.0" prefWidth="775.0">
                      <columns>
-                        <TableColumn fx:id="responseColumn" prefWidth="601.0" text="Réponse" />
-                        <TableColumn fx:id="scoreColumn" prefWidth="94.0" text="Baréme" />
-                        <TableColumn fx:id="actionColumn" prefWidth="79.0" text="Action" />
+                        <TableColumn fx:id="responseColumn" prefWidth="562.3332977294922" text="Réponse" />
+                        <TableColumn fx:id="scoreColumn" prefWidth="48.0" text="Baréme" />
+                        <TableColumn fx:id="actionColumn" prefWidth="166.66668701171875" text="Action" />
                      </columns>
                   </TableView>
                </children>

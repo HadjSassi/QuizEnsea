@@ -61,7 +61,7 @@ public class DataBase {
                 "formatQuestionTexte VARCHAR(255), " +
                 "creationDate DATE DEFAULT (CURRENT_DATE), " +
                 "projetID INT, " +
-                "FOREIGN KEY (projetID) REFERENCES Projet(idProjet));";
+                "FOREIGN KEY (projetID) REFERENCES Projet(idProjet) ON DELETE CASCADE);";
         statement.executeUpdate(createControleQuery);
 
         String createSectionQuery = "CREATE TABLE IF NOT EXISTS Section (" +
@@ -69,7 +69,7 @@ public class DataBase {
                 "ordreSection INT, " +
                 "numberOfSections INT DEFAULT 0, " +
                 "controleID INT, " +
-                "FOREIGN KEY (controleID) REFERENCES Controle(idControle));";
+                "FOREIGN KEY (controleID) REFERENCES Controle(idControle) ON DELETE CASCADE);";
         statement.executeUpdate(createSectionQuery);
 
         String createQCMQuery = "CREATE TABLE IF NOT EXISTS QCM (" +
@@ -77,7 +77,7 @@ public class DataBase {
                 "question TEXT NOT NULL, " +
                 "isQCU BOOLEAN, " +
                 "sectionID VARCHAR(255), " +
-                "FOREIGN KEY (sectionID) REFERENCES Section(idSection));";
+                "FOREIGN KEY (sectionID) REFERENCES Section(idSection) ON DELETE CASCADE);";
         statement.executeUpdate(createQCMQuery);
 
         String createQCMReponsesQuery = "CREATE TABLE IF NOT EXISTS QCM_Reponses (" +
@@ -86,7 +86,7 @@ public class DataBase {
                 "reponse TEXT, " +
                 "score INT, " +
                 "isCorrect BOOLEAN, " +
-                "FOREIGN KEY (qcmID) REFERENCES QCM(idQCM));";
+                "FOREIGN KEY (qcmID) REFERENCES QCM(idQCM) ON DELETE CASCADE);";
         statement.executeUpdate(createQCMReponsesQuery);
 
         String createQuestionLibreQuery = "CREATE TABLE IF NOT EXISTS QuestionLibre (" +
@@ -98,28 +98,28 @@ public class DataBase {
                 "tailleLigne FLOAT, " +
                 "rappel TEXT, " +
                 "controleID INT, " +
-                "FOREIGN KEY (controleID) REFERENCES Controle(idControle));";
+                "FOREIGN KEY (controleID) REFERENCES Controle(idControle) ON DELETE CASCADE);";
         statement.executeUpdate(createQuestionLibreQuery);
 
         String createDescriptionQuery = "CREATE TABLE IF NOT EXISTS Description (" +
                 "idDescription INT AUTO_INCREMENT PRIMARY KEY, " +
                 "texte TEXT, " +
                 "controleID INT, " +
-                "FOREIGN KEY (controleID) REFERENCES Controle(idControle));";
+                "FOREIGN KEY (controleID) REFERENCES Controle(idControle) ON DELETE CASCADE);";
         statement.executeUpdate(createDescriptionQuery);
 
         String createDescriptionImagesQuery = "CREATE TABLE IF NOT EXISTS Description_Images (" +
                 "idImage INT AUTO_INCREMENT PRIMARY KEY, " +
                 "descriptionID INT, " +
                 "imagePath VARCHAR(255), " +
-                "FOREIGN KEY (descriptionID) REFERENCES Description(idDescription));";
+                "FOREIGN KEY (descriptionID) REFERENCES Description(idDescription) ON DELETE CASCADE);";
         statement.executeUpdate(createDescriptionImagesQuery);
 
         String createDescriptionLegendsQuery = "CREATE TABLE IF NOT EXISTS Description_Legends (" +
                 "idLegend INT AUTO_INCREMENT PRIMARY KEY, " +
                 "descriptionID INT, " +
                 "legendText VARCHAR(255), " +
-                "FOREIGN KEY (descriptionID) REFERENCES Description(idDescription));";
+                "FOREIGN KEY (descriptionID) REFERENCES Description(idDescription) ON DELETE CASCADE);";
         statement.executeUpdate(createDescriptionLegendsQuery);
 
         String createFontDevoirQuery = "CREATE TABLE IF NOT EXISTS FontDevoir (" +

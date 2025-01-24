@@ -1,5 +1,6 @@
 package com.example.project7.controller.edition;
 
+import com.example.project7.model.Controle;
 import com.example.project7.model.QCM;
 import com.example.project7.model.Reponse;
 import com.example.project7.model.Section;
@@ -152,12 +153,74 @@ public class EditerQCU implements Initializable {
 
     @FXML
     public void handleClicksAddQCU(ActionEvent event) {
-        createSection();
-        createQCU();
-        createQCUResponse();
-        this.section.getDevoir().getController().fetchAndUpdateTableView();
-        Stage stage = (Stage) cancelQcu.getScene().getWindow();
-        stage.close();
+        if (verifyQuesstion() && verifyReponseCorrect()) {
+            if (checkSectionExists(this.section.getIdSection())) {
+                // Show confirmation alert
+                Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmationAlert.setTitle("Section Exists");
+                confirmationAlert.setHeaderText("La section existe déjà");
+                confirmationAlert.setContentText("Section avec l'identifiant " + this.section.getIdSection() + " existe déjà, voulez vous l'écraser?");
+
+                ButtonType modifyButton = new ButtonType("Modifier");
+                ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                confirmationAlert.getButtonTypes().setAll(modifyButton, cancelButton);
+
+                // Handle user response
+                confirmationAlert.showAndWait().ifPresent(response -> {
+                    if (response == modifyButton) {
+                        updateSection();
+                    }
+                });
+            } else {
+                // Proceed to create new section, QCU, and responses as before
+                createSection();
+                createQCU();
+                createQCUResponse();
+                this.section.getDevoir().getController().fetchAndUpdateTableView();
+                Stage stage = (Stage) cancelQcu.getScene().getWindow();
+                stage.close();
+            }
+        }
+    }
+
+    private void removeSection() {
+        String deleteQuery = "DELETE FROM section WHERE idSection = ?";
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+
+            statement.setString(1, section.getIdSection());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error deleting section: " + e.getMessage());
+        }
+    }
+
+    private void updateSection() {
+        removeSection();
+        handleClicksAddQCU(null);
+    }
+
+    private boolean checkSectionExists(String idSection) {
+        String checkQuery = "SELECT COUNT(*) FROM Section WHERE idSection = ?";
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+
+            checkStatement.setString(1, idSection);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0; // Return true if the section exists
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error checking section existence: " + e.getMessage());
+        }
+
+        return false; // Default to false if there's an error
     }
 
     private void createSection() {
@@ -356,4 +419,59 @@ public class EditerQCU implements Initializable {
 
         incorrectTableView.setItems(FXCollections.observableArrayList());
     }
+
+    public void setSectionUpdating(Section section) {
+        this.section = section;
+        this.enonceQuestion.setText(section.getIdSection());
+        loadQCUFromSectionId(section.getIdSection());
+    }
+
+    private void loadQCUFromSectionId(String idSection) {
+        String fetchQCUQuery = "SELECT * FROM QCM WHERE sectionID = ?";
+        String fetchResponsesQuery = "SELECT * FROM QCM_Reponses WHERE qcmID = ?";
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement qcuStatement = connection.prepareStatement(fetchQCUQuery);
+             PreparedStatement responseStatement = connection.prepareStatement(fetchResponsesQuery)) {
+
+            // Fetch QCU details
+            qcuStatement.setString(1, idSection);
+            ResultSet qcuResultSet = qcuStatement.executeQuery();
+            if (qcuResultSet.next()) {
+                qcu = new QCM();
+                qcu.setIdSection(qcuResultSet.getString("idQCM"));
+                qcu.setQuestion(qcuResultSet.getString("question"));
+                qcu.setQCU(qcuResultSet.getBoolean("isQcu"));
+
+                enonceQuestion.setText(qcu.getQuestion());
+            }
+
+            // Fetch responses
+            if (qcu != null) {
+                ObservableList<Reponse> responses = FXCollections.observableArrayList();
+                responseStatement.setInt(1, Integer.parseInt(qcu.getIdSection()));
+                ResultSet responseResultSet = responseStatement.executeQuery();
+
+                while (responseResultSet.next()) {
+                    String responseText = responseResultSet.getString("reponse");
+                    int score = responseResultSet.getInt("score");
+                    boolean isCorrect = responseResultSet.getBoolean("isCorrect");
+
+                    if (isCorrect) {
+                        reponseCorrect.setText(responseText);
+                        baremePos.setText(String.valueOf(score));
+                    } else {
+                        responses.add(new Reponse(responseText, score));
+                    }
+                }
+
+                incorrectTableView.setItems(responses);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error loading QCU data: " + e.getMessage());
+        }
+    }
+
 }

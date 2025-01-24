@@ -2,6 +2,7 @@ package com.example.project7.controller.edition;
 
 import com.example.project7.FxmlLoader;
 import com.example.project7.model.Controle;
+import com.example.project7.model.RowTableSection;
 import com.example.project7.model.Section;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -174,4 +175,54 @@ public class EditerSection implements Initializable {
         numberOfSection--;
     }
 
+    public void handleClicksModifyQCM(RowTableSection section) {
+        loadContentToSectionPane("_4_EditerQCM");
+    }
+
+    public void handleClicksModifyQCU(RowTableSection selection) {
+        loadContentToSectionPane("_5_EditerQCU");
+        if (currentController instanceof EditerQCU) {
+            EditerQCU controller = (EditerQCU) currentController;
+
+            if (identifiantSection.getText() != null && !identifiantSection.getText().trim().isEmpty()) {
+                Section section = new Section();
+                section.setIdSection(selection.getIdSection());
+                section.setDevoir(this.devoir);
+                this.identifiantSection.setText(section.getIdSection());
+                controller.setSectionUpdating(section);
+            }
+        } else {
+            System.err.println("Current controller is not an instance of EditerQCU.");
+        }
+    }
+
+    public void handleClicksModifyFreeQuestion(RowTableSection section) {
+        loadContentToSectionPane("_6_EditerQuestionLibre");
+    }
+
+    public void handleClicksModifyFreeDescription(RowTableSection section) {
+        loadContentToSectionPane("_7_EditerDescription");
+    }
+
+    public void loadSectionData(RowTableSection section) {
+        if (section != null) {
+            switch (section.getType()){
+                case "QCU":
+                    handleClicksModifyQCU(section);
+                    break;
+                case "QCM":
+                    handleClicksModifyQCM(section);
+                    break;
+                case "Question":
+                    handleClicksModifyFreeQuestion(section);
+                    break;
+                case "Description":
+                    handleClicksModifyFreeDescription(section);
+                    break;
+                default:
+                    System.out.println("OUCHY!!");
+
+            }
+        }
+    }
 }

@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class EditerProjet implements Initializable {
@@ -80,6 +81,7 @@ public class EditerProjet implements Initializable {
         this.projet = projet;
         nomDevoir.setText(this.projet.getNomProjet());
         this.insertControleData();
+        fetchAndUpdateTableView();
     }
 
     @FXML
@@ -143,7 +145,6 @@ public class EditerProjet implements Initializable {
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkControleQuery)) {
-
             checkStatement.setInt(1, projet.getIdProjet());
 
             try (ResultSet resultSet = checkStatement.executeQuery()) {
@@ -190,6 +191,14 @@ public class EditerProjet implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //todo remove these five following lines!
+        projet = new Projet("Test1", "C:\\Users\\Hadj Sassi\\Desktop\\ENSEA\\2024-2025\\Project\\Nissrine", TypeProjet.BasicModel);
+        projet.setIdProjet(1);
+        projet.setDate(new Date());
+        nomDevoir.setText(this.projet.getNomProjet());
+        this.insertControleData();
+        fetchAndUpdateTableView();
+
 
         dateDevoir.setValue(LocalDate.now());
 
@@ -222,30 +231,21 @@ public class EditerProjet implements Initializable {
         enonceCol.setCellValueFactory(new PropertyValueFactory<>("question"));
 
         actionCol.setCellFactory(col -> new TableCell<RowTableSection, Void>() {
-            private final Button modifierButton = new Button("↑");
+            private final Button moveUpButton = new Button("↑");
+            private final Button modifierButton = new Button("i");
             private final Button supprimerButton = new Button("X");
-            private final Button deplacerButton = new Button("↓");
+            private final Button moveDownButton = new Button("↓");
 
             {
-                modifierButton.setOnAction(event -> {
-                    RowTableSection section = getTableView().getItems().get(getIndex());
-                    System.out.println("Modifier section: " + section.getIdSection());
-                    // Add your modification logic here
-                });
+                moveUpButton.setOnAction(event -> handleMoveUp(getIndex()));
+
+                modifierButton.setStyle("-fx-background-color: blue; -fx-text-fill: white;");
+                modifierButton.setOnAction(event -> handleModify(getIndex()));
 
                 supprimerButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                supprimerButton.setOnAction(event -> handleDelete(getIndex()));
 
-                supprimerButton.setOnAction(event -> {
-                    RowTableSection section = getTableView().getItems().get(getIndex());
-                    System.out.println("Supprimer section: " + section.getIdSection());
-                    // Add your deletion logic here
-                });
-
-                deplacerButton.setOnAction(event -> {
-                    RowTableSection section = getTableView().getItems().get(getIndex());
-                    System.out.println("Déplacer section: " + section.getIdSection());
-                    // Add your moving logic here
-                });
+                moveDownButton.setOnAction(event -> handleMoveDown(getIndex()));
             }
 
             @Override
@@ -254,15 +254,99 @@ public class EditerProjet implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    // Add buttons to the cell
-                    HBox buttons = new HBox(5, modifierButton, supprimerButton, deplacerButton);
+                    HBox buttons = new HBox(5, moveUpButton, modifierButton, supprimerButton, moveDownButton);
                     setGraphic(buttons);
                 }
             }
         });
 
 
-        loadSectionData(); // Load data into TableView
+        loadSectionData();
+    }
+
+    // Extracted Methods
+    private void handleMoveUp(int index) {
+        RowTableSection section = tableSection.getItems().get(index);
+        System.out.println("Move Up: " + section.getIdSection());
+        // Add logic for moving the section up
+    }
+
+    private void handleModify(int index) {
+        RowTableSection section = tableSection.getItems().get(index);
+        handleModify(section);
+    }
+
+    private void handleModify(RowTableSection section) {
+        try {
+            FxmlLoader object = new FxmlLoader();
+            Parent view = object.getPane("editer_quiz/_3_EditerSection");
+
+            Scene popupScene = new Scene(view);
+            Stage popupStage = new Stage();
+
+            popupStage.setTitle("Modifier Section QCU");
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.initStyle(StageStyle.TRANSPARENT);
+            popupStage.initOwner(terminer.getScene().getWindow());
+            popupStage.setScene(popupScene);
+            popupStage.setResizable(false);
+            popupScene.getStylesheets().add(getClass().getResource("/com/example/project7/css/styles.css").toExternalForm());
+
+            EditerSection controller = (EditerSection) object.getController();
+            if (controller != null) {
+                controller.setParentPane(parentPane);
+                controller.setDevoir(devoir);
+                devoir.setController(this);
+                controller.loadSectionData(section);
+            }
+
+            popupStage.showAndWait();
+        } catch (Exception e) {
+            System.out.println("Erreur lors de l'ouverture de la popup : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void handleDelete(int index) {
+        RowTableSection section = tableSection.getItems().get(index);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete section : " + section.getIdSection() + "?");
+        alert.setContentText("This action cannot be undone.");
+
+        ButtonType confirm = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType cancel = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+        alert.getButtonTypes().setAll(confirm, cancel);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == confirm) {
+                String deleteQuery = "DELETE FROM section WHERE idSection = ?";
+                try (Connection connection = MySqlConnection.getOracleConnection();
+                     PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+
+                    statement.setString(1, section.getIdSection());
+                    int rowsAffected = statement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        System.out.println("Section deleted successfully: " + section.getIdSection());
+                        tableSection.getItems().remove(index);
+                    } else {
+                        System.err.println("No section found to delete with idSection: " + section.getIdSection());
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.err.println("Error deleting section: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+    private void handleMoveDown(int index) {
+        RowTableSection section = tableSection.getItems().get(index);
+        System.out.println("Move Down: " + section.getIdSection());
+        // Add logic for moving the section down
     }
 
     @FXML

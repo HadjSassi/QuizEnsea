@@ -65,17 +65,19 @@ public class SelectionTypeProjet implements Initializable {
             String projectLocation = location.getText().trim();
             String projectType = typeProject.getText();
             TypeProjet selectedType = getTypeProjetByName(projectType);
-
-            int idProjet = insertProjectIntoDatabase(projectName, projectLocation, projectType);
-
-            if (idProjet != -1) {
-                if (createProjectDirectory(projectLocation, projectName)) {
+            //int idProjet = insertProjectIntoDatabase(projectName, projectLocation, projectType);
+            // todo remove these true conditions they're just for testing and to remove the comment above and leave the code
+            int idProjet = 1;
+            if (true || idProjet != -1) {
+                if (true || createProjectDirectory(projectLocation, projectName)) {
                     FxmlLoader object = new FxmlLoader();
                     Parent view = object.getPane("editer_quiz/_2_EditerProjet");
                     EditerProjet controller = (EditerProjet) object.getController();
                     Projet projet = new Projet(idProjet,projectName, projectLocation, selectedType, new Date());
 
                     if (controller != null) {
+                        //todo remove this line they're just for testing
+                        projet.setIdProjet(1);projet.setNomProjet("Test1");projet.setTypeProjet(TypeProjet.BasicModel);projet.setLocalisationProjet("C:\\Users\\Hadj Sassi\\Desktop\\ENSEA\\2024-2025\\Project\\Nissrine");projet.setDate(new Date());
                         controller.setProjet(projet);
                         controller.setParentPane(parentPane);
                     }
