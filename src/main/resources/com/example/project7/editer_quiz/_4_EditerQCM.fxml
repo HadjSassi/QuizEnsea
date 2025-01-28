@@ -43,12 +43,12 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="baremePosDefault" promptText="Baréme + par défault" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="baremePosDefault" onKeyTyped="#handleInputNumber" promptText="Baréme + par défault" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="baremeNegDefault" prefHeight="31.0" prefWidth="182.0" promptText="Baréme - par défault" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <TextField fx:id="baremeNegDefault" onKeyTyped="#handleInputNumber" prefHeight="31.0" prefWidth="182.0" promptText="Baréme - par défault" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="20.0" />
                      </GridPane.margin>
@@ -64,18 +64,18 @@
             </GridPane>
             <HBox prefHeight="302.0" prefWidth="774.0" spacing="10.0">
                <children>
-                  <TableView fx:id="correctTableView" prefHeight="217.0" prefWidth="383.0">
+                  <TableView fx:id="correctTableView" editable="true" prefHeight="217.0" prefWidth="383.0">
                     <columns>
-                      <TableColumn prefWidth="202.0" text="Réponse" />
-                      <TableColumn prefWidth="82.0" text="Baréme" />
-                        <TableColumn prefWidth="93.0" text="Action" />
+                      <TableColumn fx:id="responsePosColumn" prefWidth="202.0" text="Réponse" />
+                      <TableColumn fx:id="scorePosColumn" prefWidth="82.0" text="Baréme" />
+                        <TableColumn fx:id="actionPosColumn" prefWidth="93.0" text="Action" />
                     </columns>
                   </TableView>
-                  <TableView fx:id="incorrectTableView" prefHeight="100.0" prefWidth="392.0">
+                  <TableView fx:id="incorrectTableView" editable="true" prefHeight="100.0" prefWidth="392.0">
                     <columns>
-                      <TableColumn prefWidth="194.0" text="Réponse" />
-                      <TableColumn prefWidth="86.0" text="Baréme" />
-                        <TableColumn prefWidth="100.0" text="Action" />
+                      <TableColumn fx:id="responseNegColumn" prefWidth="194.0" text="Réponse" />
+                      <TableColumn fx:id="scoreNegColumn" prefWidth="86.0" text="Baréme" />
+                        <TableColumn fx:id="actionNegColumn" prefWidth="100.0" text="Action" />
                     </columns>
                   </TableView>
                </children>

@@ -52,7 +52,7 @@ public class EditerSection implements Initializable {
         updateSection( identifiantSection.getText());
         initializeNumberOfSection();
         numberOfSection++;
-        loadContentToSectionPane("_5_EditerQCU");
+        loadContentToSectionPane("_4_EditerQCM");
     }
 
     public void setParentPane(AnchorPane parentPane) {

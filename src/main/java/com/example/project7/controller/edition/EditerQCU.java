@@ -1,6 +1,5 @@
 package com.example.project7.controller.edition;
 
-import com.example.project7.model.Controle;
 import com.example.project7.model.QCM;
 import com.example.project7.model.Reponse;
 import com.example.project7.model.Section;
@@ -64,10 +63,6 @@ public class EditerQCU implements Initializable {
     private Section section;
 
     private QCM qcu;
-
-    public void setControle(Section section) {
-        this.section = section;
-    }
 
     public void setSection(Section section) {
         this.section = section;
@@ -202,6 +197,7 @@ public class EditerQCU implements Initializable {
         handleClicksAddQCU(null);
     }
 
+    //todo what the fuck is this ?
     private boolean checkSectionExists(String idSection) {
         String checkQuery = "SELECT COUNT(*) FROM Section WHERE idSection = ?";
 
