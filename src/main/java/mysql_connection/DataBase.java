@@ -97,8 +97,8 @@ public class DataBase {
                 "nombreLigne INT, " +
                 "tailleLigne FLOAT, " +
                 "rappel TEXT, " +
-                "controleID INT, " +
-                "FOREIGN KEY (controleID) REFERENCES Controle(idControle) ON DELETE CASCADE);";
+                "sectionID VARCHAR(255), " +
+                "FOREIGN KEY (sectionID) REFERENCES Section (idSection) ON DELETE CASCADE);";
         statement.executeUpdate(createQuestionLibreQuery);
 
         String createDescriptionQuery = "CREATE TABLE IF NOT EXISTS Description (" +

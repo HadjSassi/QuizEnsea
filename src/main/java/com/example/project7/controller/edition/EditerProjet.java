@@ -384,23 +384,35 @@ public class EditerProjet implements Initializable {
 
     private void loadSectionData() {
         if (this.devoir != null) {
-            String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection " +
+            String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection, 'QCU/QCM' AS type " +
                     "FROM section " +
                     "JOIN qcm ON section.idSection = qcm.sectionID " +
                     "WHERE section.controleID = ? " + // Filter by controleId
-                    "ORDER BY section.ordreSection";
+                    "UNION " +
+                    "SELECT section.idSection, NULL AS isQCU, questionlibre.question AS question, section.ordreSection, 'QuestionLibre' AS type " +
+                    "FROM section " +
+                    "JOIN questionlibre ON section.idSection = questionlibre.sectionID " +
+                    "WHERE section.controleID = ? " + // Filter by controleId
+                    "ORDER BY ordreSection";
 
             ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
 
+            // Execute the query and load data into the ObservableList
             try (Connection connection = MySqlConnection.getOracleConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
 
-                statement.setInt(1, devoir.getIdControle()); // Use the current controle ID
+                statement.setInt(1, devoir.getIdControle());
+                statement.setInt(2, devoir.getIdControle());
 
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         String idSection = resultSet.getString("idSection");
-                        String type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
+                        String type = "";
+                        if(resultSet.getString("type").equals("QuestionLibre")){
+                            type = "QuestionLibre";
+                        }else{
+                            type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
+                        }
                         String question = resultSet.getString("question");
                         int ordre = resultSet.getInt("ordreSection");
                         sectionData.add(new RowTableSection(idSection, type, question, ordre));
@@ -411,17 +423,23 @@ public class EditerProjet implements Initializable {
                 System.err.println("Error loading section data: " + e.getMessage());
             }
 
+            // Set the ObservableList to the TableView to refresh the data
             tableSection.setItems(sectionData);
         }
     }
 
     public void fetchAndUpdateTableView() {
-        // Define the query to fetch section data from the database
-        String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection  " +
+        // Define the query to fetch section data for QCM and QuestionLibre
+        String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection, 'QCU/QCM' AS type " +
                 "FROM section " +
                 "JOIN qcm ON section.idSection = qcm.sectionID " +
                 "WHERE section.controleID = ? " + // Filter by controleId
-                "ORDER BY section.ordreSection";
+                "UNION " +
+                "SELECT section.idSection, NULL AS isQCU, questionlibre.question AS question, section.ordreSection, 'QuestionLibre' AS type " +
+                "FROM section " +
+                "JOIN questionlibre ON section.idSection = questionlibre.sectionID " +
+                "WHERE section.controleID = ? " + // Filter by controleId
+                "ORDER BY ordreSection";
 
         ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
 
@@ -429,12 +447,18 @@ public class EditerProjet implements Initializable {
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setInt(1, devoir.getIdControle()); // Use the current controle ID
+            statement.setInt(1, devoir.getIdControle());
+            statement.setInt(2, devoir.getIdControle());
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     String idSection = resultSet.getString("idSection");
-                    String type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
+                    String type = "";
+                    if(resultSet.getString("type").equals("QuestionLibre")){
+                        type = "QuestionLibre";
+                    }else{
+                        type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
+                    }
                     String question = resultSet.getString("question");
                     int ordre = resultSet.getInt("ordreSection");
                     sectionData.add(new RowTableSection(idSection, type, question, ordre));

@@ -2,13 +2,10 @@
 
 <?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQuestion">
+<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQuestion">
    <children>
       <VBox prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -60,22 +57,22 @@
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="scoringTotale" promptText="Veuillez entrer le scoring totale" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="scoringTotale" onKeyTyped="#handleInputFloat" promptText="Veuillez entrer le scoring totale" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="nombreScore" promptText="Score" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id="nombreScore" onKeyTyped="#handleInputNumber" promptText="Score" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets right="200.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="nombreLignes" promptText="Nombre de lignes" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TextField fx:id="nombreLignes" onKeyTyped="#handleInputNumber" promptText="Nombre de lignes" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="200.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="tailleLigne" promptText="La taille entre Ligne" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <TextField fx:id="tailleLigne" onKeyTyped="#handleInputFloat" promptText="La taille entre Ligne" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets right="200.0" />
                      </GridPane.margin>

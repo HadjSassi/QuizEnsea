@@ -299,7 +299,6 @@ public class EditerQCM implements Initializable {
         handleClicksAddQCM(null);
     }
 
-    //todo what the fuck is this ?
     private boolean checkSectionExists(String idSection) {
         String checkQuery = "SELECT COUNT(*) FROM Section WHERE idSection = ?";
 
