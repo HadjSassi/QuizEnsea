@@ -151,7 +151,6 @@ public class EditerProjet implements Initializable {
                 if (resultSet.next()) {
                     int idControl = resultSet.getInt("idControle");
                     devoir.setIdControle(idControl);
-                    System.out.println("Existing Controle found with idControle: " + idControl);
                 } else {
                     String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, fontDevoir, fontSize, formatQuestionNumber, formatQuestionTexte, projetId, creationDate) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)";
@@ -171,7 +170,6 @@ public class EditerProjet implements Initializable {
                                 if (generatedKeys.next()) {
                                     int idControl = generatedKeys.getInt(1);
                                     devoir.setIdControle(idControl);
-                                    System.out.println("New Controle created with idControle: " + idControl);
                                 }
                             }
                         } else {
@@ -330,7 +328,6 @@ public class EditerProjet implements Initializable {
                     int rowsAffected = statement.executeUpdate();
 
                     if (rowsAffected > 0) {
-                        System.out.println("Section deleted successfully: " + section.getIdSection());
                         tableSection.getItems().remove(index);
                     } else {
                         System.err.println("No section found to delete with idSection: " + section.getIdSection());

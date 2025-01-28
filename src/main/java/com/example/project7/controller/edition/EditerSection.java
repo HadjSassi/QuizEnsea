@@ -52,6 +52,7 @@ public class EditerSection implements Initializable {
         updateSection( identifiantSection.getText());
         initializeNumberOfSection();
         numberOfSection++;
+        loadContentToSectionPane("_5_EditerQCU");
     }
 
     public void setParentPane(AnchorPane parentPane) {
@@ -118,32 +119,26 @@ public class EditerSection implements Initializable {
 
     @FXML
     public void handleClicksAddQCM(ActionEvent event) {
-        //todo save in the database and return the previous interface which is the Editer Projet.
         loadContentToSectionPane("_4_EditerQCM");
     }
 
     @FXML
     public void handleClicksAddQCU(ActionEvent event) {
-        //todo save in the database and return the previous interface which is the Editer Projet.
         loadContentToSectionPane("_5_EditerQCU");
     }
 
     @FXML
     public void handleClicksAddFreeQuestion(ActionEvent event) {
-        //todo save in the database and return the previous interface which is the Editer Projet.
         loadContentToSectionPane("_6_EditerQuestionLibre");
     }
 
     @FXML
     public void handleClicksAddFreeDescription(ActionEvent event) {
-        //todo save in the database and return the previous interface which is the Editer Projet.
         loadContentToSectionPane("_7_EditerDescription");
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadContentToSectionPane("_5_EditerQCU");
-    }
+    public void initialize(URL url, ResourceBundle resourceBundle) {}
 
     private void initializeNumberOfSection() {
         String countQuery = "SELECT COUNT(*) AS sectionCount FROM section WHERE controleId = ?";
@@ -152,7 +147,7 @@ public class EditerSection implements Initializable {
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement statement = connection.prepareStatement(countQuery)) {
 
-
+            //todo remove the following line
             this.devoir.setIdControle(1);
 
             statement.setInt(1, this.devoir.getIdControle());
