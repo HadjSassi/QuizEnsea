@@ -363,19 +363,17 @@ public class EditerProjet implements Initializable {
 
     private void handleMoveDown(int index) {
         RowTableSection section = tableSection.getItems().get(index);
-        int maxValue;
-        if (EditerSection.getNumberOfSection() == 0)
-            maxValue = 100;
-        else
-            maxValue = EditerSection.getNumberOfSection();
-        if (section.getOrdre() < maxValue) {
+        try {
             RowTableSection sectionToMoveWith = tableSection.getItems().get(index + 1);
             section.setOrdre(section.getOrdre() + 1);
             sectionToMoveWith.setOrdre(section.getOrdre() - 1);
             updateRowTableSection(section);
             updateRowTableSection(sectionToMoveWith);
             fetchAndUpdateTableView();
+        }catch (IndexOutOfBoundsException e) {
+
         }
+
     }
 
     @FXML
