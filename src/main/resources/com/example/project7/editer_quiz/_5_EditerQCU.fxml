@@ -51,9 +51,9 @@
                <children>
                   <TableView fx:id="incorrectTableView" editable="true" prefHeight="233.0" prefWidth="775.0">
                      <columns>
-                        <TableColumn fx:id="responseColumn" prefWidth="562.3332977294922" text="Réponse" />
-                        <TableColumn fx:id="scoreColumn" prefWidth="48.0" text="Baréme" />
-                        <TableColumn fx:id="actionColumn" prefWidth="166.66668701171875" text="Action" />
+                        <TableColumn fx:id="responseColumn" prefWidth="499.333384513855" text="Réponse" />
+                        <TableColumn fx:id="scoreColumn" prefWidth="53.333343505859375" text="Baréme" />
+                        <TableColumn fx:id="actionColumn" prefWidth="226.6666259765625" text="Action" />
                      </columns>
                   </TableView>
                </children>

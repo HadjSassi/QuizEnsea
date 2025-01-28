@@ -43,12 +43,6 @@ public class EditerQCM implements Initializable {
     private TextField baremeNegDefault;
 
     @FXML
-    private Button ajouterBonneReponse;
-
-    @FXML
-    private Button ajouterMauvaiseReponse;
-
-    @FXML
     private TableView<Reponse> correctTableView;
 
     @FXML
@@ -401,12 +395,12 @@ public class EditerQCM implements Initializable {
     }
 
     private void createQCUCorrectResponse() {
-        String insertIncorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
+        String insertCorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(insertIncorrectResponseQuery)) {
+             PreparedStatement insertStatement = connection.prepareStatement(insertCorrectResponseQuery)) {
 
-            for (Reponse response : incorrectTableView.getItems()) {
+            for (Reponse response : correctTableView.getItems()) {
                 insertStatement.setInt(1, Integer.parseInt(qcm.getIdSection()));
                 insertStatement.setString(2, response.getResponse());
                 insertStatement.setInt(3, response.getScore());
@@ -475,18 +469,18 @@ public class EditerQCM implements Initializable {
     public void setSectionUpdating(Section section) {
         this.section = section;
         this.enonceQuestion.setText(section.getIdSection());
-        loadQCUFromSectionId(section.getIdSection());
+        loadQCMFromSectionId(section.getIdSection());
     }
 
-    private void loadQCUFromSectionId(String idSection) {
-        String fetchQCUQuery = "SELECT * FROM QCM WHERE sectionID = ?";
+    private void loadQCMFromSectionId(String idSection) {
+        String fetchQCMQuery = "SELECT * FROM QCM WHERE sectionID = ?";
         String fetchResponsesQuery = "SELECT * FROM QCM_Reponses WHERE qcmID = ?";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
-             PreparedStatement qcuStatement = connection.prepareStatement(fetchQCUQuery);
+             PreparedStatement qcuStatement = connection.prepareStatement(fetchQCMQuery);
              PreparedStatement responseStatement = connection.prepareStatement(fetchResponsesQuery)) {
 
-            // Fetch QCU details
+            // Fetch QCM details
             qcuStatement.setString(1, idSection);
             ResultSet qcuResultSet = qcuStatement.executeQuery();
             if (qcuResultSet.next()) {
@@ -516,8 +510,8 @@ public class EditerQCM implements Initializable {
                         responsesIncorrect.add(new Reponse(responseText, score));
                     }
                 }
-
                 incorrectTableView.setItems(responsesIncorrect);
+                correctTableView.setItems(responsesCorrect);
             }
 
         } catch (SQLException e) {

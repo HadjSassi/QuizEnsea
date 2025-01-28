@@ -60,10 +60,10 @@
             </GridPane>
             <TableView fx:id="tableSection" prefHeight="272.0" prefWidth="694.0">
               <columns>
-                <TableColumn fx:id="numCol" prefWidth="75.0" text="Num°" />
-                <TableColumn fx:id="typeCol" prefWidth="59.0" text="Type" />
-                  <TableColumn fx:id="enonceCol" prefWidth="445.0" text="Enoncé de section" />
-                  <TableColumn fx:id="actionCol" prefWidth="114.0" text="Action" />
+                <TableColumn fx:id="numCol" prefWidth="95.33334350585938" text="Num°" />
+                <TableColumn fx:id="typeCol" prefWidth="38.33331298828125" text="Type" />
+                  <TableColumn fx:id="enonceCol" prefWidth="425.0" text="Enoncé de section" />
+                  <TableColumn fx:id="actionCol" prefWidth="139.0" text="Action" />
               </columns>
                <VBox.margin>
                   <Insets left="50.0" right="50.0" />

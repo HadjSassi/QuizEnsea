@@ -170,8 +170,21 @@ public class EditerSection implements Initializable {
         numberOfSection--;
     }
 
-    public void handleClicksModifyQCM(RowTableSection section) {
+    public void handleClicksModifyQCM(RowTableSection selection) {
         loadContentToSectionPane("_4_EditerQCM");
+        if (currentController instanceof EditerQCM) {
+            EditerQCM controller = (EditerQCM) currentController;
+
+            if (identifiantSection.getText() != null && !identifiantSection.getText().trim().isEmpty()) {
+                Section section = new Section();
+                section.setIdSection(selection.getIdSection());
+                section.setDevoir(this.devoir);
+                this.identifiantSection.setText(section.getIdSection());
+                controller.setSectionUpdating(section);
+            }
+        } else {
+            System.err.println("Current controller is not an instance of EditerQCU.");
+        }
     }
 
     public void handleClicksModifyQCU(RowTableSection selection) {
@@ -191,11 +204,11 @@ public class EditerSection implements Initializable {
         }
     }
 
-    public void handleClicksModifyFreeQuestion(RowTableSection section) {
+    public void handleClicksModifyFreeQuestion(RowTableSection selection) {
         loadContentToSectionPane("_6_EditerQuestionLibre");
     }
 
-    public void handleClicksModifyFreeDescription(RowTableSection section) {
+    public void handleClicksModifyFreeDescription(RowTableSection selection) {
         loadContentToSectionPane("_7_EditerDescription");
     }
 
