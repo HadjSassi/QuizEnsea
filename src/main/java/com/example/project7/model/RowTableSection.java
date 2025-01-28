@@ -4,11 +4,13 @@ public class RowTableSection {
     private String idSection;
     private String type;
     private String question;
+    private int ordre;
 
-    public RowTableSection(String idSection, String type, String question) {
+    public RowTableSection(String idSection, String type, String question, int ordre) {
         this.idSection = idSection;
         this.type = type;
         this.question = question;
+        this.ordre = ordre;
     }
 
     public String getIdSection() {
@@ -34,4 +36,14 @@ public class RowTableSection {
     public void setQuestion(String question) {
         this.question = question;
     }
+
+    public int getOrdre() {
+        return ordre;
+    }
+
+    public void setOrdre(int ordre) {
+        this.ordre = ordre;
+    }
+
+
 }

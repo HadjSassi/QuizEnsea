@@ -262,11 +262,32 @@ public class EditerProjet implements Initializable {
         loadSectionData();
     }
 
-    // Extracted Methods
     private void handleMoveUp(int index) {
         RowTableSection section = tableSection.getItems().get(index);
-        System.out.println("Move Up: " + section.getIdSection());
-        // Add logic for moving the section up
+        if (section.getOrdre() > 1) {
+            RowTableSection sectionToMoveWith = tableSection.getItems().get(index - 1);
+            section.setOrdre(section.getOrdre() - 1);
+            sectionToMoveWith.setOrdre(section.getOrdre() + 1);
+            updateRowTableSection(section);
+            updateRowTableSection(sectionToMoveWith);
+            fetchAndUpdateTableView();
+        }
+    }
+
+    private void updateRowTableSection(RowTableSection section) {
+        String updateQuery = "UPDATE section SET ordreSection = ? WHERE idSection = ?";
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+            statement.setInt(1, section.getOrdre());
+            statement.setString(2, section.getIdSection());
+            int rowsAffected = statement.executeUpdate();
+            if (!(rowsAffected > 0)) {
+                System.err.println("Failed to update section: " + section.getIdSection());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error updating section: " + e.getMessage());
+        }
     }
 
     private void handleModify(int index) {
@@ -342,8 +363,19 @@ public class EditerProjet implements Initializable {
 
     private void handleMoveDown(int index) {
         RowTableSection section = tableSection.getItems().get(index);
-        System.out.println("Move Down: " + section.getIdSection());
-        // Add logic for moving the section down
+        int maxValue;
+        if (EditerSection.getNumberOfSection() == 0)
+            maxValue = 100;
+        else
+            maxValue = EditerSection.getNumberOfSection();
+        if (section.getOrdre() < maxValue) {
+            RowTableSection sectionToMoveWith = tableSection.getItems().get(index + 1);
+            section.setOrdre(section.getOrdre() + 1);
+            sectionToMoveWith.setOrdre(section.getOrdre() - 1);
+            updateRowTableSection(section);
+            updateRowTableSection(sectionToMoveWith);
+            fetchAndUpdateTableView();
+        }
     }
 
     @FXML
@@ -354,7 +386,7 @@ public class EditerProjet implements Initializable {
 
     private void loadSectionData() {
         if (this.devoir != null) {
-            String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question " +
+            String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection " +
                     "FROM section " +
                     "JOIN qcm ON section.idSection = qcm.sectionID " +
                     "WHERE section.controleID = ? " + // Filter by controleId
@@ -372,8 +404,8 @@ public class EditerProjet implements Initializable {
                         String idSection = resultSet.getString("idSection");
                         String type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
                         String question = resultSet.getString("question");
-
-                        sectionData.add(new RowTableSection(idSection, type, question));
+                        int ordre = resultSet.getInt("ordreSection");
+                        sectionData.add(new RowTableSection(idSection, type, question, ordre));
                     }
                 }
             } catch (SQLException e) {
@@ -387,7 +419,7 @@ public class EditerProjet implements Initializable {
 
     public void fetchAndUpdateTableView() {
         // Define the query to fetch section data from the database
-        String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question " +
+        String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection  " +
                 "FROM section " +
                 "JOIN qcm ON section.idSection = qcm.sectionID " +
                 "WHERE section.controleID = ? " + // Filter by controleId
@@ -406,8 +438,8 @@ public class EditerProjet implements Initializable {
                     String idSection = resultSet.getString("idSection");
                     String type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
                     String question = resultSet.getString("question");
-
-                    sectionData.add(new RowTableSection(idSection, type, question));
+                    int ordre = resultSet.getInt("ordreSection");
+                    sectionData.add(new RowTableSection(idSection, type, question, ordre));
                 }
             }
         } catch (SQLException e) {
