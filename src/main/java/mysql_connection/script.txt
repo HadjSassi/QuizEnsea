@@ -1,0 +1,184 @@
+use quizensea;
+
+select *
+from projet;
+insert into projet
+values (1, 'Test1', 'C:\Users\mahdi\Desktop\ENSEA\2024-2025\Project\Nissrine', 'Basic Model', '2025-01-20');
+
+create schema IF NOT EXISTS quizensea;
+
+select * from projet;
+select * from Controle;
+select * from Section;
+select * from QCM;
+select * from QCM_Reponses;
+select * from QuestionLibre;
+select * from Description;
+select * from Description_Images;
+select * from Description_Legends;
+select * from FontDevoir;
+select * from FormatQuestion;
+select * from Reponse;
+select * from TypeDevoir;
+select * from TypeNumero;
+
+
+desc projet;
+desc Controle;
+desc Section;
+desc QCM;
+desc QCM_Reponses;
+desc QuestionLibre;
+desc Description;
+desc Description_Images;
+desc Description_Legends;
+desc FontDevoir;
+desc FormatQuestion;
+desc Reponse;
+desc TypeDevoir;
+desc TypeNumero;
+
+
+
+CREATE TABLE IF NOT EXISTS Projet
+(
+    idProjet           INT AUTO_INCREMENT PRIMARY KEY,
+    nomProjet          VARCHAR(255) NOT NULL,
+    localisationProjet VARCHAR(255),
+    typeProjet         VARCHAR(100),
+    creationDate       DATE DEFAULT (CURRENT_DATE)
+);
+
+CREATE TABLE IF NOT EXISTS Controle
+(
+    idControle           INT AUTO_INCREMENT PRIMARY KEY,
+    nomDevoir            VARCHAR(255) NOT NULL,
+    typeDevoir           VARCHAR(255),
+    fontDevoir           VARCHAR(255),
+    fontSize             INT  DEFAULT (15),
+    formatQuestionNumber INT,
+    formatQuestionTexte  VARCHAR(255),
+    creationDate         DATE DEFAULT (CURRENT_DATE),
+    projetID             INT,
+    FOREIGN KEY (projetID) REFERENCES Projet (idProjet) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Section
+(
+    idSection        VARCHAR(255) PRIMARY KEY,
+    ordreSection     INT,
+    numberOfSections INT DEFAULT 0,
+    controleID       INT,
+    FOREIGN KEY (controleID) REFERENCES Controle (idControle) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS QCM
+(
+    idQCM     INT AUTO_INCREMENT PRIMARY KEY,
+    question  TEXT NOT NULL,
+    isQCU     BOOLEAN,
+    sectionID VARCHAR(255),
+    FOREIGN KEY (sectionID) REFERENCES Section (idSection) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS QCM_Reponses
+(
+    idReponse INT AUTO_INCREMENT PRIMARY KEY,
+    qcmID     INT,
+    reponse   TEXT,
+    score     INT,
+    isCorrect BOOLEAN,
+    FOREIGN KEY (qcmID) REFERENCES QCM (idQCM) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS QuestionLibre
+(
+    idQuestionLibre INT AUTO_INCREMENT PRIMARY KEY,
+    question        TEXT NOT NULL,
+    scoreTotal      INT,
+    nombreScore     INT,
+    nombreLigne     INT,
+    tailleLigne     FLOAT,
+    rappel          TEXT,
+    controleID      INT,
+    FOREIGN KEY (controleID) REFERENCES Controle (idControle) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Description
+(
+    idDescription INT AUTO_INCREMENT PRIMARY KEY,
+    texte         TEXT,
+    controleID    INT,
+    FOREIGN KEY (controleID) REFERENCES Controle (idControle) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Description_Images
+(
+    idImage       INT AUTO_INCREMENT PRIMARY KEY,
+    descriptionID INT,
+    imagePath     VARCHAR(255),
+    FOREIGN KEY (descriptionID) REFERENCES Description (idDescription) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Description_Legends
+(
+    idLegend      INT AUTO_INCREMENT PRIMARY KEY,
+    descriptionID INT,
+    legendText    VARCHAR(255),
+    FOREIGN KEY (descriptionID) REFERENCES Description (idDescription) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS FontDevoir
+(
+    idFontDevoir INT AUTO_INCREMENT PRIMARY KEY,
+    nomPolice    VARCHAR(100),
+    sizePolice   INT
+);
+
+CREATE TABLE IF NOT EXISTS FormatQuestion
+(
+    idFormatQuestion INT AUTO_INCREMENT PRIMARY KEY,
+    premierTexte     TEXT,
+    isNumerated      BOOLEAN,
+    numeroIncremente VARCHAR(50),
+    deuxiemeTexte    TEXT
+);
+
+CREATE TABLE IF NOT EXISTS Reponse
+(
+    idReponse INT AUTO_INCREMENT PRIMARY KEY,
+    reponse   TEXT,
+    score     INT
+);
+
+CREATE TABLE IF NOT EXISTS TypeDevoir
+(
+    idTypeDevoir  INT AUTO_INCREMENT PRIMARY KEY,
+    nomTypeDevoir VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS TypeNumero
+(
+    idTypeNumero  INT AUTO_INCREMENT PRIMARY KEY,
+    nomTypeNumero VARCHAR(255) NOT NULL
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+truncate table projet;
+
+drop table projet;
+
+drop schema quizensea;
