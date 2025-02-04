@@ -37,9 +37,20 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="nomDevoir" prefHeight="39.0" prefWidth="432.0" promptText="Please enter the assignment name" GridPane.columnIndex="1" />
-                  <TextField fx:id="typeDevoir" prefHeight="39.0" prefWidth="432.0" promptText="Please enter the assignment type" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="formatQuestion" prefHeight="39.0" prefWidth="432.0" promptText="Please specify the question format !" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="nomDevoir" prefHeight="39.0" prefWidth="432.0" promptText="Please enter the assignment name" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <TextField fx:id="formatQuestion" prefHeight="39.0" prefWidth="281.0" promptText="By default will be blank" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <opaqueInsets>
+                        <Insets right="50.0" />
+                     </opaqueInsets>
+                     <GridPane.margin>
+                        <Insets right="180.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
                   <Label prefHeight="30.0" prefWidth="238.0" text="           Assignment Date :" GridPane.rowIndex="2">
                      <font>
                         <Font size="20.0" />
@@ -50,14 +61,46 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#handleClicksAddSection" text="Add Question or Description" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <Button mnemonicParsing="false" onAction="#handleClicksAddSection" prefHeight="39.0" prefWidth="200.0" text="Add Question or Description" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="40.0" />
+                     </GridPane.margin></Button>
                   <DatePicker fx:id="dateDevoir" prefHeight="31.0" prefWidth="452.0" promptText="Please choose the assignment date" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <MenuButton fx:id="typeDevoir" mnemonicParsing="false" prefHeight="39.0" prefWidth="455.0" text="Please select the Assignement Type" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </MenuButton>
+                  <MenuButton mnemonicParsing="false" prefHeight="42.0" prefWidth="143.0" text="Number Format" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </MenuButton>
+                  <Button layoutX="255.0" layoutY="212.0" mnemonicParsing="false" onAction="#handleClicksImportSection" prefHeight="39.0" prefWidth="213.0" style="-fx-background-color: #A53860;" text="  Import Question Or Description" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
                </children>
                <VBox.margin>
                   <Insets right="50.0" top="20.0" />
                </VBox.margin>
             </GridPane>
-            <TableView fx:id="tableSection" prefHeight="272.0" prefWidth="694.0">
+            <TableView fx:id="tableSection" prefHeight="262.0" prefWidth="694.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="No°" />
                 <TableColumn prefWidth="59.0" text="Type" />
