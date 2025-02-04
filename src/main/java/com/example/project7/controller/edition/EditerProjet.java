@@ -7,12 +7,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -114,6 +117,75 @@ public class EditerProjet implements Initializable {
             System.out.println("Erreur lors de l'ouverture de la popup : " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void handleClicksImportSection(ActionEvent event) {
+        Stage modalStage = new Stage();
+        modalStage.initModality(Modality.APPLICATION_MODAL);
+        modalStage.setTitle("Select a Section");
+
+        // TableView setup
+        TableView<SectionRow> tableView = new TableView<>();
+        TableColumn<SectionRow, Integer> idColumn = new TableColumn<>("ID");
+        TableColumn<SectionRow, String> nameColumn = new TableColumn<>("Section Type");
+
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+        tableView.getColumns().addAll(idColumn, nameColumn);
+
+        // Load data from the database
+        tableView.setItems(getSectionsFromDatabase());
+
+        // Select Button
+        Button selectButton = new Button("Select");
+        selectButton.setOnAction(e -> insertImportedSection(modalStage, tableView));
+
+        // Layout
+        VBox vbox = new VBox(10, tableView, selectButton);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+
+        // Scene
+        Scene scene = new Scene(vbox, 400, 300);
+        modalStage.setScene(scene);
+        modalStage.showAndWait();
+    }
+
+    private void insertImportedSection(Stage modalStage, TableView<SectionRow> tableView) {
+        //todo insert a new section but it's imported !
+        SectionRow selectedSection = tableView.getSelectionModel().getSelectedItem();
+        if (selectedSection != null) {
+            System.out.println("Selected Section: " + selectedSection.getType());
+            modalStage.close();
+        }
+    }
+
+    private ObservableList<SectionRow> getSectionsFromDatabase() {
+        ObservableList<SectionRow> sections = FXCollections.observableArrayList();
+        String query = "SELECT idSection, " +
+                "CASE WHEN qcm.isQCU IS NOT NULL THEN (CASE WHEN qcm.isQCU = 1 THEN 'QCU' ELSE 'QCM' END) " +
+                "WHEN questionlibre.sectionID IS NOT NULL THEN 'QuestionLibre' " +
+                "WHEN description.controleID IS NOT NULL THEN 'Description' " +
+                "ELSE 'Unknown' END AS type " +
+                "FROM section " +
+                "LEFT JOIN qcm ON section.idSection = qcm.sectionID " +
+                "LEFT JOIN questionlibre ON section.idSection = questionlibre.sectionID " +
+                "LEFT JOIN description ON section.idSection = description.controleID ";
+
+        try (Connection conn = MySqlConnection.getOracleConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                sections.add(new SectionRow(rs.getString("idSection"), rs.getString("type")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return sections;
     }
 
     @FXML
@@ -370,7 +442,7 @@ public class EditerProjet implements Initializable {
             updateRowTableSection(section);
             updateRowTableSection(sectionToMoveWith);
             fetchAndUpdateTableView();
-        }catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
 
         }
 
@@ -470,9 +542,9 @@ public class EditerProjet implements Initializable {
                 while (resultSet.next()) {
                     String idSection = resultSet.getString("idSection");
                     String type = "";
-                    if(resultSet.getString("type").equals("QuestionLibre")){
+                    if (resultSet.getString("type").equals("QuestionLibre")) {
                         type = "QuestionLibre";
-                    }else{
+                    } else {
                         type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
                     }
                     String question = resultSet.getString("question");

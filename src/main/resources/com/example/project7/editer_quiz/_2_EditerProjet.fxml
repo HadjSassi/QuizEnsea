@@ -53,6 +53,7 @@
                   </Label>
                   <Button mnemonicParsing="false" onAction="#handleClicksAddSection" text="Ajouter Question ou Description" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                   <DatePicker fx:id="dateDevoir" editable="false" prefHeight="31.0" prefWidth="452.0" promptText="By default will be today's date" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button layoutX="289.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleClicksImportSection" text="Import Question ou Description" GridPane.rowIndex="4" />
                </children>
                <VBox.margin>
                   <Insets right="50.0" top="20.0" />

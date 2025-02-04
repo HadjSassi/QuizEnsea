@@ -2,6 +2,7 @@ module com.example.project7 {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires java.desktop;
 
 
     opens com.example.project7 to javafx.fxml;
