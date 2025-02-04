@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerDescription">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerDescription">
    <children>
       <VBox layoutX="-6.0" layoutY="-1.0" prefHeight="600.0" prefWidth="803.0">
          <children>
@@ -38,11 +33,11 @@
                   </Button>
                </children>
             </HBox>
-            <TableView fx:id="tableViewImages" prefHeight="261.0" prefWidth="763.0">
+            <TableView fx:id="tableViewImages" editable="true" prefHeight="261.0" prefWidth="763.0">
               <columns>
-                <TableColumn prefWidth="272.0" text="Chemin d'image" />
-                <TableColumn prefWidth="349.0" text="Légende d'image" />
-                  <TableColumn prefWidth="141.0" text="Action sur Image" />
+                <TableColumn fx:id="cheminCol" prefWidth="272.0" text="Chemin d'image" />
+                <TableColumn fx:id="legendCol" prefWidth="441.33331298828125" text="Légende d'image" />
+                  <TableColumn fx:id="actionCol" prefWidth="49.3333740234375" text="Action" />
               </columns>
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="30.0" />

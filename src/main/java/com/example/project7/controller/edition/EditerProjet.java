@@ -387,34 +387,45 @@ public class EditerProjet implements Initializable {
             String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection, 'QCU/QCM' AS type " +
                     "FROM section " +
                     "JOIN qcm ON section.idSection = qcm.sectionID " +
-                    "WHERE section.controleID = ? " + // Filter by controleId
+                    "WHERE section.controleID = ? " +
                     "UNION " +
                     "SELECT section.idSection, NULL AS isQCU, questionlibre.question AS question, section.ordreSection, 'QuestionLibre' AS type " +
                     "FROM section " +
                     "JOIN questionlibre ON section.idSection = questionlibre.sectionID " +
-                    "WHERE section.controleID = ? " + // Filter by controleId
+                    "WHERE section.controleID = ? " +
+                    "UNION " +
+                    "SELECT section.idSection, NULL AS isQCU, section.idSection AS question, section.ordreSection, 'Description' AS type " +
+                    "FROM section " +
+                    "JOIN description ON section.idSection = description.controleID " +
+                    "WHERE section.controleID = ? " +
                     "ORDER BY ordreSection";
 
             ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
 
-            // Execute the query and load data into the ObservableList
             try (Connection connection = MySqlConnection.getOracleConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
 
                 statement.setInt(1, devoir.getIdControle());
                 statement.setInt(2, devoir.getIdControle());
+                statement.setInt(3, devoir.getIdControle());
 
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         String idSection = resultSet.getString("idSection");
-                        String type = "";
-                        if(resultSet.getString("type").equals("QuestionLibre")){
+                        String type = resultSet.getString("type");
+
+                        // Determine the correct type
+                        if (type.equals("QuestionLibre")) {
                             type = "QuestionLibre";
-                        }else{
+                        } else if (type.equals("QCU/QCM")) {
                             type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
+                        } else {
+                            type = "Description"; // For descriptions
                         }
+
                         String question = resultSet.getString("question");
                         int ordre = resultSet.getInt("ordreSection");
+
                         sectionData.add(new RowTableSection(idSection, type, question, ordre));
                     }
                 }
@@ -423,7 +434,6 @@ public class EditerProjet implements Initializable {
                 System.err.println("Error loading section data: " + e.getMessage());
             }
 
-            // Set the ObservableList to the TableView to refresh the data
             tableSection.setItems(sectionData);
         }
     }
@@ -433,12 +443,17 @@ public class EditerProjet implements Initializable {
         String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection, 'QCU/QCM' AS type " +
                 "FROM section " +
                 "JOIN qcm ON section.idSection = qcm.sectionID " +
-                "WHERE section.controleID = ? " + // Filter by controleId
+                "WHERE section.controleID = ? " +
                 "UNION " +
                 "SELECT section.idSection, NULL AS isQCU, questionlibre.question AS question, section.ordreSection, 'QuestionLibre' AS type " +
                 "FROM section " +
                 "JOIN questionlibre ON section.idSection = questionlibre.sectionID " +
-                "WHERE section.controleID = ? " + // Filter by controleId
+                "WHERE section.controleID = ? " +
+                "UNION " +
+                "SELECT section.idSection, NULL AS isQCU, section.idSection AS question, section.ordreSection, 'Description' AS type " +
+                "FROM section " +
+                "JOIN description ON section.idSection = description.controleID " +
+                "WHERE section.controleID = ? " +
                 "ORDER BY ordreSection";
 
         ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
@@ -449,6 +464,7 @@ public class EditerProjet implements Initializable {
 
             statement.setInt(1, devoir.getIdControle());
             statement.setInt(2, devoir.getIdControle());
+            statement.setInt(3, devoir.getIdControle());
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

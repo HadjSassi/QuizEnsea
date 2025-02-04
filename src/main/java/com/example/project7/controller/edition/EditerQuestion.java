@@ -181,6 +181,7 @@ public class EditerQuestion implements Initializable {
                 questionLibre.setScoreTotal(Float.parseFloat(scoringTotale.getText().trim()));
                 createSection();
                 createQuestion();
+                this.section.getDevoir().getController().fetchAndUpdateTableView();
                 Stage stage = (Stage) cancelQuestion.getScene().getWindow();
                 stage.close();
             }

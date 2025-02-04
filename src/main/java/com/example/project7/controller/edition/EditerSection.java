@@ -52,7 +52,7 @@ public class EditerSection implements Initializable {
         updateSection( identifiantSection.getText());
         initializeNumberOfSection();
         numberOfSection++;
-        loadContentToSectionPane("_6_EditerQuestionLibre");
+        loadContentToSectionPane("_7_EditerDescription");
     }
 
     public void setParentPane(AnchorPane parentPane) {
@@ -223,6 +223,19 @@ public class EditerSection implements Initializable {
 
     public void handleClicksModifyFreeDescription(RowTableSection selection) {
         loadContentToSectionPane("_7_EditerDescription");
+        if (currentController instanceof EditerDescription) {
+            EditerDescription controller = (EditerDescription) currentController;
+
+            if (identifiantSection.getText() != null && !identifiantSection.getText().trim().isEmpty()) {
+                Section section = new Section();
+                section.setIdSection(selection.getIdSection());
+                section.setDevoir(this.devoir);
+                this.identifiantSection.setText(section.getIdSection());
+                controller.setSectionUpdating(section);
+            }
+        } else {
+            System.err.println("Current controller is not an instance of EditerQCU.");
+        }
     }
 
     public void loadSectionData(RowTableSection section) {

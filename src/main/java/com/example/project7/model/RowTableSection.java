@@ -5,11 +5,19 @@ public class RowTableSection {
     private String type;
     private String question;
     private int ordre;
+    private String chemin;
+    private String legend;
 
     public RowTableSection(String idSection, String type, String question, int ordre) {
         this.idSection = idSection;
         this.type = type;
         this.question = question;
+        this.ordre = ordre;
+    }
+
+    public RowTableSection(String chemin, String legend, int ordre) {
+        this.chemin = chemin;
+        this.legend = legend;
         this.ordre = ordre;
     }
 
@@ -45,5 +53,19 @@ public class RowTableSection {
         this.ordre = ordre;
     }
 
+    public String getChemin() {
+        return chemin;
+    }
 
+    public void setChemin(String chemin) {
+        this.chemin = chemin;
+    }
+
+    public String getLegend() {
+        return legend;
+    }
+
+    public void setLegend(String legend) {
+        this.legend = legend;
+    }
 }
