@@ -22,10 +22,7 @@ import javafx.stage.StageStyle;
 import mysql_connection.MySqlConnection;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -154,11 +151,113 @@ public class EditerProjet implements Initializable {
     }
 
     private void insertImportedSection(Stage modalStage, TableView<SectionRow> tableView) {
-        //todo insert a new section but it's imported !
         SectionRow selectedSection = tableView.getSelectionModel().getSelectedItem();
         if (selectedSection != null) {
-            System.out.println("Selected Section: " + selectedSection.getType());
+            processInsertImportedSection(selectedSection);
             modalStage.close();
+        }
+    }
+
+    private void processInsertImportedSection(SectionRow sectionRow) {
+        String newSectionId = sectionRow.getId() + "_" + devoir.getIdControle();
+        String sectionType = sectionRow.getType();
+        int newSectionOrdre = 0;
+        try (Connection conn = MySqlConnection.getOracleConnection()) {
+            String countQuery = "SELECT COUNT(*) as cnt FROM section WHERE controleID = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(countQuery)) {
+                stmt.setInt(1, this.devoir.getIdControle());
+                try (ResultSet resultSet = stmt.executeQuery()) {
+                    if (resultSet.next()) {
+                        newSectionOrdre = resultSet.getInt("cnt");
+                    }
+                    String insertQuery = "INSERT INTO section (idSection, controleID, ordreSection)" +
+                            " values (?,?,?)";
+                    try (PreparedStatement stmt2 = conn.prepareStatement(insertQuery)) {
+                        stmt2.setString(1, newSectionId);
+                        stmt2.setInt(2, this.devoir.getIdControle());
+                        stmt2.setInt(3, newSectionOrdre);
+                        stmt2.executeUpdate();
+                    }
+                }
+            }
+            if ("QCU".equals(sectionType) || "QCM".equals(sectionType)) {
+                int newQcmID = -1;
+                String insertQcmQuery = "INSERT INTO qcm (sectionID, isQCU, question) " +
+                        "SELECT ?, isQCU, question FROM qcm WHERE sectionID = ?";
+
+                try (PreparedStatement stmt = conn.prepareStatement(insertQcmQuery, Statement.RETURN_GENERATED_KEYS)) {
+                    stmt.setString(1, newSectionId);
+                    stmt.setString(2, sectionRow.getId());
+                    stmt.executeUpdate();
+                    try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            newQcmID = generatedKeys.getInt(1);
+                        }
+                    }
+                }
+
+                String insertQcmResponsesQuery = "INSERT INTO qcm_reponses (qcmID, reponse, score, isCorrect) " +
+                        "SELECT ?, reponse, score, isCorrect FROM qcm_reponses WHERE qcmID = ?";
+
+                try (PreparedStatement stmt = conn.prepareStatement(insertQcmResponsesQuery)) {
+                    stmt.setInt(1, newQcmID);
+                    stmt.setInt(2, getOldQcmID(sectionRow.getId()));
+                    stmt.executeUpdate();
+                }
+
+            } else if ("QuestionLibre".equals(sectionType)) {
+                String insertQuestionQuery = "INSERT INTO questionlibre (sectionID, question, scoreTotal, nombreScore," +
+                        "nombreLigne, tailleLigne,rappel) " +
+                        "SELECT ?,question, scoreTotal, nombreScore,nombreLigne, tailleLigne,rappel " +
+                        "FROM questionlibre WHERE sectionID = ?";
+
+                try (PreparedStatement stmt = conn.prepareStatement(insertQuestionQuery)) {
+                    stmt.setString(1, newSectionId);
+                    stmt.setString(2, sectionRow.getId());
+                    stmt.executeUpdate();
+                }
+            } else if ("Description".equals(sectionType)) {
+                int newDescriptionId = -1;
+
+                String insertDescriptionQuery = "INSERT INTO description (controleID, texte) " +
+                        "SELECT ?, texte FROM description WHERE controleID = ?";
+
+                try (PreparedStatement stmt = conn.prepareStatement(insertDescriptionQuery, Statement.RETURN_GENERATED_KEYS)) {
+                    stmt.setString(1, newSectionId);
+                    stmt.setString(2, sectionRow.getId());
+                    stmt.executeUpdate();
+
+                    try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            newDescriptionId = generatedKeys.getInt(1);
+                        }
+                    }
+
+                    if (newDescriptionId != -1) {
+                        String insertDescriptionImagesQuery = "INSERT INTO description_images (descriptionID, imagePath) " +
+                                "SELECT ?, imagePath FROM description_images WHERE descriptionID = ?";
+
+                        try (PreparedStatement stmt2 = conn.prepareStatement(insertDescriptionImagesQuery)) {
+                            stmt2.setInt(1, newDescriptionId);
+                            stmt2.setInt(2, getOldDescriptionID(sectionRow.getId()));
+                            stmt2.executeUpdate();
+                        }
+
+                        String insertDescriptionLegendsQuery = "INSERT INTO description_legends (descriptionID, legendText) " +
+                                "SELECT ?, legendText FROM description_legends WHERE descriptionID = ?";
+
+                        try (PreparedStatement stmt2 = conn.prepareStatement(insertDescriptionLegendsQuery)) {
+                            stmt2.setInt(1, newDescriptionId);
+                            stmt2.setInt(2, getOldDescriptionID(sectionRow.getId()));
+                            stmt2.executeUpdate();
+                        }
+                    }
+                }
+            }
+            fetchAndUpdateTableView();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error while inserting imported section: " + e.getMessage());
         }
     }
 
@@ -186,6 +285,38 @@ public class EditerProjet implements Initializable {
         }
 
         return sections;
+    }
+
+    private int getOldQcmID(String sectionId) {
+        String query = "SELECT idQCM FROM qcm WHERE sectionID = ?";
+        try (Connection conn = MySqlConnection.getOracleConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, sectionId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idQCM");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return an invalid ID if not found
+    }
+
+    private int getOldDescriptionID(String sectionId) {
+        String query = "SELECT idDescription FROM description WHERE controleID = ?";
+        try (Connection conn = MySqlConnection.getOracleConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, sectionId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idDescription");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return invalid ID if not found
     }
 
     @FXML
