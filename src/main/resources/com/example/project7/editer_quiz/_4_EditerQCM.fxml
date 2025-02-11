@@ -66,16 +66,16 @@
                <children>
                   <TableView fx:id="correctTableView" prefHeight="217.0" prefWidth="383.0">
                     <columns>
-                      <TableColumn prefWidth="207.0" text="Answer" />
-                      <TableColumn prefWidth="77.0" text="Grade" />
-                        <TableColumn prefWidth="93.0" text="Action" />
+                      <TableColumn fx:id="responsePosColumn" prefWidth="207.0" text="Answer" />
+                      <TableColumn fx:id="scorePosColumn" prefWidth="77.0" text="Grade" />
+                        <TableColumn fx:id="actionPosColumn" prefWidth="93.0" text="Action" />
                     </columns>
                   </TableView>
                   <TableView fx:id="incorrectTableView" prefHeight="100.0" prefWidth="392.0">
                     <columns>
-                      <TableColumn prefWidth="241.0" text="Answer" />
-                      <TableColumn prefWidth="64.0" text="Grade" />
-                        <TableColumn prefWidth="75.0" text="Action" />
+                      <TableColumn fx:id="responseNegColumn" prefWidth="241.0" text="Answer" />
+                      <TableColumn fx:id="scoreNegColumn" prefWidth="64.0" text="Grade" />
+                        <TableColumn fx:id="actionNegColumn" prefWidth="75.0" text="Action" />
                     </columns>
                   </TableView>
                </children>

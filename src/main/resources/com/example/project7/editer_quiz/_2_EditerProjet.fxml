@@ -41,7 +41,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></TextField>
-                  <TextField fx:id="formatQuestion" prefHeight="39.0" prefWidth="281.0" promptText="By default will be blank" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TextField fx:id="formatQuestionText" prefHeight="39.0" prefWidth="281.0" promptText="By default will be blank" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <opaqueInsets>
                         <Insets right="50.0" />
                      </opaqueInsets>
@@ -78,7 +78,7 @@
                         <Font size="14.0" />
                      </font>
                   </MenuButton>
-                  <MenuButton mnemonicParsing="false" prefHeight="42.0" prefWidth="143.0" text="Number Format" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                  <MenuButton fx:id="formatQuestionNumber" mnemonicParsing="false" prefHeight="42.0" prefWidth="143.0" text="Number Format" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Action 1" />
                       <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -102,10 +102,10 @@
             </GridPane>
             <TableView fx:id="tableSection" prefHeight="262.0" prefWidth="694.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="No°" />
-                <TableColumn prefWidth="59.0" text="Type" />
-                  <TableColumn prefWidth="445.0" text="Section Statement" />
-                  <TableColumn prefWidth="114.0" text="Action" />
+                <TableColumn fx:id="numCol" prefWidth="75.0" text="No°" />
+                <TableColumn fx:id="typeCol" prefWidth="59.0" text="Type" />
+                  <TableColumn fx:id="enonceCol" prefWidth="445.0" text="Section Statement" />
+                  <TableColumn fx:id="actionCol" prefWidth="114.0" text="Action" />
               </columns>
                <VBox.margin>
                   <Insets left="50.0" right="50.0" />

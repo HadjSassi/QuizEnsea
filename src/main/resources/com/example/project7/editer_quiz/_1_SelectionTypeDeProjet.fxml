@@ -58,7 +58,7 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <TextField fx:id="location" prefHeight="31.0" prefWidth="357.0" promptText="Please choose the project location" />
-                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="60.0">
+                        <Button mnemonicParsing="false" onAction="#handleLocationBrowse" prefHeight="39.0" prefWidth="60.0">
                            <graphic>
                               <ImageView fitHeight="28.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

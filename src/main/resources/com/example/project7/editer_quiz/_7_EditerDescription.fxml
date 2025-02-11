@@ -16,7 +16,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="354.0" prefWidth="803.0">
                <children>
-                  <Label prefHeight="125.0" prefWidth="214.0" text="Enter the description: &#10;'Put # if you want to &#10;write code in your &#10;description.'">
+                  <Label prefHeight="190.0" prefWidth="214.0" text="Enter the description: &#10;'Put before and after &#10;the text #### if you &#10;want to write code in &#10;your description.'">
                      <font>
                         <Font size="19.0" />
                      </font></Label>
@@ -43,9 +43,9 @@
             </HBox>
             <TableView fx:id="tableViewImages" prefHeight="261.0" prefWidth="763.0">
               <columns>
-                <TableColumn prefWidth="272.0" text="Image path" />
-                <TableColumn prefWidth="317.0" text="Image caption" />
-                  <TableColumn prefWidth="173.0" text="Action on Image" />
+                <TableColumn fx:id="cheminCol" prefWidth="272.0" text="Image path" />
+                <TableColumn fx:id="legendCol" prefWidth="317.0" text="Image caption" />
+                  <TableColumn fx:id="actionCol" prefWidth="173.0" text="Action on Image" />
               </columns>
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="30.0" />

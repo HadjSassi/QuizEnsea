@@ -21,7 +21,7 @@
                                 <Font size="20.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="identifiantSection" prefHeight="31.0" prefWidth="196.0" promptText="Veuillez Saisir l'identificant de la section !" />
+                        <TextField fx:id="identifiantSection" onKeyTyped="#handleInputIdentifier" prefHeight="31.0" prefWidth="196.0" promptText="Veuillez Saisir l'identificant de la section !" />
                         <SplitMenuButton fx:id="typeSection" mnemonicParsing="false" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #A3B18A;" text="Please Select type of the Section ">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCU" text="QCU" />

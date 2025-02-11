@@ -55,7 +55,7 @@
                      <GridPane.margin>
                         <Insets left="40.0" />
                      </GridPane.margin></Label>
-                  <TextField fx:id="baremeNegDefault" alignment="CENTER" prefHeight="39.0" prefWidth="122.0" promptText="0 , -1,...." GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="baremeNegDefault" alignment="CENTER" prefHeight="39.0" prefWidth="157.0" promptText="0 , -1,...." GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="470.0" />
                      </GridPane.margin>
@@ -77,8 +77,8 @@
                <children>
                   <TableView fx:id="incorrectTableView" prefHeight="233.0" prefWidth="775.0">
                      <columns>
-                        <TableColumn prefWidth="601.0" text="Answer" />
-                        <TableColumn prefWidth="94.0" text="Grade" />
+                        <TableColumn fx:id="responseColumn" prefWidth="601.0" text="Answer" />
+                        <TableColumn fx:id="scoreColumn" prefWidth="94.0" text="Grade" />
                         <TableColumn prefWidth="79.0" text="Action" />
                      </columns>
                   </TableView>
