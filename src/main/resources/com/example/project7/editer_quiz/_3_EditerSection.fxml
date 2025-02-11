@@ -16,12 +16,12 @@
             <children>
             <HBox alignment="CENTER" prefHeight="49.0" prefWidth="794.0" spacing="10.0">
                <children>
-                        <Label text="Identifiant du Section :">
+                        <Label text="Section Identifier">
                             <font>
                                 <Font size="20.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="identifiantSection" onKeyTyped="#handleInputIdentifier" prefHeight="31.0" prefWidth="196.0" promptText="Veuillez Saisir l'identificant de la section !" />
+                        <TextField fx:id="identifiantSection" onKeyTyped="#handleInputIdentifier" prefHeight="31.0" prefWidth="196.0" promptText="Please enter the section identifier!" />
                         <SplitMenuButton fx:id="typeSection" mnemonicParsing="false" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #A3B18A;" text="Please Select type of the Section ">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCU" text="QCU" />
