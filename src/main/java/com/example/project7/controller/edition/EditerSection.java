@@ -140,24 +140,42 @@ public class EditerSection implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {}
 
     private void initializeNumberOfSection() {
-        String countQuery = "SELECT COUNT(*) AS sectionCount FROM section WHERE controleId = ?";
-        numberOfSection = 0;
+        String fetchSectionsQuery = "SELECT idSection FROM section WHERE controleId = ? ORDER BY ordreSection";
+        String updateOrderQuery = "UPDATE section SET ordreSection = ? WHERE idSection = ?";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
-             PreparedStatement statement = connection.prepareStatement(countQuery)) {
+             PreparedStatement fetchStatement = connection.prepareStatement(fetchSectionsQuery);
+             PreparedStatement updateStatement = connection.prepareStatement(updateOrderQuery)) {
 
             //todo remove the following line
             this.devoir.setIdControle(1);
 
-            statement.setInt(1, this.devoir.getIdControle());
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    numberOfSection = resultSet.getInt("sectionCount");
+            fetchStatement.setInt(1, this.devoir.getIdControle());
+            try (ResultSet resultSet = fetchStatement.executeQuery()) {
+                int newOrder = 1;
+                // Start iterating through the sections
+                while (resultSet.next()) {
+                    String idSection = resultSet.getString("idSection");
+
+                    // Prepare the update statement
+                    updateStatement.setInt(1, newOrder); // Set the new ordreSection value
+                    updateStatement.setString(2, idSection); // Set the idSection value
+
+                    // Add the update to batch
+                    updateStatement.addBatch();
+
+                    // Increment the order
+                    newOrder++;
                 }
+
+                // Execute the batch update to save everything in one go
+                updateStatement.executeBatch();
+                numberOfSection = newOrder-1;
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error retrieving section count: " + e.getMessage());
+            System.err.println("Error updating section order: " + e.getMessage());
         }
     }
 
