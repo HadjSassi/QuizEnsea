@@ -32,12 +32,12 @@
                   <TextField fx:id="nomDevoir" prefHeight="39.0" prefWidth="432.0" promptText="By Default will be the name of the assaignement" GridPane.columnIndex="1" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                      <children>
-                        <Label prefHeight="48.0" prefWidth="156.0" text="Nombre Exemplaire:">
+                        <Label prefHeight="48.0" prefWidth="193.0" text="Nombre Exemplaire:">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="formatQuestionText" prefHeight="39.0" prefWidth="101.0" promptText="Exemplaires" />
+                        <TextField fx:id="nombreExemplaire" prefHeight="39.0" prefWidth="101.0" promptText="Exemplaires" />
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="48.0" prefWidth="145.0" text="Random Seed :" textAlignment="CENTER">
                            <font>
                               <Font size="20.0" />
@@ -46,7 +46,7 @@
                               <Insets left="50.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="42.0" prefWidth="120.0" promptText="Random Seed" />
+                        <TextField fx:id="randomSeed" prefHeight="42.0" prefWidth="120.0" promptText="Random Seed" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
@@ -71,14 +71,14 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
                      <children>
-                        <TextField promptText="Exam Header" />
-                        <Button mnemonicParsing="false" text="..." />
-                        <TextField promptText="Response Header">
+                        <TextField fx:id="examHeader" promptText="Exam Header" />
+                        <Button mnemonicParsing="false" onAction="#modifyExamHeader" text="..." />
+                        <TextField fx:id="reponseHeader" promptText="Response Header">
                            <HBox.margin>
                               <Insets left="50.0" />
                            </HBox.margin>
                         </TextField>
-                        <Button mnemonicParsing="false" text="..." />
+                        <Button mnemonicParsing="false" onAction="#modifyReponseHeader" text="..." />
                      </children>
                   </HBox>
                </children>
@@ -89,8 +89,8 @@
             <TableView fx:id="tableSection" prefHeight="272.0" prefWidth="694.0">
               <columns>
                 <TableColumn fx:id="numCol" prefWidth="95.33334350585938" text="Num°" />
-                <TableColumn fx:id="typeCol" prefWidth="38.33331298828125" text="Type" />
-                  <TableColumn fx:id="enonceCol" prefWidth="425.0" text="Enoncé de section" />
+                <TableColumn fx:id="typeCol" prefWidth="165.0" text="Type" />
+                  <TableColumn fx:id="enonceCol" prefWidth="299.0" text="Enoncé de section" />
                   <TableColumn fx:id="actionCol" prefWidth="139.0" text="Action" />
               </columns>
                <VBox.margin>

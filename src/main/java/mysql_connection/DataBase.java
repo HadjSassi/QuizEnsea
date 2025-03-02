@@ -55,10 +55,10 @@ public class DataBase {
                 "idControle INT AUTO_INCREMENT PRIMARY KEY, " +
                 "nomDevoir VARCHAR(255) NOT NULL, " +
                 "typeDevoir VARCHAR(255), " +
-                "fontDevoir  VARCHAR(255), " +
-                "fontSize  INT DEFAULT (15), " +
-                "formatQuestionNumber INT, " +
-                "formatQuestionTexte VARCHAR(255), " +
+                "nombreExemplaire INT default(1), " +
+                "randomSeed INT  DEFAULT (12345678), " +
+                "examHeader TEXT, " +
+                "reponseHeader TEXT, " +
                 "creationDate DATE DEFAULT (CURRENT_DATE), " +
                 "projetID INT, " +
                 "FOREIGN KEY (projetID) REFERENCES Projet(idProjet) ON DELETE CASCADE);";

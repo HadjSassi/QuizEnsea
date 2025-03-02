@@ -24,6 +24,7 @@ import mysql_connection.MySqlConnection;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -42,10 +43,16 @@ public class EditerProjet implements Initializable {
     private Button terminer;
 
     @FXML
-    private Button cancel;
+    private TextField nomDevoir;
 
     @FXML
-    private TextField nomDevoir;
+    private TextField examHeader;
+
+    @FXML
+    private TextField randomSeed;
+
+    @FXML
+    private TextField reponseHeader;
 
     @FXML
     private MenuButton typeDevoir;
@@ -54,10 +61,7 @@ public class EditerProjet implements Initializable {
     private DatePicker dateDevoir;
 
     @FXML
-    private TextField formatQuestionText;
-
-    @FXML
-    private MenuButton formatQuestionNumber;
+    private TextField nombreExemplaire;
 
     @FXML
     private TableView<RowTableSection> tableSection;
@@ -85,6 +89,80 @@ public class EditerProjet implements Initializable {
         nomDevoir.setText(this.projet.getNomProjet());
         this.insertControleData();
         fetchAndUpdateTableView();
+    }
+
+    @FXML
+    public void modifyExamHeader(ActionEvent events){
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initStyle(StageStyle.UTILITY);
+
+        VBox popupVBox = new VBox(10);
+        popupVBox.setPadding(new Insets(20));
+
+        TextArea responseTextArea = new TextArea(examHeader.getText());
+
+
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        Button saveButton = new Button("Modifier");
+        saveButton.setOnAction(event -> {
+            examHeader.setText(responseTextArea.getText());
+
+            popupStage.close();
+        });
+
+        Button closeButton = new Button("Fermer");
+        closeButton.setOnAction(event -> {
+            popupStage.close();
+        });
+
+        buttonBox.getChildren().addAll(saveButton, closeButton);
+
+        popupVBox.getChildren().addAll(responseTextArea, buttonBox);
+
+        Scene popupScene = new Scene(popupVBox, 350, 250);
+        popupStage.setScene(popupScene);
+        popupStage.setTitle("Modifier l'entête d'examen");
+        popupStage.show();
+    }
+
+    @FXML
+    public void modifyReponseHeader(ActionEvent events){
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initStyle(StageStyle.UTILITY);
+
+        VBox popupVBox = new VBox(10);
+        popupVBox.setPadding(new Insets(20));
+
+        TextArea responseTextArea = new TextArea(reponseHeader.getText());
+
+
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        Button saveButton = new Button("Modifier");
+        saveButton.setOnAction(event -> {
+            reponseHeader.setText(responseTextArea.getText());
+
+            popupStage.close();
+        });
+
+        Button closeButton = new Button("Fermer");
+        closeButton.setOnAction(event -> {
+            popupStage.close();
+        });
+
+        buttonBox.getChildren().addAll(saveButton, closeButton);
+
+        popupVBox.getChildren().addAll(responseTextArea, buttonBox);
+
+        Scene popupScene = new Scene(popupVBox, 350, 250);
+        popupStage.setScene(popupScene);
+        popupStage.setTitle("Modifier l'entête de réponse");
+        popupStage.show();
     }
 
     @FXML
@@ -358,16 +436,17 @@ public class EditerProjet implements Initializable {
                     int idControl = resultSet.getInt("idControle");
                     devoir.setIdControle(idControl);
                 } else {
-                    String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, fontDevoir, fontSize, formatQuestionNumber, formatQuestionTexte, projetId, creationDate) " +
+                    intializeHeaders();
+                    String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, nombreExemplaire, randomSeed, examHeader, reponseHeader, projetId, creationDate) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)";
 
                     try (PreparedStatement insertStatement = connection.prepareStatement(insertControleQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
                         insertStatement.setString(1, nomDevoir.getText());
                         insertStatement.setString(2, typeDevoir.getText());
-                        insertStatement.setString(3, "Times New Roman");
-                        insertStatement.setInt(4, 15);
-                        insertStatement.setInt(5, 1);
-                        insertStatement.setString(6, "Question");
+                        insertStatement.setInt(3, 1);
+                        insertStatement.setInt(4, 12345678);
+                        insertStatement.setString(5, examHeader.getText());
+                        insertStatement.setString(6, reponseHeader.getText());
                         insertStatement.setInt(7, projet.getIdProjet());
 
                         int rowsAffected = insertStatement.executeUpdate();
@@ -400,13 +479,16 @@ public class EditerProjet implements Initializable {
         projet.setIdProjet(1);
         projet.setDate(new Date());
         nomDevoir.setText(this.projet.getNomProjet());
+        randomSeed.setText("12345678");
+        nombreExemplaire.setText("1");
+        intializeHeaders();
+        //todo till here
         this.insertControleData();
         fetchAndUpdateTableView();
 
 
         dateDevoir.setValue(LocalDate.now());
 
-        formatQuestionText.setText("Question :");
 
 
         for (TypeDevoir type : TypeDevoir.values()) {
@@ -417,16 +499,6 @@ public class EditerProjet implements Initializable {
 
         if (!typeDevoir.getItems().isEmpty()) {
             typeDevoir.setText(typeDevoir.getItems().get(0).getText());
-        }
-
-        for (TypeNumero typeNumero : TypeNumero.values()) {
-            MenuItem menuItem = new MenuItem(typeNumero.getValue());
-            menuItem.setOnAction(event -> formatQuestionNumber.setText(typeNumero.getValue()));
-            formatQuestionNumber.getItems().add(menuItem);
-        }
-
-        if (!formatQuestionNumber.getItems().isEmpty()) {
-            formatQuestionNumber.setText(formatQuestionNumber.getItems().get(0).getText());
         }
 
 
@@ -466,6 +538,33 @@ public class EditerProjet implements Initializable {
 
 
         loadSectionData();
+    }
+
+    private void intializeHeaders(){
+        String examHeaderText =
+                "Dans ce document, vous trouverez d'abord les questions puis ensuite les feuilles de réponses (à rendre). " +
+                        "In this document, you will first find the questions then the pages for the answers.\n" +
+                        "\t\t\t\\newline \n" +
+                        "Les questions faisant apparaître le symbole \\multiSymbole{} peuvent présenter zéro, une ou plusieurs bonnes réponses. " +
+                        "Les autres ont une unique bonne réponse. Des points négatifs sont affectés aux mauvaises réponses. " +
+                        "La pondération des mauvaises réponses est nulle pour les premières fausses réponses mais ensuite la pondération (négative) " +
+                        "des mauvaises réponses augmente avec le nombre de mauvaises réponses.\n" +
+                        "\t\t\t\\newline \n" +
+                        "Questions with the symbol \\multiSymbole{} may have zero, one or more correct answers. The others have a single correct answer. " +
+                        "Negative points are assigned for wrong answers. The weight of wrong answers is zero for the first few wrong answers, " +
+                        "but then the (negative) weight of wrong answers increases with the number of wrong answers.\n" +
+                        "\t\t\t\\newline \n" +
+                        "Un document ressource est distribué en plus de ce document. Vous devez utiliser les informations de ce document en priorité. " +
+                        "A resource document is distributed in addition to this document. You should use the information in this document as a priority.\n" +
+                        "\t\t\t\\newline ";
+
+        String reponseHeaderText =
+                "2 feuilles (4 pages) à détacher : seuls documents à rendre pour la partie Microprocesseur de cet examen. \n" +
+                        "\t\t\t2 detachable sheets (4 pages): only documents to be returned for the Microprocessor exam.";
+
+        this.examHeader.setText(examHeaderText);
+        this.reponseHeader.setText(reponseHeaderText);
+
     }
 
     private void handleMoveUp(int index) {
@@ -703,7 +802,7 @@ public class EditerProjet implements Initializable {
         header.append("\\usepackage{float}\n");
         header.append("\\usepackage[francais,bloc,completemulti,ensemble]{automultiplechoice}\n");
         header.append("\\begin{document}\n");
-        header.append("\t\\AMCrandomseed{12345678}\n");
+        header.append("\t\\AMCrandomseed{" + randomSeed.getText().trim() + "}\n");
         header.append("\t\\def\\AMCformQuestion#1{{\\sc Question #1 :}}\n");
         header.append("\t\\setdefaultgroupmode{fixed}\n");
         return header.toString();
@@ -713,40 +812,32 @@ public class EditerProjet implements Initializable {
         StringBuilder footer = new StringBuilder();
         footer.append("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
         footer.append("\n");
-        footer.append("\t%\\exemplaire{3}{\n");
-        footer.append("\t\\exemplaire{1}{\n");
-        footer.append("\t\t%%% debut de l'en-tête des copies :\n");
+        footer.append("\t\\exemplaire{").append(nombreExemplaire.getText().trim()).append("}{\n");
         footer.append("\t\t\n");
-        footer.append("\t\t\\noindent{\\large\\bf QUESTIONS  \\hfill Contrôle du jeudi 12/01/2024}\n");
-        footer.append("\t\t%bareme sur 100 points (qui correspond à 10 sur l'exam partagé avec Java)\n");
+        footer.append("\t\t\\noindent{\\large\\bf QUESTIONS  \\hfill ").append(typeDevoir.getText()).append(" du ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy"))).append("}\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\vspace*{.5cm}\n");
         footer.append("\t\t\\begin{minipage}{.4\\linewidth}\n");
-        footer.append("\t\t\t\\centering\\large\\bf MICROPROCESSORS 2 %%\\\\ QUESTIONS du QCM v01\\\\ Examen du 12/01/2023 \n");
+        footer.append("\t\t\t\\centering\\large\\bf ").append(nomDevoir.getText().trim()).append(" \n");
         footer.append("\t\t\\end{minipage}\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\begin{center}\\em\n");
-        footer.append("\t\t\t%Durée : 1 heure pour la partie µP: QCM + code. \\\\\n");
         footer.append("\t\t\t\n");
-        footer.append("\t\t\tIntroduction Entete\n");
+        footer.append("\t\t\t").append(examHeader.getText()).append("\n");
         footer.append("\t\t\t\n");
         footer.append("\t\t\\end{center}\n");
         footer.append("\t\t\\vspace{1ex}\n");
         footer.append("\t\t\n");
-        footer.append("\t\t%%% fin de l'en-tête\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\restituegroupe{general}\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\AMCcleardoublepage    \n");
         footer.append("\t\t\n");
-        footer.append("\t\t% \\AMCaddpagesto{3} \n");
         footer.append("\t\t\n");
         footer.append("\t\t\\AMCdebutFormulaire    \n");
         footer.append("\t\t\n");
-        footer.append("\t\t%%% début de l'en-tête de la feuille de réponses\n");
         footer.append("\t\t\n");
-        footer.append("\t\t{\\large\\bf MICROPROCESSEURS REPONSES 12/01/2024 \n");
-        footer.append("\t\t\\newline MICROPROCESSORS ANSWERS MONCHAL}\n");
+        footer.append("\t\t{\\large\\bf ").append(nomDevoir.getText().trim()).append(" REPONSES ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).append("} \n");
         footer.append("\t\t\\newline\n");
         footer.append("\t\t\\hfill \\champnom{\\fbox{    \n");
         footer.append("\t\t\t\t\\begin{minipage}{.5\\linewidth}\n");
@@ -766,19 +857,14 @@ public class EditerProjet implements Initializable {
         footer.append("\t\t\\AMCcodeGridInt[vertical=false]{etu}{5}\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\begin{center}\n");
-        footer.append("\t\t\t%\\em \n");
-        footer.append("\t\t\t2 feuilles (4 pages) à détacher : seuls documents à rendre pour la partie Microprocesseur de cet examen. \n");
-        footer.append("\t\t\t2 detachable sheets (4 pages): only documents to be returned for the Microprocessor exam.\n");
+        footer.append("\t\t\t").append(reponseHeader.getText()).append("\n");
         footer.append("\t\t\\end{center}\n");
         footer.append("\t\t\n");
-        footer.append("\t\t%%% fin de l'en-tête de la feuille de réponses\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\formulaire\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\begin{center}\n");
         footer.append("\t\t\t\\bf\\em \n");
-        footer.append("\t\t\t%Il n'y a que cette feuille à rendre pour l'examen de microprocesseur. Merci de la détacher.\n");
-        footer.append("\t\t\t%Des compléments peuvent être écrits sur une autre feuille blanche (à demander au surveillant) ne peuvent concerner que les questions 1 à 3. Dans ce cas, numérotez bien les questions et %inscrivez votre nom de manière lisible en haut à droite.\n");
         footer.append("\t\t\\end{center} \n");
         footer.append("\t}\n");
         footer.append("\n");
@@ -940,8 +1026,84 @@ public class EditerProjet implements Initializable {
         }
     }
 
+    private void verifyNomDevoir(){
+        if(this.nomDevoir.getText().trim().isEmpty())
+            nomDevoir.setText(this.projet.getNomProjet());
+    }
+
+    private void verifyNombreExemplaire(){
+        if(this.nombreExemplaire.getText().trim().isEmpty())
+            this.nombreExemplaire.setText("1");
+    }
+
+    private void verifyRandomSeed(){
+        if(this.randomSeed.getText().trim().isEmpty())
+            this.randomSeed.setText("12345678");
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void saveProject(){
+        verifyNomDevoir();
+        verifyRandomSeed();
+        verifyNombreExemplaire();
+
+        int exemplaire,seed;
+
+        try {
+            exemplaire = Integer.parseInt(nombreExemplaire.getText().trim());
+        } catch (NumberFormatException e) {
+            exemplaire = 1;
+            nombreExemplaire.setText("1");
+        }
+        try {
+            seed = Integer.parseInt(randomSeed.getText().trim());
+        } catch (NumberFormatException e) {
+            seed = 12345678;
+            randomSeed.setText("12345678");
+        }
+
+        String insertQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, nombreExemplaire, randomSeed, examHeader, reponseHeader, creationDate) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = MySqlConnection.getOracleConnection();
+             PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
+
+            pstmt.setString(1, nomDevoir.getText());
+            pstmt.setString(2, typeDevoir.getText());
+            pstmt.setInt(3, exemplaire);
+            pstmt.setInt(4, seed);
+            pstmt.setString(5, examHeader.getText());
+            pstmt.setString(6, reponseHeader.getText());
+            pstmt.setString(7, dateDevoir.getValue().toString());
+
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                //todo remove the following comment and let the content
+                //showAlert("Succès", "Le contrôle a été ajouté avec succès.");
+            } else {
+                showAlert("Erreur", "Échec de l'ajout du contrôle.");
+            }
+
+        } catch (SQLException e) {
+            showAlert("Erreur", "Erreur lors de l'ajout du contrôle : " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
     @FXML
     public void handleClicksSaveProject(ActionEvent event) {
+
+        saveProject();
+
         ObservableList<RowTableSection> sections = tableSection.getItems();
 
         StringBuilder texcontentBuilder = new StringBuilder();
