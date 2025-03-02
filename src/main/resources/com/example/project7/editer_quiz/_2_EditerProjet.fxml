@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerProjet">
+<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerProjet">
    <children>
       <VBox prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -28,32 +29,58 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="30.0" prefWidth="241.0" text="                Type du Devoir :" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
                   <TextField fx:id="nomDevoir" prefHeight="39.0" prefWidth="432.0" promptText="By Default will be the name of the assaignement" GridPane.columnIndex="1" />
-                  <MenuButton fx:id="typeDevoir" mnemonicParsing="false" prefHeight="31.0" prefWidth="457.0" text="Please Select the Assignement Type" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                      <children>
-                        <TextField fx:id="formatQuestionText" prefHeight="39.0" prefWidth="256.0" promptText="By default will be blank" />
-                        <MenuButton fx:id="formatQuestionNumber" mnemonicParsing="false" prefHeight="31.0" prefWidth="185.0" text="Number Format" />
+                        <Label prefHeight="48.0" prefWidth="156.0" text="Nombre Exemplaire:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="formatQuestionText" prefHeight="39.0" prefWidth="101.0" promptText="Exemplaires" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="48.0" prefWidth="145.0" text="Random Seed :" textAlignment="CENTER">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="42.0" prefWidth="120.0" promptText="Random Seed" />
                      </children>
                   </HBox>
-                  <Label prefHeight="30.0" prefWidth="163.0" text="  Date du Devoir :" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="60.0" prefWidth="210.0" text="Format Des Questions :" GridPane.rowIndex="3">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Button mnemonicParsing="false" onAction="#handleClicksAddSection" text="Ajouter Question ou Description" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <DatePicker fx:id="dateDevoir" editable="false" prefHeight="31.0" prefWidth="452.0" promptText="By default will be today's date" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Button layoutX="289.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleClicksImportSection" text="Import Question ou Description" GridPane.rowIndex="4" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                     <children>
+                        <MenuButton fx:id="typeDevoir" alignment="CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="237.0" text="Please Select Type Devoir">
+                           <HBox.margin>
+                              <Insets right="50.0" />
+                           </HBox.margin>
+                        </MenuButton>
+                        <DatePicker fx:id="dateDevoir" editable="false" prefHeight="31.0" prefWidth="269.0" promptText="Please select the Date Of Devoir" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#handleClicksImportSection" text="Import Question ou Description" />
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClicksAddSection" prefHeight="31.0" prefWidth="261.0" text="Ajouter Question ou Description" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                     <children>
+                        <TextField promptText="Exam Header" />
+                        <Button mnemonicParsing="false" text="..." />
+                        <TextField promptText="Response Header">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button mnemonicParsing="false" text="..." />
+                     </children>
+                  </HBox>
                </children>
                <VBox.margin>
                   <Insets right="50.0" top="20.0" />

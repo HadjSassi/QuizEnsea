@@ -208,8 +208,7 @@ public class EditerProjet implements Initializable {
                     stmt.executeUpdate();
                 }
 
-            }
-            else if ("QuestionLibre".equals(sectionType)) {
+            } else if ("QuestionLibre".equals(sectionType)) {
                 String insertQuestionQuery = "INSERT INTO questionlibre (sectionID, question, scoreTotal, nombreScore," +
                         "nombreLigne, tailleLigne,rappel) " +
                         "SELECT ?,question, scoreTotal, nombreScore,nombreLigne, tailleLigne,rappel " +
@@ -220,8 +219,7 @@ public class EditerProjet implements Initializable {
                     stmt.setString(2, sectionRow.getId());
                     stmt.executeUpdate();
                 }
-            }
-            else if ("Description".equals(sectionType)) {
+            } else if ("Description".equals(sectionType)) {
                 int newDescriptionId = -1;
 
                 String insertDescriptionQuery = "INSERT INTO description (sectionID, texte) " +
@@ -696,34 +694,259 @@ public class EditerProjet implements Initializable {
         tableSection.setItems(sectionData);
     }
 
-    @FXML
-    public void handleClicksSaveProject(ActionEvent event) {
-        // todo you need to check the special characters !
-        // Classe locale pour stocker les réponses d'un QCM/QCU
-        class Response {
+    private String generateHeader() {
+        StringBuilder header = new StringBuilder();
+        header.append("\\documentclass[a4paper]{article}\n");
+        header.append("\\usepackage[utf8x]{inputenc}\n");
+        header.append("\\usepackage[T1]{fontenc}\n");
+        header.append("\\usepackage{graphics}\n");
+        header.append("\\usepackage{float}\n");
+        header.append("\\usepackage[francais,bloc,completemulti,ensemble]{automultiplechoice}\n");
+        header.append("\\begin{document}\n");
+        header.append("\t\\AMCrandomseed{12345678}\n");
+        header.append("\t\\def\\AMCformQuestion#1{{\\sc Question #1 :}}\n");
+        header.append("\t\\setdefaultgroupmode{fixed}\n");
+        return header.toString();
+    }
+
+    private String generateFooter() {
+        StringBuilder footer = new StringBuilder();
+        footer.append("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
+        footer.append("\n");
+        footer.append("\t%\\exemplaire{3}{\n");
+        footer.append("\t\\exemplaire{1}{\n");
+        footer.append("\t\t%%% debut de l'en-tête des copies :\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t\\noindent{\\large\\bf QUESTIONS  \\hfill Contrôle du jeudi 12/01/2024}\n");
+        footer.append("\t\t%bareme sur 100 points (qui correspond à 10 sur l'exam partagé avec Java)\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t\\vspace*{.5cm}\n");
+        footer.append("\t\t\\begin{minipage}{.4\\linewidth}\n");
+        footer.append("\t\t\t\\centering\\large\\bf MICROPROCESSORS 2 %%\\\\ QUESTIONS du QCM v01\\\\ Examen du 12/01/2023 \n");
+        footer.append("\t\t\\end{minipage}\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t\\begin{center}\\em\n");
+        footer.append("\t\t\t%Durée : 1 heure pour la partie µP: QCM + code. \\\\\n");
+        footer.append("\t\t\t\n");
+        footer.append("\t\t\tIntroduction Entete\n");
+        footer.append("\t\t\t\n");
+        footer.append("\t\t\\end{center}\n");
+        footer.append("\t\t\\vspace{1ex}\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t%%% fin de l'en-tête\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t\\restituegroupe{general}\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t\\AMCcleardoublepage    \n");
+        footer.append("\t\t\n");
+        footer.append("\t\t% \\AMCaddpagesto{3} \n");
+        footer.append("\t\t\n");
+        footer.append("\t\t\\AMCdebutFormulaire    \n");
+        footer.append("\t\t\n");
+        footer.append("\t\t%%% début de l'en-tête de la feuille de réponses\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t{\\large\\bf MICROPROCESSEURS REPONSES 12/01/2024 \n");
+        footer.append("\t\t\\newline MICROPROCESSORS ANSWERS MONCHAL}\n");
+        footer.append("\t\t\\newline\n");
+        footer.append("\t\t\\hfill \\champnom{\\fbox{    \n");
+        footer.append("\t\t\t\t\\begin{minipage}{.5\\linewidth}\n");
+        footer.append("\t\t\t\t\tNOM/NAME  Prénom/First name :\n");
+        footer.append("\t\t\t\t\t\n");
+        footer.append("\t\t\t\t\t\\vspace*{.5cm}\\dotfill\n");
+        footer.append("\t\t\t\t\t\\vspace*{1mm}\n");
+        footer.append("\t\t\t\t\\end{minipage}\n");
+        footer.append("\t\t}}\n");
+        footer.append("\t\t\\newline\n");
+        footer.append("\t\t\n");
+        footer.append("\t\tMerci de coder votre numéro d'étudiant à 5 chiffres en noircissant bien les cases:\n");
+        footer.append("\t\t\\newline\n");
+        footer.append("\t\tPlease code your 5-digit student number by filling in the boxes in black:\n");
+        footer.append("\t\t\\newline\n");
+        footer.append("\t\t\\AMCcodeHspace=2.5em\n");
+        footer.append("\t\t\\AMCcodeGridInt[vertical=false]{etu}{5}\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t\\begin{center}\n");
+        footer.append("\t\t\t%\\em \n");
+        footer.append("\t\t\t2 feuilles (4 pages) à détacher : seuls documents à rendre pour la partie Microprocesseur de cet examen. \n");
+        footer.append("\t\t\t2 detachable sheets (4 pages): only documents to be returned for the Microprocessor exam.\n");
+        footer.append("\t\t\\end{center}\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t%%% fin de l'en-tête de la feuille de réponses\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t\\formulaire\n");
+        footer.append("\t\t\n");
+        footer.append("\t\t\\begin{center}\n");
+        footer.append("\t\t\t\\bf\\em \n");
+        footer.append("\t\t\t%Il n'y a que cette feuille à rendre pour l'examen de microprocesseur. Merci de la détacher.\n");
+        footer.append("\t\t\t%Des compléments peuvent être écrits sur une autre feuille blanche (à demander au surveillant) ne peuvent concerner que les questions 1 à 3. Dans ce cas, numérotez bien les questions et %inscrivez votre nom de manière lisible en haut à droite.\n");
+        footer.append("\t\t\\end{center} \n");
+        footer.append("\t}\n");
+        footer.append("\n");
+        footer.append("\\end{document}\n");
+        return footer.toString();
+    }
+
+    private void processQCM(Connection conn, String idSection, String question, String idSectionLatex, StringBuilder texcontentBuilder) throws SQLException {
+        class ResponseLatex {
             String reponse;
             int score;
             boolean isCorrect;
-            Response(String reponse, int score, boolean isCorrect) {
+
+            ResponseLatex(String reponse, int score, boolean isCorrect) {
                 this.reponse = reponse;
                 this.score = score;
                 this.isCorrect = isCorrect;
             }
         }
 
+        PreparedStatement psQcm = conn.prepareStatement("SELECT idQCM FROM QCM WHERE sectionID = ?");
+        psQcm.setString(1, idSection);
+        ResultSet rsQcm = psQcm.executeQuery();
+        if (rsQcm.next()) {
+            int qcmID = rsQcm.getInt("idQCM");
+            rsQcm.close();
+            psQcm.close();
+
+            PreparedStatement psResponses = conn.prepareStatement("SELECT reponse, score, isCorrect FROM QCM_Reponses WHERE qcmID = ?");
+            psResponses.setInt(1, qcmID);
+            ResultSet rsResponses = psResponses.executeQuery();
+
+            List<ResponseLatex> responseLatexList = new ArrayList<>();
+            while (rsResponses.next()) {
+                String rep = rsResponses.getString("reponse");
+                int score = rsResponses.getInt("score");
+                boolean isCorrect = rsResponses.getBoolean("isCorrect");
+                responseLatexList.add(new ResponseLatex(rep, score, isCorrect));
+            }
+            rsResponses.close();
+            psResponses.close();
+
+            int maxCorrect = 0;
+            int maxIncorrect = -100;
+            for (ResponseLatex r : responseLatexList) {
+                if (r.isCorrect) {
+                    if (r.score > maxCorrect) maxCorrect = r.score;
+                } else {
+                    if (r.score > maxIncorrect) maxIncorrect = r.score;
+                }
+            }
+
+            texcontentBuilder.append("\n\t\\element{general}{\n");
+            texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}")
+                    .append("\\bareme{b=").append(maxCorrect)
+                    .append(",m=").append(maxIncorrect).append("}\n");
+            texcontentBuilder.append("\t\t").append(question).append("\n");
+            texcontentBuilder.append("\t\t\\begin{reponseshoriz}\n");
+
+            for (ResponseLatex r : responseLatexList) {
+                if (r.isCorrect) {
+                    texcontentBuilder.append("\t\t\t\\bonne{").append(r.reponse).append("}\n");
+                } else {
+                    texcontentBuilder.append("\t\t\t\\mauvaise{").append(r.reponse).append("}\n");
+                }
+            }
+            texcontentBuilder.append("\t\t\\end{reponseshoriz}\n");
+            texcontentBuilder.append("\t\\end{question}\n");
+            texcontentBuilder.append("\t}\n");
+        }
+    }
+
+    private void processFreeQuestion(Connection conn, String idSection, String question, String idSectionLatex, StringBuilder texcontentBuilder) throws SQLException {
+        PreparedStatement psFreeQuestion = conn.prepareStatement("SELECT nombreLigne, tailleLigne, rappel, scoreTotal, nombreScore FROM questionlibre WHERE sectionID = ?");
+        psFreeQuestion.setString(1, idSection);
+        ResultSet rsFreeQuestion = psFreeQuestion.executeQuery();
+        if (rsFreeQuestion.next()) {
+            int nombreLigne = rsFreeQuestion.getInt("nombreLigne");
+            double tailleLigne = rsFreeQuestion.getDouble("tailleLigne");
+            String rappel = rsFreeQuestion.getString("rappel");
+            int scoreTotal = rsFreeQuestion.getInt("scoreTotal");
+            int nombreScore = rsFreeQuestion.getInt("nombreScore");
+
+            texcontentBuilder.append("\n\t\\element{general}{\n");
+            texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}\n");
+            texcontentBuilder.append("\t\t").append(question).append("\n");
+            texcontentBuilder.append("\t\t\\AMCOpen{lines=").append(nombreLigne)
+                    .append(",lineheight=").append(tailleLigne)
+                    .append("cm,question=\\texttt{").append(rappel).append("}}\n");
+            texcontentBuilder.append("\t\t{\n");
+
+            for (int i = 0; i < nombreScore; i++) {
+                texcontentBuilder.append("\t\t\t\\mauvaise[").append(i).append("]{").append(i)
+                        .append("}\\scoring{").append(scoreTotal).append("*").append(i)
+                        .append("/").append(nombreScore).append("}\n");
+            }
+
+            texcontentBuilder.append("\t\t\t\\bonne[").append(nombreScore).append("]{").append(nombreScore)
+                    .append("}\\scoring{").append(scoreTotal).append("}\n");
+            texcontentBuilder.append("\t\t}\n");
+            texcontentBuilder.append("\t\\end{question}\n");
+            texcontentBuilder.append("\t}\n");
+        }
+    }
+
+    private void processDescription(Connection conn, String idSection, StringBuilder texcontentBuilder) throws SQLException {
+        PreparedStatement psDescription = conn.prepareStatement("SELECT idDescription, texte FROM Description WHERE sectionID = ?");
+        psDescription.setString(1, idSection);
+        ResultSet rsDescription = psDescription.executeQuery();
+
+        while (rsDescription.next()) {
+            int idDescription = rsDescription.getInt("idDescription");
+            String texte = rsDescription.getString("texte");
+
+            texcontentBuilder.append("\n\t\\element{general}{\n");
+            texcontentBuilder.append("\t\t").append(texte).append("\\\\\n");
+
+            // Process images and legends
+            processImagesAndLegends(conn, idDescription, texcontentBuilder);
+
+            texcontentBuilder.append("}\n");
+        }
+        rsDescription.close();
+        psDescription.close();
+    }
+
+    private void processImagesAndLegends(Connection conn, int idDescription, StringBuilder texcontentBuilder) throws SQLException {
+        PreparedStatement psImages = conn.prepareStatement("SELECT idImage, imagePath FROM Description_Images WHERE descriptionID = ?");
+        psImages.setInt(1, idDescription);
+        ResultSet rsImages = psImages.executeQuery();
+
+        PreparedStatement psLegends = conn.prepareStatement("SELECT idLegend, legendText FROM Description_Legends WHERE descriptionID = ?");
+        psLegends.setInt(1, idDescription);
+        ResultSet rsLegends = psLegends.executeQuery();
+
+        List<String> images = new ArrayList<>();
+        List<String> legends = new ArrayList<>();
+
+        while (rsImages.next()) {
+            images.add(rsImages.getString("imagePath"));
+        }
+
+        while (rsLegends.next()) {
+            legends.add(rsLegends.getString("legendText"));
+        }
+
+        rsImages.close();
+        psImages.close();
+        rsLegends.close();
+        psLegends.close();
+
+        for (int i = 0; i < images.size(); i++) {
+            String imagePath = images.get(i).replace("\\", "/");
+            texcontentBuilder.append("\\begin{figure}[H]\n");
+            texcontentBuilder.append("    \\centering\n");
+            texcontentBuilder.append("    \\includegraphics[width=1\\linewidth]{\\detokenize{").append(imagePath).append("}}\n");
+            texcontentBuilder.append("    \\caption{\\detokenize{").append(legends.get(i)).append("}}\n");
+            texcontentBuilder.append("\\end{figure}\n");
+        }
+    }
+
+    @FXML
+    public void handleClicksSaveProject(ActionEvent event) {
         ObservableList<RowTableSection> sections = tableSection.getItems();
 
         StringBuilder texcontentBuilder = new StringBuilder();
-        texcontentBuilder.append("\\documentclass[a4paper]{article}\n");
-        texcontentBuilder.append("\\usepackage[utf8x]{inputenc}\n");
-        texcontentBuilder.append("\\usepackage[T1]{fontenc}\n");
-        texcontentBuilder.append("\\usepackage{graphics}\n");
-        texcontentBuilder.append("\\usepackage{float}\n");
-        texcontentBuilder.append("\\usepackage[francais,bloc,completemulti,ensemble]{automultiplechoice}\n");
-        texcontentBuilder.append("\\begin{document}\n");
-        texcontentBuilder.append("\t\\AMCrandomseed{12345678}\n");
-        texcontentBuilder.append("\t\\def\\AMCformQuestion#1{{\\sc Question #1 :}}\n");
-        texcontentBuilder.append("\t\\setdefaultgroupmode{fixed}\n");
+
+        texcontentBuilder.append(generateHeader());
 
         Connection conn = null;
         try {
@@ -732,188 +955,19 @@ public class EditerProjet implements Initializable {
                 String type = row.getType();
                 String question = row.getQuestion();
                 String idSection = row.getIdSection();
-                String idSectionLatex = idSection.replace("#"," : ");
+                String idSectionLatex = idSection.replace("#", " : ");
+
                 if (type.equals("QCM") || type.equals("QCU")) {
-                    // Récupération de l'idQCM associé à cette section
-                    PreparedStatement psQcm = conn.prepareStatement("SELECT idQCM FROM QCM WHERE sectionID = ?");
-                    psQcm.setString(1, idSection);
-                    ResultSet rsQcm = psQcm.executeQuery();
-                    if (rsQcm.next()) {
-                        int qcmID = rsQcm.getInt("idQCM");
-                        rsQcm.close();
-                        psQcm.close();
-
-                        // Récupération des réponses (avec score et isCorrect)
-                        PreparedStatement psResponses = conn.prepareStatement("SELECT reponse, score, isCorrect FROM QCM_Reponses WHERE qcmID = ?");
-                        psResponses.setInt(1, qcmID);
-                        ResultSet rsResponses = psResponses.executeQuery();
-
-                        List<Response> responseList = new ArrayList<>();
-                        while (rsResponses.next()) {
-                            String rep = rsResponses.getString("reponse");
-                            int score = rsResponses.getInt("score");
-                            boolean isCorrect = rsResponses.getBoolean("isCorrect");
-                            responseList.add(new Response(rep, score, isCorrect));
-                        }
-                        rsResponses.close();
-                        psResponses.close();
-
-                        // Calcul du score de la bonne réponse principale et du score maximum parmi les réponses incorrectes
-                        int maxCorrect = 0;
-                        int maxIncorrect = -100;
-                        for (Response r : responseList) {
-                            if (r.isCorrect) {
-                                if (r.score > maxCorrect)
-                                    maxCorrect = r.score;
-                            } else {
-                                if (r.score > maxIncorrect)
-                                    maxIncorrect = r.score;
-                            }
-                        }
-
-                        // Construction de l'en-tête de la question avec le barème calculé
-                        texcontentBuilder.append("\n\t\\element{general}{\n");
-                        texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}")
-                                .append("\\bareme{b=").append(maxCorrect)
-                                .append(",m=").append(maxIncorrect).append("}\n");
-                        texcontentBuilder.append("\t\t").append(question).append("\n");
-                        texcontentBuilder.append("\t\t\\begin{reponseshoriz}\n");
-
-                        // Affichage des réponses avec leur barème individuel si nécessaire
-                        for (Response r : responseList) {
-                            if (r.isCorrect) {
-                                if (r.score == maxCorrect) {
-                                    texcontentBuilder.append("\t\t\t\\bonne{").append(r.reponse).append("}\n");
-                                } else {
-                                    texcontentBuilder.append("\t\t\t\\bonne{").append(r.reponse).append("}")
-                                            .append("\\bareme{").append(r.score).append("}\n");
-                                }
-                            } else {
-                                if (r.score == maxIncorrect) {
-                                    texcontentBuilder.append("\t\t\t\\mauvaise{").append(r.reponse).append("}\n");
-                                } else {
-                                    texcontentBuilder.append("\t\t\t\\mauvaise{").append(r.reponse).append("}")
-                                            .append("\\bareme{").append(r.score).append("}\n");
-                                }
-                            }
-                        }
-                        texcontentBuilder.append("\t\t\\end{reponseshoriz}\n");
-                        texcontentBuilder.append("\t\\end{question}\n");
-                        texcontentBuilder.append("\t}\n");
-                    } else {
-                        rsQcm.close();
-                        psQcm.close();
-                    }
-                }
-
-                else if (type.equals("QuestionLibre")) {
-                    // Récupération des paramètres spécifiques aux questions libres
-                    PreparedStatement psFreeQuestion = conn.prepareStatement("SELECT nombreLigne, tailleLigne, rappel, scoreTotal, nombreScore FROM questionlibre WHERE sectionID = ?");
-                    psFreeQuestion.setString(1, idSection);
-                    ResultSet rsFreeQuestion = psFreeQuestion.executeQuery();
-                    if (rsFreeQuestion.next()) {
-                        int nombreLigne = rsFreeQuestion.getInt("nombreLigne");
-                        double tailleLigne = rsFreeQuestion.getDouble("tailleLigne");
-                        String rappel = rsFreeQuestion.getString("rappel");
-                        int scoreTotal = rsFreeQuestion.getInt("scoreTotal");
-                        int nombreScore = rsFreeQuestion.getInt("nombreScore");
-
-                        texcontentBuilder.append("\n\t\\element{general}{\n");
-                        texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}\n");
-                        texcontentBuilder.append("\t\t").append(question).append("\n");
-
-                        // Ajout du bloc \AMCOpen avec les paramètres dynamiques
-                        texcontentBuilder.append("\t\t\\AMCOpen{lines=").append(nombreLigne)
-                                .append(",lineheight=").append(tailleLigne)
-                                .append("cm,question=\\texttt{").append(rappel).append("}}\n");
-
-                        texcontentBuilder.append("\t\t{\n");
-
-                        // Génération des mauvaises réponses avec leur score
-                        for (int i = 0; i < nombreScore; i++) {
-                            texcontentBuilder.append("\t\t\t\\mauvaise[").append(i).append("]{").append(i)
-                                    .append("}\\scoring{").append(scoreTotal).append("*").append(i)
-                                    .append("/").append(nombreScore).append("}\n");
-                        }
-
-                        // Ajout de la bonne réponse
-                        texcontentBuilder.append("\t\t\t\\bonne[").append(nombreScore).append("]{").append(nombreScore)
-                                .append("}\\scoring{").append(scoreTotal).append("}\n");
-
-                        texcontentBuilder.append("\t\t}\n");
-                        texcontentBuilder.append("\t\\end{question}\n");
-                        texcontentBuilder.append("\t}\n");
-                    }
-
-                    rsFreeQuestion.close();
-                    psFreeQuestion.close();
-                }
-
-                else if (type.equals("Description")) {
-                    // Description
-                    PreparedStatement psDescription = conn.prepareStatement("SELECT idDescription, texte FROM Description WHERE sectionID = ?");
-                    psDescription.setString(1, idSection);
-                    ResultSet rsDescription = psDescription.executeQuery();
-
-                    while (rsDescription.next()) {
-                        int idDescription = rsDescription.getInt("idDescription");
-                        String texte = rsDescription.getString("texte");
-
-                        texcontentBuilder.append("\n\t\\element{general}{\n");
-                        texcontentBuilder.append("\t\t").append(texte).append("\n");
-
-                        // Récupération des images et légendes associées
-                        PreparedStatement psImages = conn.prepareStatement("SELECT idImage, imagePath FROM Description_Images WHERE descriptionID = ?");
-                        psImages.setInt(1, idDescription);
-                        ResultSet rsImages = psImages.executeQuery();
-
-                        PreparedStatement psLegends = conn.prepareStatement("SELECT idLegend, legendText FROM Description_Legends WHERE descriptionID = ?");
-                        psLegends.setInt(1, idDescription);
-                        ResultSet rsLegends = psLegends.executeQuery();
-
-                        List<String> images = new ArrayList<>();
-                        List<String> legends = new ArrayList<>();
-
-                        while (rsImages.next()) {
-                            images.add(rsImages.getString("imagePath"));
-                        }
-
-                        while (rsLegends.next()) {
-                            legends.add(rsLegends.getString("legendText"));
-                        }
-
-                        rsImages.close();
-                        psImages.close();
-                        rsLegends.close();
-                        psLegends.close();
-
-                        // Insert images with their captions
-                        for (int i = 0; i < images.size(); i++) {
-                            String imagePath = images.get(i).replace("\\", "/");
-                            texcontentBuilder.append("\\begin{figure}[H]\n");
-                            texcontentBuilder.append("    \\centering\n");
-                            texcontentBuilder.append("    \\includegraphics[width=1\\linewidth]{\\detokenize{").append(imagePath).append("}}\n");
-
-                            if (i < legends.size()) {
-                                texcontentBuilder.append("    \\caption{\\detokenize{").append(legends.get(i)).append("}}\n");
-                            }
-
-                            texcontentBuilder.append("    \\label{question").append(idDescription).append("_").append(i + 1).append("}\n");
-                            texcontentBuilder.append("\\end{figure}\n\n");
-                        }
-
-                        texcontentBuilder.append("}\n");
-                    }
-
-                    rsDescription.close();
-                    psDescription.close();
-
+                    processQCM(conn, idSection, question, idSectionLatex, texcontentBuilder);
+                } else if (type.equals("QuestionLibre")) {
+                    processFreeQuestion(conn, idSection, question, idSectionLatex, texcontentBuilder);
+                } else if (type.equals("Description")) {
+                    processDescription(conn, idSection, texcontentBuilder);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             if (conn != null) {
                 try {
                     conn.close();
@@ -923,86 +977,10 @@ public class EditerProjet implements Initializable {
             }
         }
 
-        // Ajout de l'en-tête de la feuille de réponses
-        texcontentBuilder.append("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
-        texcontentBuilder.append("\n");
-        texcontentBuilder.append("\t%\\exemplaire{3}{\n");
-        texcontentBuilder.append("\t\\exemplaire{1}{\n");
-        texcontentBuilder.append("\t\t%%% debut de l'en-tête des copies :\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t\\noindent{\\large\\bf QUESTIONS  \\hfill Contrôle du jeudi 12/01/2024}\n");
-        texcontentBuilder.append("\t\t%bareme sur 100 points (qui correspond à 10 sur l'exam partagé avec Java)\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t\\vspace*{.5cm}\n");
-        texcontentBuilder.append("\t\t\\begin{minipage}{.4\\linewidth}\n");
-        texcontentBuilder.append("\t\t\t\\centering\\large\\bf MICROPROCESSORS 2 %%\\\\ QUESTIONS du QCM v01\\\\ Examen du 12/01/2023 \n");
-        texcontentBuilder.append("\t\t\\end{minipage}\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t\\begin{center}\\em\n");
-        texcontentBuilder.append("\t\t\t%Durée : 1 heure pour la partie µP: QCM + code. \\\\\n");
-        texcontentBuilder.append("\t\t\t\n");
-        texcontentBuilder.append("\t\t\tIntroduction Entete\n");
-        texcontentBuilder.append("\t\t\t\n");
-        texcontentBuilder.append("\t\t\\end{center}\n");
-        texcontentBuilder.append("\t\t\\vspace{1ex}\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t%%% fin de l'en-tête\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t\\restituegroupe{general}\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t\\AMCcleardoublepage    \n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t% \\AMCaddpagesto{3} \n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t\\AMCdebutFormulaire    \n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t%%% début de l'en-tête de la feuille de réponses\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t{\\large\\bf MICROPROCESSEURS REPONSES 12/01/2024 \n");
-        texcontentBuilder.append("\t\t\\newline MICROPROCESSORS ANSWERS MONCHAL}\n");
-        texcontentBuilder.append("\t\t\\newline\n");
-        texcontentBuilder.append("\t\t\\hfill \\champnom{\\fbox{    \n");
-        texcontentBuilder.append("\t\t\t\t\\begin{minipage}{.5\\linewidth}\n");
-        texcontentBuilder.append("\t\t\t\t\tNOM/NAME  Prénom/First name :\n");
-        texcontentBuilder.append("\t\t\t\t\t\n");
-        texcontentBuilder.append("\t\t\t\t\t\\vspace*{.5cm}\\dotfill\n");
-        texcontentBuilder.append("\t\t\t\t\t\\vspace*{1mm}\n");
-        texcontentBuilder.append("\t\t\t\t\\end{minipage}\n");
-        texcontentBuilder.append("\t\t}}\n");
-        texcontentBuilder.append("\t\t\\newline\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\tMerci de coder votre numéro d'étudiant à 5 chiffres en noircissant bien les cases:\n");
-        texcontentBuilder.append("\t\t\\newline\n");
-        texcontentBuilder.append("\t\tPlease code your 5-digit student number by filling in the boxes in black:\n");
-        texcontentBuilder.append("\t\t\\newline\n");
-        texcontentBuilder.append("\t\t\\AMCcodeHspace=2.5em\n");
-        texcontentBuilder.append("\t\t\\AMCcodeGridInt[vertical=false]{etu}{5}\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t\\begin{center}\n");
-        texcontentBuilder.append("\t\t\t%\\em \n");
-        texcontentBuilder.append("\t\t\t2 feuilles (4 pages) à détacher : seuls documents à rendre pour la partie Microprocesseur de cet examen. \n");
-        texcontentBuilder.append("\t\t\t2 detachable sheets (4 pages): only documents to be returned for the Microprocessor exam.\n");
-        texcontentBuilder.append("\t\t\\end{center}\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t%%% fin de l'en-tête de la feuille de réponses\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t\\formulaire\n");
-        texcontentBuilder.append("\t\t\n");
-        texcontentBuilder.append("\t\t\\begin{center}\n");
-        texcontentBuilder.append("\t\t\t\\bf\\em \n");
-        texcontentBuilder.append("\t\t\t%Il n'y a que cette feuille à rendre pour l'examen de microprocesseur. Merci de la détacher.\n");
-        texcontentBuilder.append("\t\t\t%Des compléments peuvent être écrits sur une autre feuille blanche (à demander au surveillant) ne peuvent concerner que les questions 1 à 3. Dans ce cas, numérotez bien les questions et %inscrivez votre nom de manière lisible en haut à droite.\n");
-        texcontentBuilder.append("\t\t\\end{center} \n");
-        texcontentBuilder.append("\t}\n");
-        texcontentBuilder.append("\n");
-        texcontentBuilder.append("\\end{document}\n");
+        texcontentBuilder.append(generateFooter());
 
         //todo remove this line and save a file in the specific folder with the config file.
         System.out.println(texcontentBuilder.toString());
     }
 
-
-
 }
-
-
