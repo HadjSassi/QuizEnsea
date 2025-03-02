@@ -208,7 +208,8 @@ public class EditerProjet implements Initializable {
                     stmt.executeUpdate();
                 }
 
-            } else if ("QuestionLibre".equals(sectionType)) {
+            }
+            else if ("QuestionLibre".equals(sectionType)) {
                 String insertQuestionQuery = "INSERT INTO questionlibre (sectionID, question, scoreTotal, nombreScore," +
                         "nombreLigne, tailleLigne,rappel) " +
                         "SELECT ?,question, scoreTotal, nombreScore,nombreLigne, tailleLigne,rappel " +
@@ -219,11 +220,12 @@ public class EditerProjet implements Initializable {
                     stmt.setString(2, sectionRow.getId());
                     stmt.executeUpdate();
                 }
-            } else if ("Description".equals(sectionType)) {
+            }
+            else if ("Description".equals(sectionType)) {
                 int newDescriptionId = -1;
 
-                String insertDescriptionQuery = "INSERT INTO description (controleID, texte) " +
-                        "SELECT ?, texte FROM description WHERE controleID = ?";
+                String insertDescriptionQuery = "INSERT INTO description (sectionID, texte) " +
+                        "SELECT ?, texte FROM description WHERE sectionID = ?";
 
                 try (PreparedStatement stmt = conn.prepareStatement(insertDescriptionQuery, Statement.RETURN_GENERATED_KEYS)) {
                     stmt.setString(1, newSectionId);
@@ -269,12 +271,12 @@ public class EditerProjet implements Initializable {
         String query = "SELECT idSection, " +
                 "CASE WHEN qcm.isQCU IS NOT NULL THEN (CASE WHEN qcm.isQCU = 1 THEN 'QCU' ELSE 'QCM' END) " +
                 "WHEN questionlibre.sectionID IS NOT NULL THEN 'QuestionLibre' " +
-                "WHEN description.controleID IS NOT NULL THEN 'Description' " +
+                "WHEN description.sectionID IS NOT NULL THEN 'Description' " +
                 "ELSE 'Unknown' END AS type " +
                 "FROM section " +
                 "LEFT JOIN qcm ON section.idSection = qcm.sectionID " +
                 "LEFT JOIN questionlibre ON section.idSection = questionlibre.sectionID " +
-                "LEFT JOIN description ON section.idSection = description.controleID ";
+                "LEFT JOIN description ON section.idSection = description.sectionID ";
 
         try (Connection conn = MySqlConnection.getOracleConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -307,7 +309,7 @@ public class EditerProjet implements Initializable {
     }
 
     private int getOldDescriptionID(String sectionId) {
-        String query = "SELECT idDescription FROM description WHERE controleID = ?";
+        String query = "SELECT idDescription FROM description WHERE sectionID = ?";
         try (Connection conn = MySqlConnection.getOracleConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, sectionId);
@@ -596,7 +598,7 @@ public class EditerProjet implements Initializable {
                     "UNION " +
                     "SELECT section.idSection, NULL AS isQCU, section.idSection AS question, section.ordreSection, 'Description' AS type " +
                     "FROM section " +
-                    "JOIN description ON section.idSection = description.controleID " +
+                    "JOIN description ON section.idSection = description.sectionID " +
                     "WHERE section.controleID = ? " +
                     "ORDER BY ordreSection";
 
@@ -651,7 +653,7 @@ public class EditerProjet implements Initializable {
                 "UNION " +
                 "SELECT section.idSection, NULL AS isQCU, section.idSection AS question, section.ordreSection, 'Description' AS type " +
                 "FROM section " +
-                "JOIN description ON section.idSection = description.controleID " +
+                "JOIN description ON section.idSection = description.sectionID " +
                 "WHERE section.controleID = ? " +
                 "ORDER BY ordreSection";
 
@@ -696,6 +698,7 @@ public class EditerProjet implements Initializable {
 
     @FXML
     public void handleClicksSaveProject(ActionEvent event) {
+        // todo you need to check the special characters !
         // Classe locale pour stocker les réponses d'un QCM/QCU
         class Response {
             String reponse;
@@ -729,7 +732,7 @@ public class EditerProjet implements Initializable {
                 String type = row.getType();
                 String question = row.getQuestion();
                 String idSection = row.getIdSection();
-
+                String idSectionLatex = idSection.replace("#"," : ");
                 if (type.equals("QCM") || type.equals("QCU")) {
                     // Récupération de l'idQCM associé à cette section
                     PreparedStatement psQcm = conn.prepareStatement("SELECT idQCM FROM QCM WHERE sectionID = ?");
@@ -756,30 +759,30 @@ public class EditerProjet implements Initializable {
                         psResponses.close();
 
                         // Calcul du score de la bonne réponse principale et du score maximum parmi les réponses incorrectes
-                        int scoreCorrect = 0;
-                        int maxIncorrect = 0;
+                        int maxCorrect = 0;
+                        int maxIncorrect = -100;
                         for (Response r : responseList) {
                             if (r.isCorrect) {
-                                scoreCorrect = r.score; // pour QCU, on suppose une seule bonne réponse
+                                if (r.score > maxCorrect)
+                                    maxCorrect = r.score;
                             } else {
-                                if (r.score > maxIncorrect) {
+                                if (r.score > maxIncorrect)
                                     maxIncorrect = r.score;
-                                }
                             }
                         }
 
                         // Construction de l'en-tête de la question avec le barème calculé
                         texcontentBuilder.append("\n\t\\element{general}{\n");
-                        texcontentBuilder.append("\t\\begin{question}{").append(idSection).append("}")
-                                .append("\\bareme{b=").append(scoreCorrect)
-                                .append(",m=-").append(maxIncorrect).append("}\n");
+                        texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}")
+                                .append("\\bareme{b=").append(maxCorrect)
+                                .append(",m=").append(maxIncorrect).append("}\n");
                         texcontentBuilder.append("\t\t").append(question).append("\n");
                         texcontentBuilder.append("\t\t\\begin{reponseshoriz}\n");
 
                         // Affichage des réponses avec leur barème individuel si nécessaire
                         for (Response r : responseList) {
                             if (r.isCorrect) {
-                                if (r.score == scoreCorrect) {
+                                if (r.score == maxCorrect) {
                                     texcontentBuilder.append("\t\t\t\\bonne{").append(r.reponse).append("}\n");
                                 } else {
                                     texcontentBuilder.append("\t\t\t\\bonne{").append(r.reponse).append("}")
@@ -816,7 +819,7 @@ public class EditerProjet implements Initializable {
                         int nombreScore = rsFreeQuestion.getInt("nombreScore");
 
                         texcontentBuilder.append("\n\t\\element{general}{\n");
-                        texcontentBuilder.append("\t\\begin{question}{").append(idSection).append("}\n");
+                        texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}\n");
                         texcontentBuilder.append("\t\t").append(question).append("\n");
 
                         // Ajout du bloc \AMCOpen avec les paramètres dynamiques
@@ -848,7 +851,7 @@ public class EditerProjet implements Initializable {
 
                 else if (type.equals("Description")) {
                     // Description
-                    PreparedStatement psDescription = conn.prepareStatement("SELECT idDescription, texte FROM Description WHERE controleID = ?");
+                    PreparedStatement psDescription = conn.prepareStatement("SELECT idDescription, texte FROM Description WHERE sectionID = ?");
                     psDescription.setString(1, idSection);
                     ResultSet rsDescription = psDescription.executeQuery();
 
@@ -857,7 +860,6 @@ public class EditerProjet implements Initializable {
                         String texte = rsDescription.getString("texte");
 
                         texcontentBuilder.append("\n\t\\element{general}{\n");
-                        texcontentBuilder.append("\t\\begin{question}{desc").append(idDescription).append("}\n");
                         texcontentBuilder.append("\t\t").append(texte).append("\n");
 
                         // Récupération des images et légendes associées
@@ -890,17 +892,16 @@ public class EditerProjet implements Initializable {
                             String imagePath = images.get(i).replace("\\", "/");
                             texcontentBuilder.append("\\begin{figure}[H]\n");
                             texcontentBuilder.append("    \\centering\n");
-                            texcontentBuilder.append("    \\includegraphics[width=1\\linewidth]{\"").append(imagePath).append("\"}\n");
+                            texcontentBuilder.append("    \\includegraphics[width=1\\linewidth]{\\detokenize{").append(imagePath).append("}}\n");
 
                             if (i < legends.size()) {
-                                texcontentBuilder.append("    \\caption{").append(legends.get(i)).append("}\n");
+                                texcontentBuilder.append("    \\caption{\\detokenize{").append(legends.get(i)).append("}}\n");
                             }
 
                             texcontentBuilder.append("    \\label{question").append(idDescription).append("_").append(i + 1).append("}\n");
                             texcontentBuilder.append("\\end{figure}\n\n");
                         }
 
-                        texcontentBuilder.append("\\end{question}\n");
                         texcontentBuilder.append("}\n");
                     }
 
@@ -911,7 +912,8 @@ public class EditerProjet implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             if (conn != null) {
                 try {
                     conn.close();
@@ -995,7 +997,7 @@ public class EditerProjet implements Initializable {
         texcontentBuilder.append("\n");
         texcontentBuilder.append("\\end{document}\n");
 
-        // Affichage ou écriture du code LaTeX final
+        //todo remove this line and save a file in the specific folder with the config file.
         System.out.println(texcontentBuilder.toString());
     }
 

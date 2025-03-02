@@ -99,8 +99,15 @@ public class EditerQCM implements Initializable {
         TextField textField = (TextField) event.getSource();
         String currentText = textField.getText();
 
-        String sanitizedText = currentText.replaceAll("[^\\d]", "");
+        // Allow only digits and an optional leading "-"
+        String sanitizedText = currentText.replaceAll("[^\\d-]", "");
 
+        // Ensure "-" is only at the start and not repeated
+        if (sanitizedText.length() > 1) {
+            sanitizedText = sanitizedText.replaceAll("(?<!^)-", ""); // Remove "-" if not at the start
+        }
+
+        // Limit to 3 characters (including possible "-")
         if (sanitizedText.length() > 3) {
             sanitizedText = sanitizedText.substring(0, 3);
         }
@@ -300,7 +307,7 @@ public class EditerQCM implements Initializable {
     }
 
     private boolean checkSectionExists(String idSection) {
-        String checkQuery = "SELECT COUNT(*) FROM Section WHERE idSection = ?";
+        String checkQuery = "SELECT COUNT(*) FROM section WHERE idSection = ?";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
@@ -321,7 +328,7 @@ public class EditerQCM implements Initializable {
     }
 
     private void createSection() {
-        String insertSectionQuery = "INSERT INTO Section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
+        String insertSectionQuery = "INSERT INTO section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertSectionQuery)) {
@@ -338,7 +345,7 @@ public class EditerQCM implements Initializable {
     }
 
     private void createQCM() {
-        String insertQCUQuery = "INSERT INTO QCM (question, isQcu, sectionID) VALUES (?, ?, ?)";
+        String insertQCUQuery = "INSERT INTO qcm (question, isQcu, sectionID) VALUES (?, ?, ?)";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertQCUQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -372,7 +379,7 @@ public class EditerQCM implements Initializable {
     }
 
     private void createQCUInCorrectResponse() {
-        String insertIncorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
+        String insertIncorrectResponseQuery = "INSERT INTO qcm_reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertIncorrectResponseQuery)) {
@@ -394,7 +401,7 @@ public class EditerQCM implements Initializable {
     }
 
     private void createQCUCorrectResponse() {
-        String insertCorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
+        String insertCorrectResponseQuery = "INSERT INTO qcm_reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertCorrectResponseQuery)) {
@@ -472,8 +479,8 @@ public class EditerQCM implements Initializable {
     }
 
     private void loadQCMFromSectionId(String idSection) {
-        String fetchQCMQuery = "SELECT * FROM QCM WHERE sectionID = ?";
-        String fetchResponsesQuery = "SELECT * FROM QCM_Reponses WHERE qcmID = ?";
+        String fetchQCMQuery = "SELECT * FROM qcm WHERE sectionID = ?";
+        String fetchResponsesQuery = "SELECT * FROM qcm_reponses WHERE qcmID = ?";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement qcuStatement = connection.prepareStatement(fetchQCMQuery);

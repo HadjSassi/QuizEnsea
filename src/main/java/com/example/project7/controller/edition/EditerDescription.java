@@ -226,7 +226,7 @@ public class EditerDescription implements Initializable {
     }
 
     private void createDescription() {
-        String insertDescriptionQuery = "INSERT INTO description (texte, controleID) VALUES (?, ?)";
+        String insertDescriptionQuery = "INSERT INTO description (texte, sectionID) VALUES (?, ?)";
         String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath) VALUES (?, ?)";
         String insertLegendQuery = "INSERT INTO Description_Legends (descriptionID, legendText) VALUES (?, ?)";
 
@@ -277,7 +277,7 @@ public class EditerDescription implements Initializable {
     }
 
     private void loadFieldFromSectionId(String idSection) {
-        String fetchQCUQuery = "SELECT * FROM description WHERE controleID = ?";
+        String fetchQCUQuery = "SELECT * FROM description WHERE sectionID = ?";
         String fetchImagesQuery = "SELECT imagePath FROM Description_Images WHERE descriptionID = ?";
         String fetchLegendsQuery = "SELECT legendText FROM Description_Legends WHERE descriptionID = ?";
         int idDescription = 0;
@@ -288,7 +288,7 @@ public class EditerDescription implements Initializable {
             ResultSet resultSet = qcuStatement.executeQuery();
             if (resultSet.next()) {
                 description = new Description();
-                description.setIdSection(resultSet.getString("controleID"));
+                description.setIdSection(resultSet.getString("sectionID"));
                 description.setTexte(resultSet.getString("texte"));
                 idDescription = resultSet.getInt("idDescription");
                 descriptionTextArea.setText(description.getTexte());

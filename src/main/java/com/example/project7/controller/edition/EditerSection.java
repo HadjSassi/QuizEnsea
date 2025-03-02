@@ -65,14 +65,12 @@ public class EditerSection implements Initializable {
 
     @FXML
     public void handleInputIdentifier(KeyEvent event) {
-        //todo this is crazing me out!
-
         updateSection( identifiantSection.getText());
 
         if (identifiantSection.getText().trim().equals("")) {
             String sectionId = "Section#" + numberOfSection;
             updateSection(sectionId);
-            identifiantSection.setText(sectionId);
+            //identifiantSection.setText(sectionId);
         }
 
     }

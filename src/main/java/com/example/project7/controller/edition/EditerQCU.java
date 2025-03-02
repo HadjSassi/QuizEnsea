@@ -96,35 +96,20 @@ public class EditerQCU implements Initializable {
         }
     }
 
-    private int verifyBaremePos() {
-        if (baremePos.getText() == null || baremePos.getText().trim().equals("")) {
-            return 1;
-        }
-        try {
-            return Integer.parseInt(baremePos.getText().trim());
-        } catch (NumberFormatException e) {
-            return 1;
-        }
-    }
-
-    private int verifyBaremeNeg() {
-        if (baremeNegDefault.getText() == null || baremeNegDefault.getText().trim().equals("")) {
-            return 0;
-        }
-        try {
-            return Integer.parseInt(baremeNegDefault.getText().trim());
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
     @FXML
     public void handleInputNumber(KeyEvent event) {
         TextField textField = (TextField) event.getSource();
         String currentText = textField.getText();
 
-        String sanitizedText = currentText.replaceAll("[^\\d]", "");
+        // Allow only digits and an optional leading "-"
+        String sanitizedText = currentText.replaceAll("[^\\d-]", "");
 
+        // Ensure "-" is only at the start and not repeated
+        if (sanitizedText.length() > 1) {
+            sanitizedText = sanitizedText.replaceAll("(?<!^)-", ""); // Remove "-" if not at the start
+        }
+
+        // Limit to 3 characters (including possible "-")
         if (sanitizedText.length() > 3) {
             sanitizedText = sanitizedText.substring(0, 3);
         }
@@ -132,6 +117,7 @@ public class EditerQCU implements Initializable {
         textField.setText(sanitizedText);
         textField.positionCaret(sanitizedText.length());
     }
+
 
     @FXML
     public void handleClicksAddWrongResponce(ActionEvent event) {

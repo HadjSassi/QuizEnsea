@@ -92,7 +92,7 @@ public class DataBase {
         String createQuestionLibreQuery = "CREATE TABLE IF NOT EXISTS QuestionLibre (" +
                 "idQuestionLibre INT AUTO_INCREMENT PRIMARY KEY, " +
                 "question TEXT NOT NULL, " +
-                "scoreTotal INT, " +
+                "scoreTotal FLOAT, " +
                 "nombreScore INT, " +
                 "nombreLigne INT, " +
                 "tailleLigne FLOAT, " +
@@ -104,8 +104,8 @@ public class DataBase {
         String createDescriptionQuery = "CREATE TABLE IF NOT EXISTS Description (" +
                 "idDescription INT AUTO_INCREMENT PRIMARY KEY, " +
                 "texte TEXT, " +
-                "controleID VARCHAR(255), " +
-                "FOREIGN KEY (controleID) REFERENCES Section(idSection) ON DELETE CASCADE);";
+                "sectionID VARCHAR(255), " +
+                "FOREIGN KEY (sectionID) REFERENCES Section(idSection) ON DELETE CASCADE);";
         statement.executeUpdate(createDescriptionQuery);
 
         String createDescriptionImagesQuery = "CREATE TABLE IF NOT EXISTS Description_Images (" +

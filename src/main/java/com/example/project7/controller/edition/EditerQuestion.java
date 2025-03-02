@@ -98,7 +98,7 @@ public class EditerQuestion implements Initializable {
         if (element.isEmpty()) {
             if (!nombreLignes.getStyleClass().contains("text-field-danger")) {
                 nombreLignes.getStyleClass().add("text-field-danger");
-                this.nombreLignes.setText("1");
+                this.nombreLignes.setText("3");
             }
         } else {
             nombreLignes.getStyleClass().removeAll("text-field-danger");
@@ -111,7 +111,7 @@ public class EditerQuestion implements Initializable {
         if (element.isEmpty()) {
             if (!tailleLigne.getStyleClass().contains("text-field-danger")) {
                 tailleLigne.getStyleClass().add("text-field-danger");
-                this.tailleLigne.setText("1");
+                this.tailleLigne.setText("0.5");
             }
         } else {
             tailleLigne.getStyleClass().removeAll("text-field-danger");
@@ -194,6 +194,10 @@ public class EditerQuestion implements Initializable {
         int x = random.nextInt(999999999);
         this.rappel = "QuestionN°" + String.valueOf(x);
         this.rappelQuestion.setText(this.rappel);
+        this.scoringTotale.setText("1");
+        this.nombreScore.setText("2");
+        this.nombreLignes.setText("3");
+        this.tailleLigne.setText("0.5");
         this.questionLibre = new QuestionLibre();
     }
 
