@@ -23,7 +23,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.ResourceBundle;
 
 public class EditerDescription implements Initializable {
@@ -31,9 +30,6 @@ public class EditerDescription implements Initializable {
 
     @FXML
     private TextArea descriptionTextArea;
-
-    @FXML
-    private Button addImageButton;
 
     @FXML
     private TableView<RowTableSection> tableViewImages;
@@ -191,8 +187,9 @@ public class EditerDescription implements Initializable {
             System.err.println("Error checking section existence: " + e.getMessage());
         }
 
-        return false; // Default to false if there's an error
+        return false;
     }
+
     private void removeSection() {
         String deleteQuery = "DELETE FROM section WHERE idSection = ?";
         try (Connection connection = MySqlConnection.getOracleConnection();
@@ -205,10 +202,12 @@ public class EditerDescription implements Initializable {
             System.err.println("Error deleting section: " + e.getMessage());
         }
     }
+
     private void updateSection() {
         removeSection();
         handleClickAddDescription(null);
     }
+
     private void createSection() {
         String insertSectionQuery = "INSERT INTO Section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
 
@@ -225,6 +224,7 @@ public class EditerDescription implements Initializable {
             System.err.println("Error inserting Section data: " + e.getMessage());
         }
     }
+
     private void createDescription() {
         String insertDescriptionQuery = "INSERT INTO description (texte, controleID) VALUES (?, ?)";
         String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath) VALUES (?, ?)";
@@ -275,6 +275,7 @@ public class EditerDescription implements Initializable {
             System.err.println("Erreur lors de l'insertion : " + e.getMessage());
         }
     }
+
     private void loadFieldFromSectionId(String idSection) {
         String fetchQCUQuery = "SELECT * FROM description WHERE controleID = ?";
         String fetchImagesQuery = "SELECT imagePath FROM Description_Images WHERE descriptionID = ?";
@@ -324,6 +325,7 @@ public class EditerDescription implements Initializable {
             System.err.println("Error loading QCU data: " + e.getMessage());
         }
     }
+
     private void handleDelete(int index) {
         tableViewImages.getItems().remove(index);
     }

@@ -65,6 +65,7 @@ public class EditerSection implements Initializable {
 
     @FXML
     public void handleInputIdentifier(KeyEvent event) {
+        //todo this is crazing me out!
 
         updateSection( identifiantSection.getText());
 
@@ -160,10 +161,6 @@ public class EditerSection implements Initializable {
             e.printStackTrace();
             System.err.println("Error retrieving section count: " + e.getMessage());
         }
-    }
-
-    public static int getNumberOfSection() {
-        return numberOfSection;
     }
 
     public static void cancelSection() {

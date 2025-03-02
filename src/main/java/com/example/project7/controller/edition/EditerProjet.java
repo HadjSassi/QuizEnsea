@@ -25,7 +25,10 @@ import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
+
 
 public class EditerProjet implements Initializable {
 
@@ -579,12 +582,6 @@ public class EditerProjet implements Initializable {
 
     }
 
-    @FXML
-    public void handleClicksSaveProject(ActionEvent event) {
-        //todo save in the database and show pop up if the user wants to export it in pdf or latex
-
-    }
-
     private void loadSectionData() {
         if (this.devoir != null) {
             String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection, 'QCU/QCM' AS type " +
@@ -642,7 +639,6 @@ public class EditerProjet implements Initializable {
     }
 
     public void fetchAndUpdateTableView() {
-        // Define the query to fetch section data for QCM and QuestionLibre
         String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection, 'QCU/QCM' AS type " +
                 "FROM section " +
                 "JOIN qcm ON section.idSection = qcm.sectionID " +
@@ -672,14 +668,20 @@ public class EditerProjet implements Initializable {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     String idSection = resultSet.getString("idSection");
-                    String type = "";
-                    if (resultSet.getString("type").equals("QuestionLibre")) {
+                    String type = resultSet.getString("type");
+
+                    // Determine the correct type
+                    if (type.equals("QuestionLibre")) {
                         type = "QuestionLibre";
-                    } else {
+                    } else if (type.equals("QCU/QCM")) {
                         type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
+                    } else {
+                        type = "Description"; // For descriptions
                     }
+
                     String question = resultSet.getString("question");
                     int ordre = resultSet.getInt("ordreSection");
+
                     sectionData.add(new RowTableSection(idSection, type, question, ordre));
                 }
             }
@@ -691,6 +693,313 @@ public class EditerProjet implements Initializable {
         // Set the ObservableList to the TableView to refresh the data
         tableSection.setItems(sectionData);
     }
+
+    @FXML
+    public void handleClicksSaveProject(ActionEvent event) {
+        // Classe locale pour stocker les réponses d'un QCM/QCU
+        class Response {
+            String reponse;
+            int score;
+            boolean isCorrect;
+            Response(String reponse, int score, boolean isCorrect) {
+                this.reponse = reponse;
+                this.score = score;
+                this.isCorrect = isCorrect;
+            }
+        }
+
+        ObservableList<RowTableSection> sections = tableSection.getItems();
+
+        StringBuilder texcontentBuilder = new StringBuilder();
+        texcontentBuilder.append("\\documentclass[a4paper]{article}\n");
+        texcontentBuilder.append("\\usepackage[utf8x]{inputenc}\n");
+        texcontentBuilder.append("\\usepackage[T1]{fontenc}\n");
+        texcontentBuilder.append("\\usepackage{graphics}\n");
+        texcontentBuilder.append("\\usepackage{float}\n");
+        texcontentBuilder.append("\\usepackage[francais,bloc,completemulti,ensemble]{automultiplechoice}\n");
+        texcontentBuilder.append("\\begin{document}\n");
+        texcontentBuilder.append("\t\\AMCrandomseed{12345678}\n");
+        texcontentBuilder.append("\t\\def\\AMCformQuestion#1{{\\sc Question #1 :}}\n");
+        texcontentBuilder.append("\t\\setdefaultgroupmode{fixed}\n");
+
+        Connection conn = null;
+        try {
+            conn = MySqlConnection.getOracleConnection();
+            for (RowTableSection row : sections) {
+                String type = row.getType();
+                String question = row.getQuestion();
+                String idSection = row.getIdSection();
+
+                if (type.equals("QCM") || type.equals("QCU")) {
+                    // Récupération de l'idQCM associé à cette section
+                    PreparedStatement psQcm = conn.prepareStatement("SELECT idQCM FROM QCM WHERE sectionID = ?");
+                    psQcm.setString(1, idSection);
+                    ResultSet rsQcm = psQcm.executeQuery();
+                    if (rsQcm.next()) {
+                        int qcmID = rsQcm.getInt("idQCM");
+                        rsQcm.close();
+                        psQcm.close();
+
+                        // Récupération des réponses (avec score et isCorrect)
+                        PreparedStatement psResponses = conn.prepareStatement("SELECT reponse, score, isCorrect FROM QCM_Reponses WHERE qcmID = ?");
+                        psResponses.setInt(1, qcmID);
+                        ResultSet rsResponses = psResponses.executeQuery();
+
+                        List<Response> responseList = new ArrayList<>();
+                        while (rsResponses.next()) {
+                            String rep = rsResponses.getString("reponse");
+                            int score = rsResponses.getInt("score");
+                            boolean isCorrect = rsResponses.getBoolean("isCorrect");
+                            responseList.add(new Response(rep, score, isCorrect));
+                        }
+                        rsResponses.close();
+                        psResponses.close();
+
+                        // Calcul du score de la bonne réponse principale et du score maximum parmi les réponses incorrectes
+                        int scoreCorrect = 0;
+                        int maxIncorrect = 0;
+                        for (Response r : responseList) {
+                            if (r.isCorrect) {
+                                scoreCorrect = r.score; // pour QCU, on suppose une seule bonne réponse
+                            } else {
+                                if (r.score > maxIncorrect) {
+                                    maxIncorrect = r.score;
+                                }
+                            }
+                        }
+
+                        // Construction de l'en-tête de la question avec le barème calculé
+                        texcontentBuilder.append("\n\t\\element{general}{\n");
+                        texcontentBuilder.append("\t\\begin{question}{").append(idSection).append("}")
+                                .append("\\bareme{b=").append(scoreCorrect)
+                                .append(",m=-").append(maxIncorrect).append("}\n");
+                        texcontentBuilder.append("\t\t").append(question).append("\n");
+                        texcontentBuilder.append("\t\t\\begin{reponseshoriz}\n");
+
+                        // Affichage des réponses avec leur barème individuel si nécessaire
+                        for (Response r : responseList) {
+                            if (r.isCorrect) {
+                                if (r.score == scoreCorrect) {
+                                    texcontentBuilder.append("\t\t\t\\bonne{").append(r.reponse).append("}\n");
+                                } else {
+                                    texcontentBuilder.append("\t\t\t\\bonne{").append(r.reponse).append("}")
+                                            .append("\\bareme{").append(r.score).append("}\n");
+                                }
+                            } else {
+                                if (r.score == maxIncorrect) {
+                                    texcontentBuilder.append("\t\t\t\\mauvaise{").append(r.reponse).append("}\n");
+                                } else {
+                                    texcontentBuilder.append("\t\t\t\\mauvaise{").append(r.reponse).append("}")
+                                            .append("\\bareme{").append(r.score).append("}\n");
+                                }
+                            }
+                        }
+                        texcontentBuilder.append("\t\t\\end{reponseshoriz}\n");
+                        texcontentBuilder.append("\t\\end{question}\n");
+                        texcontentBuilder.append("\t}\n");
+                    } else {
+                        rsQcm.close();
+                        psQcm.close();
+                    }
+                }
+
+                else if (type.equals("QuestionLibre")) {
+                    // Récupération des paramètres spécifiques aux questions libres
+                    PreparedStatement psFreeQuestion = conn.prepareStatement("SELECT nombreLigne, tailleLigne, rappel, scoreTotal, nombreScore FROM questionlibre WHERE sectionID = ?");
+                    psFreeQuestion.setString(1, idSection);
+                    ResultSet rsFreeQuestion = psFreeQuestion.executeQuery();
+                    if (rsFreeQuestion.next()) {
+                        int nombreLigne = rsFreeQuestion.getInt("nombreLigne");
+                        double tailleLigne = rsFreeQuestion.getDouble("tailleLigne");
+                        String rappel = rsFreeQuestion.getString("rappel");
+                        int scoreTotal = rsFreeQuestion.getInt("scoreTotal");
+                        int nombreScore = rsFreeQuestion.getInt("nombreScore");
+
+                        texcontentBuilder.append("\n\t\\element{general}{\n");
+                        texcontentBuilder.append("\t\\begin{question}{").append(idSection).append("}\n");
+                        texcontentBuilder.append("\t\t").append(question).append("\n");
+
+                        // Ajout du bloc \AMCOpen avec les paramètres dynamiques
+                        texcontentBuilder.append("\t\t\\AMCOpen{lines=").append(nombreLigne)
+                                .append(",lineheight=").append(tailleLigne)
+                                .append("cm,question=\\texttt{").append(rappel).append("}}\n");
+
+                        texcontentBuilder.append("\t\t{\n");
+
+                        // Génération des mauvaises réponses avec leur score
+                        for (int i = 0; i < nombreScore; i++) {
+                            texcontentBuilder.append("\t\t\t\\mauvaise[").append(i).append("]{").append(i)
+                                    .append("}\\scoring{").append(scoreTotal).append("*").append(i)
+                                    .append("/").append(nombreScore).append("}\n");
+                        }
+
+                        // Ajout de la bonne réponse
+                        texcontentBuilder.append("\t\t\t\\bonne[").append(nombreScore).append("]{").append(nombreScore)
+                                .append("}\\scoring{").append(scoreTotal).append("}\n");
+
+                        texcontentBuilder.append("\t\t}\n");
+                        texcontentBuilder.append("\t\\end{question}\n");
+                        texcontentBuilder.append("\t}\n");
+                    }
+
+                    rsFreeQuestion.close();
+                    psFreeQuestion.close();
+                }
+
+                else if (type.equals("Description")) {
+                    // Description
+                    PreparedStatement psDescription = conn.prepareStatement("SELECT idDescription, texte FROM Description WHERE controleID = ?");
+                    psDescription.setString(1, idSection);
+                    ResultSet rsDescription = psDescription.executeQuery();
+
+                    while (rsDescription.next()) {
+                        int idDescription = rsDescription.getInt("idDescription");
+                        String texte = rsDescription.getString("texte");
+
+                        texcontentBuilder.append("\n\t\\element{general}{\n");
+                        texcontentBuilder.append("\t\\begin{question}{desc").append(idDescription).append("}\n");
+                        texcontentBuilder.append("\t\t").append(texte).append("\n");
+
+                        // Récupération des images et légendes associées
+                        PreparedStatement psImages = conn.prepareStatement("SELECT idImage, imagePath FROM Description_Images WHERE descriptionID = ?");
+                        psImages.setInt(1, idDescription);
+                        ResultSet rsImages = psImages.executeQuery();
+
+                        PreparedStatement psLegends = conn.prepareStatement("SELECT idLegend, legendText FROM Description_Legends WHERE descriptionID = ?");
+                        psLegends.setInt(1, idDescription);
+                        ResultSet rsLegends = psLegends.executeQuery();
+
+                        List<String> images = new ArrayList<>();
+                        List<String> legends = new ArrayList<>();
+
+                        while (rsImages.next()) {
+                            images.add(rsImages.getString("imagePath"));
+                        }
+
+                        while (rsLegends.next()) {
+                            legends.add(rsLegends.getString("legendText"));
+                        }
+
+                        rsImages.close();
+                        psImages.close();
+                        rsLegends.close();
+                        psLegends.close();
+
+                        // Insert images with their captions
+                        for (int i = 0; i < images.size(); i++) {
+                            String imagePath = images.get(i).replace("\\", "/");
+                            texcontentBuilder.append("\\begin{figure}[H]\n");
+                            texcontentBuilder.append("    \\centering\n");
+                            texcontentBuilder.append("    \\includegraphics[width=1\\linewidth]{\"").append(imagePath).append("\"}\n");
+
+                            if (i < legends.size()) {
+                                texcontentBuilder.append("    \\caption{").append(legends.get(i)).append("}\n");
+                            }
+
+                            texcontentBuilder.append("    \\label{question").append(idDescription).append("_").append(i + 1).append("}\n");
+                            texcontentBuilder.append("\\end{figure}\n\n");
+                        }
+
+                        texcontentBuilder.append("\\end{question}\n");
+                        texcontentBuilder.append("}\n");
+                    }
+
+                    rsDescription.close();
+                    psDescription.close();
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // Ajout de l'en-tête de la feuille de réponses
+        texcontentBuilder.append("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
+        texcontentBuilder.append("\n");
+        texcontentBuilder.append("\t%\\exemplaire{3}{\n");
+        texcontentBuilder.append("\t\\exemplaire{1}{\n");
+        texcontentBuilder.append("\t\t%%% debut de l'en-tête des copies :\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t\\noindent{\\large\\bf QUESTIONS  \\hfill Contrôle du jeudi 12/01/2024}\n");
+        texcontentBuilder.append("\t\t%bareme sur 100 points (qui correspond à 10 sur l'exam partagé avec Java)\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t\\vspace*{.5cm}\n");
+        texcontentBuilder.append("\t\t\\begin{minipage}{.4\\linewidth}\n");
+        texcontentBuilder.append("\t\t\t\\centering\\large\\bf MICROPROCESSORS 2 %%\\\\ QUESTIONS du QCM v01\\\\ Examen du 12/01/2023 \n");
+        texcontentBuilder.append("\t\t\\end{minipage}\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t\\begin{center}\\em\n");
+        texcontentBuilder.append("\t\t\t%Durée : 1 heure pour la partie µP: QCM + code. \\\\\n");
+        texcontentBuilder.append("\t\t\t\n");
+        texcontentBuilder.append("\t\t\tIntroduction Entete\n");
+        texcontentBuilder.append("\t\t\t\n");
+        texcontentBuilder.append("\t\t\\end{center}\n");
+        texcontentBuilder.append("\t\t\\vspace{1ex}\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t%%% fin de l'en-tête\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t\\restituegroupe{general}\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t\\AMCcleardoublepage    \n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t% \\AMCaddpagesto{3} \n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t\\AMCdebutFormulaire    \n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t%%% début de l'en-tête de la feuille de réponses\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t{\\large\\bf MICROPROCESSEURS REPONSES 12/01/2024 \n");
+        texcontentBuilder.append("\t\t\\newline MICROPROCESSORS ANSWERS MONCHAL}\n");
+        texcontentBuilder.append("\t\t\\newline\n");
+        texcontentBuilder.append("\t\t\\hfill \\champnom{\\fbox{    \n");
+        texcontentBuilder.append("\t\t\t\t\\begin{minipage}{.5\\linewidth}\n");
+        texcontentBuilder.append("\t\t\t\t\tNOM/NAME  Prénom/First name :\n");
+        texcontentBuilder.append("\t\t\t\t\t\n");
+        texcontentBuilder.append("\t\t\t\t\t\\vspace*{.5cm}\\dotfill\n");
+        texcontentBuilder.append("\t\t\t\t\t\\vspace*{1mm}\n");
+        texcontentBuilder.append("\t\t\t\t\\end{minipage}\n");
+        texcontentBuilder.append("\t\t}}\n");
+        texcontentBuilder.append("\t\t\\newline\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\tMerci de coder votre numéro d'étudiant à 5 chiffres en noircissant bien les cases:\n");
+        texcontentBuilder.append("\t\t\\newline\n");
+        texcontentBuilder.append("\t\tPlease code your 5-digit student number by filling in the boxes in black:\n");
+        texcontentBuilder.append("\t\t\\newline\n");
+        texcontentBuilder.append("\t\t\\AMCcodeHspace=2.5em\n");
+        texcontentBuilder.append("\t\t\\AMCcodeGridInt[vertical=false]{etu}{5}\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t\\begin{center}\n");
+        texcontentBuilder.append("\t\t\t%\\em \n");
+        texcontentBuilder.append("\t\t\t2 feuilles (4 pages) à détacher : seuls documents à rendre pour la partie Microprocesseur de cet examen. \n");
+        texcontentBuilder.append("\t\t\t2 detachable sheets (4 pages): only documents to be returned for the Microprocessor exam.\n");
+        texcontentBuilder.append("\t\t\\end{center}\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t%%% fin de l'en-tête de la feuille de réponses\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t\\formulaire\n");
+        texcontentBuilder.append("\t\t\n");
+        texcontentBuilder.append("\t\t\\begin{center}\n");
+        texcontentBuilder.append("\t\t\t\\bf\\em \n");
+        texcontentBuilder.append("\t\t\t%Il n'y a que cette feuille à rendre pour l'examen de microprocesseur. Merci de la détacher.\n");
+        texcontentBuilder.append("\t\t\t%Des compléments peuvent être écrits sur une autre feuille blanche (à demander au surveillant) ne peuvent concerner que les questions 1 à 3. Dans ce cas, numérotez bien les questions et %inscrivez votre nom de manière lisible en haut à droite.\n");
+        texcontentBuilder.append("\t\t\\end{center} \n");
+        texcontentBuilder.append("\t}\n");
+        texcontentBuilder.append("\n");
+        texcontentBuilder.append("\\end{document}\n");
+
+        // Affichage ou écriture du code LaTeX final
+        System.out.println(texcontentBuilder.toString());
+    }
+
+
 
 }
 
