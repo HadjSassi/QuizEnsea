@@ -240,7 +240,7 @@ public class EditerProjet implements Initializable {
     }
 
     private void processInsertImportedSection(SectionRow sectionRow) {
-        String newSectionId = sectionRow.getId() + "_" + devoir.getIdControle();
+        String newSectionId = sectionRow.getId() + "_" + devoir.getIdControle() + "_" + System.currentTimeMillis();
         String sectionType = sectionRow.getType();
         int newSectionOrdre = 0;
         try (Connection conn = MySqlConnection.getOracleConnection()) {
@@ -249,7 +249,7 @@ public class EditerProjet implements Initializable {
                 stmt.setInt(1, this.devoir.getIdControle());
                 try (ResultSet resultSet = stmt.executeQuery()) {
                     if (resultSet.next()) {
-                        newSectionOrdre = resultSet.getInt("cnt");
+                        newSectionOrdre = resultSet.getInt("cnt")+1;
                     }
                     String insertQuery = "INSERT INTO section (idSection, controleID, ordreSection)" +
                             " values (?,?,?)";
@@ -544,19 +544,19 @@ public class EditerProjet implements Initializable {
         String examHeaderText =
                 "Dans ce document, vous trouverez d'abord les questions puis ensuite les feuilles de réponses (à rendre). " +
                         "In this document, you will first find the questions then the pages for the answers.\n" +
-                        "\t\t\t\\newline \n" +
-                        "Les questions faisant apparaître le symbole \\multiSymbole{} peuvent présenter zéro, une ou plusieurs bonnes réponses. " +
+                        "\t\t\t \n" +
+                        "Les questions faisant apparaître le symbole :¨: peuvent présenter zéro, une ou plusieurs bonnes réponses. " +
                         "Les autres ont une unique bonne réponse. Des points négatifs sont affectés aux mauvaises réponses. " +
                         "La pondération des mauvaises réponses est nulle pour les premières fausses réponses mais ensuite la pondération (négative) " +
                         "des mauvaises réponses augmente avec le nombre de mauvaises réponses.\n" +
-                        "\t\t\t\\newline \n" +
-                        "Questions with the symbol \\multiSymbole{} may have zero, one or more correct answers. The others have a single correct answer. " +
+                        "\t\t\t \n" +
+                        "Questions with the symbol :¨: may have zero, one or more correct answers. The others have a single correct answer. " +
                         "Negative points are assigned for wrong answers. The weight of wrong answers is zero for the first few wrong answers, " +
                         "but then the (negative) weight of wrong answers increases with the number of wrong answers.\n" +
-                        "\t\t\t\\newline \n" +
+                        "\t\t\t \n" +
                         "Un document ressource est distribué en plus de ce document. Vous devez utiliser les informations de ce document en priorité. " +
                         "A resource document is distributed in addition to this document. You should use the information in this document as a priority.\n" +
-                        "\t\t\t\\newline ";
+                        "\t\t\t ";
 
         String reponseHeaderText =
                 "2 feuilles (4 pages) à détacher : seuls documents à rendre pour la partie Microprocesseur de cet examen. \n" +
@@ -812,18 +812,18 @@ public class EditerProjet implements Initializable {
         StringBuilder footer = new StringBuilder();
         footer.append("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
         footer.append("\n");
-        footer.append("\t\\exemplaire{").append(nombreExemplaire.getText().trim()).append("}{\n");
+        footer.append("\t\\exemplaire{").append(formatLatex(nombreExemplaire.getText().trim())).append("}{\n");
         footer.append("\t\t\n");
-        footer.append("\t\t\\noindent{\\large\\bf QUESTIONS  \\hfill ").append(typeDevoir.getText()).append(" du ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy"))).append("}\n");
+        footer.append("\t\t\\noindent{\\large\\bf QUESTIONS  \\hfill ").append(formatLatex(typeDevoir.getText())).append(" du ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy"))).append("}\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\vspace*{.5cm}\n");
         footer.append("\t\t\\begin{minipage}{.4\\linewidth}\n");
-        footer.append("\t\t\t\\centering\\large\\bf ").append(nomDevoir.getText().trim()).append(" \n");
+        footer.append("\t\t\t\\centering\\large\\bf ").append(formatLatex(nomDevoir.getText().trim())).append(" \n");
         footer.append("\t\t\\end{minipage}\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\begin{center}\\em\n");
         footer.append("\t\t\t\n");
-        footer.append("\t\t\t").append(examHeader.getText()).append("\n");
+        footer.append("\t\t\t").append(formatLatex(examHeader.getText())).append("\n");
         footer.append("\t\t\t\n");
         footer.append("\t\t\\end{center}\n");
         footer.append("\t\t\\vspace{1ex}\n");
@@ -837,7 +837,7 @@ public class EditerProjet implements Initializable {
         footer.append("\t\t\\AMCdebutFormulaire    \n");
         footer.append("\t\t\n");
         footer.append("\t\t\n");
-        footer.append("\t\t{\\large\\bf ").append(nomDevoir.getText().trim()).append(" REPONSES ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).append("} \n");
+        footer.append("\t\t{\\large\\bf ").append(formatLatex(nomDevoir.getText().trim())).append(" REPONSES ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).append("} \n");
         footer.append("\t\t\\newline\n");
         footer.append("\t\t\\hfill \\champnom{\\fbox{    \n");
         footer.append("\t\t\t\t\\begin{minipage}{.5\\linewidth}\n");
@@ -857,7 +857,7 @@ public class EditerProjet implements Initializable {
         footer.append("\t\t\\AMCcodeGridInt[vertical=false]{etu}{5}\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\begin{center}\n");
-        footer.append("\t\t\t").append(reponseHeader.getText()).append("\n");
+        footer.append("\t\t\t").append(formatLatex(reponseHeader.getText())).append("\n");
         footer.append("\t\t\\end{center}\n");
         footer.append("\t\t\n");
         footer.append("\t\t\n");
@@ -921,14 +921,14 @@ public class EditerProjet implements Initializable {
             texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}")
                     .append("\\bareme{b=").append(maxCorrect)
                     .append(",m=").append(maxIncorrect).append("}\n");
-            texcontentBuilder.append("\t\t").append(question).append("\n");
+            texcontentBuilder.append("\t\t").append(formatLatex(question)).append("\n");
             texcontentBuilder.append("\t\t\\begin{reponseshoriz}\n");
 
             for (ResponseLatex r : responseLatexList) {
                 if (r.isCorrect) {
-                    texcontentBuilder.append("\t\t\t\\bonne{").append(r.reponse).append("}\n");
+                    texcontentBuilder.append("\t\t\t\\bonne{").append(formatLatex(r.reponse)).append("}\n");
                 } else {
-                    texcontentBuilder.append("\t\t\t\\mauvaise{").append(r.reponse).append("}\n");
+                    texcontentBuilder.append("\t\t\t\\mauvaise{").append(formatLatex(r.reponse)).append("}\n");
                 }
             }
             texcontentBuilder.append("\t\t\\end{reponseshoriz}\n");
@@ -950,7 +950,7 @@ public class EditerProjet implements Initializable {
 
             texcontentBuilder.append("\n\t\\element{general}{\n");
             texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}\n");
-            texcontentBuilder.append("\t\t").append(question).append("\n");
+            texcontentBuilder.append("\t\t").append(formatLatex(question)).append("\n");
             texcontentBuilder.append("\t\t\\AMCOpen{lines=").append(nombreLigne)
                     .append(",lineheight=").append(tailleLigne)
                     .append("cm,question=\\texttt{").append(rappel).append("}}\n");
@@ -980,7 +980,7 @@ public class EditerProjet implements Initializable {
             String texte = rsDescription.getString("texte");
 
             texcontentBuilder.append("\n\t\\element{general}{\n");
-            texcontentBuilder.append("\t\t").append(texte).append("\\\\\n");
+            texcontentBuilder.append("\t\t").append(formatLatex(texte)).append("\\\\\n");
 
             // Process images and legends
             processImagesAndLegends(conn, idDescription, texcontentBuilder);
@@ -1069,11 +1069,11 @@ public class EditerProjet implements Initializable {
             randomSeed.setText("12345678");
         }
 
-        String insertQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, nombreExemplaire, randomSeed, examHeader, reponseHeader, creationDate) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String updateQuery = "UPDATE Controle SET nomDevoir = ?, typeDevoir = ?, nombreExemplaire = ?, randomSeed = ?, " +
+                "examHeader = ?, reponseHeader = ?, creationDate = ? WHERE idControle = ?";
 
         try (Connection conn = MySqlConnection.getOracleConnection();
-             PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
+             PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
 
             pstmt.setString(1, nomDevoir.getText());
             pstmt.setString(2, typeDevoir.getText());
@@ -1082,6 +1082,7 @@ public class EditerProjet implements Initializable {
             pstmt.setString(5, examHeader.getText());
             pstmt.setString(6, reponseHeader.getText());
             pstmt.setString(7, dateDevoir.getValue().toString());
+            pstmt.setInt(8, this.devoir.getIdControle());
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -1089,14 +1090,49 @@ public class EditerProjet implements Initializable {
                 //todo remove the following comment and let the content
                 //showAlert("Succès", "Le contrôle a été ajouté avec succès.");
             } else {
-                showAlert("Erreur", "Échec de l'ajout du contrôle.");
+                showAlert("Erreur", "Échec de la mise à jour du contrôle.");
             }
 
         } catch (SQLException e) {
-            showAlert("Erreur", "Erreur lors de l'ajout du contrôle : " + e.getMessage());
+            showAlert("Erreur", "Erreur lors de la mise à jour du contrôle : " + e.getMessage());
             e.printStackTrace();
         }
+    }
 
+
+    private String formatLatex(String text) {
+        //todo check if there is something missing
+        return text
+                .replace("\\ ", "\\textbackslash{}") // Backslash
+                .replace("&", "\\&")                // Ampersand
+                .replace("%", "\\%")                // Pourcentage
+                .replace("$", "\\$")                // Dollar
+                .replace("#", "\\#")                // Dièse
+                .replace("_", "\\_")                // Souligné
+                .replace("{", "\\{")                // Accolade ouvrante
+                .replace("}", "\\}")                // Accolade fermante
+                .replace("~", "\\textasciitilde{}") // Tilde
+                .replace("^", "\\textasciicircum{}") // Accent circonflexe
+                .replace("\n", "\\newline ")         // Retour à la ligne
+                .replace("<", "\\textless{}")       // Moins que
+                .replace(">", "\\textgreater{}")    // Plus que
+                .replace("€", "\\texteuro{}")       // Euro
+                .replace("£", "\\pounds{}")         // Livre sterling
+                .replace("¥", "\\textyen{}")        // Yen
+                .replace("©", "\\textcopyright{}")  // Copyright
+                .replace("®", "\\textregistered{}")  // Marque déposée
+                .replace("™", "\\texttrademark{}")   // Marque de commerce
+                .replace("–", "--")                  // Tiret long
+                .replace("—", "---")                 // Tiret émis
+                .replace("•", "\\textbullet{}")      // Puce
+                .replace("«", "\\guillemotleft{}")   // Guillemot gauche
+                .replace("»", "\\guillemotright{}")  // Guillemot droit
+                .replace("‘", "`")                   // Apostrophe gauche
+                .replace("’", "'")                   // Apostrophe droite
+                .replace("“", "``")                  // Guillemet ouvrant
+                .replace("”", "''")
+                .replace(":¨:", "\\multiSymbole{}") // ♣
+                ;                 // Guillemet fermant
     }
 
     @FXML
