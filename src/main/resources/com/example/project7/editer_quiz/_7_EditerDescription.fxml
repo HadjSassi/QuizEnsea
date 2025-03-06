@@ -16,32 +16,32 @@
          <children>
             <HBox alignment="CENTER" prefHeight="354.0" prefWidth="803.0">
                <children>
-                  <Label prefHeight="190.0" prefWidth="214.0" text="Enter the description: &#10;'Put before and after &#10;the text #### if you &#10;want to write code in &#10;your description.'">
+                  <Label prefHeight="190.0" prefWidth="214.0" text="Enter the description : &#10;&quot; Put before and after &#10;the text #### if you &#10;want to write code in &#10;your description &quot;" textFill="#970d0d">
                      <font>
                         <Font size="19.0" />
                      </font></Label>
-                  <TextArea fx:id="descriptionTextArea" prefHeight="255.0" prefWidth="460.0" promptText="Please enter the description">
+                  <TextArea fx:id="descriptionTextArea" prefHeight="138.0" prefWidth="460.0" promptText="Please enter the description">
                      <HBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                      </HBox.margin>
                   </TextArea>
                </children>
             </HBox>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="773.0" text="Please add the images and their captions" textAlignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="773.0" text="           Please add the images and their captions" textAlignment="CENTER">
                <VBox.margin>
                   <Insets left="30.0" />
                </VBox.margin>
             </Label>
             <HBox alignment="CENTER" prefHeight="57.0" prefWidth="803.0">
                <children>
-                  <Button fx:id="addImageButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClickAddImage" prefHeight="31.0" prefWidth="167.0" text="Add an imag">
+                  <Button fx:id="addImageButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClickAddImage" prefHeight="39.0" prefWidth="159.0" style="-fx-background-color: #A53860;" text="Add an imag" textFill="WHITE">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
-            <TableView fx:id="tableViewImages" prefHeight="261.0" prefWidth="763.0">
+            <TableView fx:id="tableViewImages" prefHeight="340.0" prefWidth="763.0">
               <columns>
                 <TableColumn fx:id="cheminCol" prefWidth="272.0" text="Image path" />
                 <TableColumn fx:id="legendCol" prefWidth="317.0" text="Image caption" />
@@ -50,10 +50,13 @@
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="30.0" />
                </VBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </TableView>
             <HBox alignment="CENTER" prefHeight="52.0" prefWidth="803.0" spacing="50.0">
                <children>
-                  <JFXButton fx:id="ajouterDescription" onAction="#handleClickAddDescription" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #69243D;" text="Add" textFill="WHITE" />
+                  <JFXButton fx:id="ajouterDescription" onAction="#handleClickAddDescription" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Add" textFill="WHITE" />
                   <JFXButton fx:id="cancelDescription" onAction="#handleClickCancelDescription" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
                </children>
                <VBox.margin>

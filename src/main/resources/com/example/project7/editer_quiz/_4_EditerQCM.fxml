@@ -18,8 +18,9 @@
                <children>
                   <Pane prefHeight="100.0" prefWidth="796.0">
                      <children>
-                        <Label layoutX="45.0" layoutY="37.0" text="The question :" />
-                        <TextField fx:id="enonceQuestion" layoutX="199.0" layoutY="31.0" prefHeight="44.0" prefWidth="570.0" promptText="Please enter the statement of the question !" />
+                        <Label layoutX="76.0" layoutY="40.0" prefHeight="27.0" prefWidth="115.0" text="The question :" />
+                        <TextField fx:id="enonceQuestion" layoutX="199.0" layoutY="31.0" prefHeight="44.0" prefWidth="506.0" promptText="Please enter the statement of the question !" />
+                        <Button layoutX="714.0" layoutY="34.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="58.0" text=".." />
                      </children>
                   </Pane>
                </children>
@@ -43,7 +44,7 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="baremePosDefault" promptText="1 , 2, ...." GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="baremePosDefault" prefHeight="39.0" prefWidth="127.0" promptText="1 , 2, ...." GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
@@ -55,8 +56,8 @@
                   </TextField>
                   <Label alignment="CENTER" prefHeight="21.0" prefWidth="408.0" text="Correct Answers Section" textAlignment="CENTER" GridPane.columnSpan="2" />
                   <Label alignment="CENTER" prefHeight="21.0" prefWidth="384.0" text="Incorrect Answers Section" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" />
-                  <Button fx:id="ajouterBonneReponse" mnemonicParsing="false" onAction="#handleClicksAddGoodResponce" prefHeight="31.0" prefWidth="217.0" text="Add a correct answer" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Button fx:id="ajouterMauvaiseReponse" mnemonicParsing="false" onAction="#handleClicksAddWrongResponce" prefHeight="31.0" prefWidth="236.0" text="Add an incorrect answer" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Button fx:id="ajouterBonneReponse" mnemonicParsing="false" onAction="#handleClicksAddGoodResponce" prefHeight="31.0" prefWidth="217.0" style="-fx-background-color: #8F6373;" text="Add a correct answer" textAlignment="CENTER" textFill="WHITE" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Button fx:id="ajouterMauvaiseReponse" mnemonicParsing="false" onAction="#handleClicksAddWrongResponce" prefHeight="31.0" prefWidth="236.0" style="-fx-background-color: #8F6373;" text="Add an incorrect answer" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                </children>
                <opaqueInsets>
                   <Insets right="50.0" />

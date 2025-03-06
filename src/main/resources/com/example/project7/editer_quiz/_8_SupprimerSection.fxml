@@ -18,7 +18,7 @@
                   <Insets left="80.0" top="60.0" />
                </VBox.margin>
                <font>
-                  <Font name="Times New Roman" size="26.0" />
+                  <Font name="Times New Roman" size="27.0" />
                </font>
             </Label>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">

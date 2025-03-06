@@ -25,7 +25,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Project Name:">
+                  <Label text="Project Name :">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -57,7 +57,7 @@
                   </TextField>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <TextField fx:id="location" prefHeight="31.0" prefWidth="357.0" promptText="Please choose the project location" />
+                        <TextField fx:id="location" prefHeight="39.0" prefWidth="380.0" promptText="Please choose the project location" />
                         <Button mnemonicParsing="false" onAction="#handleLocationBrowse" prefHeight="39.0" prefWidth="60.0">
                            <graphic>
                               <ImageView fitHeight="28.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
@@ -78,8 +78,8 @@
             </GridPane>
             <HBox alignment="CENTER" prefHeight="162.0" prefWidth="794.0" spacing="50.0">
                <children>
-                  <JFXButton fx:id="create" onAction="#handleClicksCreate" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: #450920;" text="Create" textFill="WHITE" />
-                  <JFXButton fx:id="cancel" onAction="#handleClicksCancel" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: #FFA5AB;" text="Cancel" />
+                  <JFXButton fx:id="create" onAction="#handleClicksCreate" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: #A53860;" text="Create" textFill="WHITE" />
+                  <JFXButton fx:id="cancel" onAction="#handleClicksCancel" prefHeight="39.0" prefWidth="130.0" style="-fx-background-color: fff0f3;" text="Cancel" />
                </children>
                <opaqueInsets>
                   <Insets />
