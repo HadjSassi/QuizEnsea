@@ -15,7 +15,7 @@
                   <Pane prefHeight="100.0" prefWidth="796.0">
                      <children>
                         <Label layoutX="76.0" layoutY="40.0" prefHeight="27.0" prefWidth="115.0" text="The question :" />
-                        <TextField fx:id="enonceQuestion" layoutX="199.0" layoutY="31.0" prefHeight="44.0" prefWidth="522.0" promptText="Please enter the statement of the question !" />
+                        <TextArea fx:id="enonceQuestion" layoutX="199.0" layoutY="31.0" prefHeight="44.0" prefWidth="522.0" promptText="Please enter the statement of the question !" />
                         <Button layoutX="734.0" layoutY="34.0" mnemonicParsing="false" onAction="#modfiyQuestion" prefHeight="39.0" prefWidth="37.0" text="..." />
                      </children>
                   </Pane>

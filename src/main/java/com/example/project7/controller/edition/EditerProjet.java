@@ -46,13 +46,13 @@ public class EditerProjet implements Initializable {
     private TextField nomDevoir;
 
     @FXML
-    private TextField examHeader;
+    private TextArea examHeader;
 
     @FXML
     private TextField randomSeed;
 
     @FXML
-    private TextField reponseHeader;
+    private TextArea reponseHeader;
 
     @FXML
     private MenuButton typeDevoir;

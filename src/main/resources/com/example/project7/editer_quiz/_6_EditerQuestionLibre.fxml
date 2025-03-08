@@ -34,14 +34,11 @@
                         <Insets top="40.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="enonceQuestion" alignment="TOP_LEFT" prefHeight="161.0" prefWidth="325.0" promptText="Please enter the question" GridPane.columnIndex="1">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
+                  <TextArea fx:id="enonceQuestion" prefHeight="168.0" prefWidth="325.0" promptText="Please enter the question" GridPane.columnIndex="1">
                      <GridPane.margin>
-                        <Insets right="100.0" />
+                        <Insets bottom="10.0" right="100.0" top="10.0" />
                      </GridPane.margin>
-                  </TextField>
+                  </TextArea>
                   <TextField fx:id="scoringTotale" onKeyTyped="#handleInputFloat" promptText="Please enter the score range" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets right="100.0" />

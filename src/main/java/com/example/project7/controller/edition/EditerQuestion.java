@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 public class EditerQuestion implements Initializable {
 
     @FXML
-    private TextField enonceQuestion;
+    private TextArea enonceQuestion;
 
     @FXML
     private TextField scoringTotale;

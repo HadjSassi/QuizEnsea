@@ -14,7 +14,7 @@
                   <Pane prefHeight="100.0" prefWidth="796.0">
                      <children>
                         <Label layoutX="38.0" layoutY="37.0" prefHeight="27.0" prefWidth="119.0" text="The question :" />
-                        <TextField fx:id="enonceQuestion" layoutX="224.0" layoutY="31.0" prefHeight="39.0" prefWidth="446.0" promptText="Please enter the statement of the question !" />
+                        <TextArea fx:id="enonceQuestion" layoutX="224.0" layoutY="31.0" prefHeight="39.0" prefWidth="446.0" promptText="Please enter the statement of the question !" />
                         <Button layoutX="684.0" layoutY="31.0" mnemonicParsing="false" onAction="#modfiyQuestion" prefHeight="39.0" prefWidth="48.0" text="..." />
                      </children>
                   </Pane>
@@ -24,7 +24,7 @@
                <children>
                   <Pane prefHeight="0.0" prefWidth="744.0">
                      <children>
-                        <TextField fx:id="reponseCorrect" layoutX="293.0" layoutY="41.0" prefHeight="39.0" prefWidth="350.0" promptText="Please enter the correct answer!" />
+                        <TextArea fx:id="reponseCorrect" layoutX="293.0" layoutY="41.0" prefHeight="39.0" prefWidth="350.0" promptText="Please enter the correct answer!" />
                         <Button layoutX="661.0" layoutY="41.0" mnemonicParsing="false" onAction="#modifyCorrectAnswer" prefHeight="39.0" prefWidth="48.0" text="..." />
                         <TextField fx:id="baremePos" layoutX="199.0" layoutY="41.0" prefHeight="39.0" prefWidth="76.0" promptText="1,2,3,...." />
                         <Label layoutX="14.0" layoutY="27.0" prefHeight="67.0" prefWidth="185.0" text="Grading scale for the &#10;correct answers :" />

@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 public class EditerQCM implements Initializable {
 
     @FXML
-    private TextField enonceQuestion;
+    private TextArea enonceQuestion;
 
     @FXML
     private TextField baremePosDefault;

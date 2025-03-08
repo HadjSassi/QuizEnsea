@@ -34,13 +34,13 @@ import java.util.ResourceBundle;
 public class EditerQCU implements Initializable {
 
     @FXML
-    private TextField enonceQuestion;
+    private TextArea enonceQuestion;
 
     @FXML
     private TextField baremePos;
 
     @FXML
-    private TextField reponseCorrect;
+    private TextArea reponseCorrect;
 
     @FXML
     private TextField baremeNegDefault;
