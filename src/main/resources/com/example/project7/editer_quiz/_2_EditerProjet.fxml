@@ -1,105 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerProjet">
    <children>
       <VBox prefHeight="600.0" prefWidth="794.0">
          <children>
-            <GridPane hgap="20.0" prefHeight="248.0" prefWidth="744.0">
-              <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="382.0" minWidth="10.0" prefWidth="308.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="527.0" minWidth="10.0" prefWidth="486.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="250.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="451.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="73.0" valignment="CENTER" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="65.0" valignment="CENTER" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="65.0" valignment="CENTER" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <GridPane hgap="20.0" prefHeight="270.0" prefWidth="744.0">
                <children>
-                  <Label prefHeight="12.0" prefWidth="249.0" text="                 Nom du Devoir :">
+                  <Label prefHeight="30.0" prefWidth="180.0" text="Assignment Name :">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="nomDevoir" prefHeight="39.0" prefWidth="432.0" promptText="By Default will be the name of the assaignement" GridPane.columnIndex="1" />
+                  <TextField fx:id="nomDevoir" prefHeight="39.0" prefWidth="231.0" promptText="By Default will be the name of the assignment" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="30.0" right="90.0" />
+                     </GridPane.margin></TextField>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                      <children>
-                        <Label prefHeight="48.0" prefWidth="193.0" text="Nombre Exemplaire:">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="48.0" prefWidth="176.0" text="Number of Copies :" textAlignment="CENTER">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="nombreExemplaire" prefHeight="39.0" prefWidth="101.0" promptText="Exemplaires" />
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="48.0" prefWidth="145.0" text="Random Seed :" textAlignment="CENTER">
+                        <TextField fx:id="nombreExemplaire" prefHeight="39.0" prefWidth="69.0" promptText="Copies" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="48.0" prefWidth="210.0" text=" Random Seed :" textAlignment="CENTER">
                            <font>
                               <Font size="20.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="50.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="randomSeed" prefHeight="42.0" prefWidth="120.0" promptText="Random Seed" />
+                        <TextField fx:id="randomSeed" prefHeight="42.0" prefWidth="76.0" promptText="Random Seed" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                      <children>
-                        <MenuButton fx:id="typeDevoir" alignment="CENTER" mnemonicParsing="false" prefHeight="31.0" prefWidth="237.0" text="Please Select Type Devoir">
+                        <MenuButton fx:id="typeDevoir" alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="256.0" text="Please Select Type Devoir">
                            <HBox.margin>
                               <Insets right="50.0" />
                            </HBox.margin>
                         </MenuButton>
-                        <DatePicker fx:id="dateDevoir" editable="false" prefHeight="31.0" prefWidth="269.0" promptText="Please select the Date Of Devoir" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#handleClicksImportSection" text="Import Question ou Description" />
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClicksAddSection" prefHeight="31.0" prefWidth="261.0" text="Ajouter Question ou Description" textAlignment="CENTER">
-                           <HBox.margin>
-                              <Insets left="50.0" />
-                           </HBox.margin>
-                        </Button>
+                        <DatePicker fx:id="dateDevoir" editable="false" prefHeight="39.0" prefWidth="261.0" promptText="Please select the Date Of Devoir" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
                      <children>
-                        <TextField fx:id="examHeader" promptText="Exam Header" />
-                        <Button mnemonicParsing="false" onAction="#modifyExamHeader" text="..." />
-                        <TextField fx:id="reponseHeader" promptText="Response Header">
+                        <TextField fx:id="examHeader" prefHeight="39.0" prefWidth="219.0" promptText="Exam Header">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></TextField>
+                        <Button mnemonicParsing="false" onAction="#modifyExamHeader" prefHeight="39.0" prefWidth="42.0" text="..." />
+                        <TextField fx:id="reponseHeader" prefHeight="39.0" prefWidth="226.0" promptText="Response Header">
                            <HBox.margin>
                               <Insets left="50.0" />
                            </HBox.margin>
                         </TextField>
-                        <Button mnemonicParsing="false" onAction="#modifyReponseHeader" text="..." />
+                        <Button mnemonicParsing="false" onAction="#modifyReponseHeader" prefHeight="39.0" prefWidth="34.0" text="..." />
                      </children>
                   </HBox>
+                  <Button mnemonicParsing="false" onAction="#handleClicksImportSection" prefHeight="39.0" prefWidth="259.0" style="-fx-background-color: #E4C3CF;" text="Import Question ou Description" GridPane.rowIndex="4" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClicksAddSection" prefHeight="39.0" prefWidth="252.0" style="-fx-background-color: #9E4666;" text="Ajouter Question ou Description" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="38.0" />
+                     </GridPane.margin>
+                  </Button>
                </children>
+               <columnConstraints>
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="382.0" minWidth="10.0" prefWidth="343.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="527.0" minWidth="10.0" prefWidth="381.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="250.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="451.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="73.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="65.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="455.0" minHeight="10.0" prefHeight="65.0" valignment="CENTER" vgrow="SOMETIMES" />
+               </rowConstraints>
                <VBox.margin>
                   <Insets right="50.0" top="20.0" />
                </VBox.margin>
             </GridPane>
-            <TableView fx:id="tableSection" prefHeight="272.0" prefWidth="694.0">
-              <columns>
-                <TableColumn fx:id="numCol" prefWidth="95.33334350585938" text="Num°" />
-                <TableColumn fx:id="typeCol" prefWidth="165.0" text="Type" />
-                  <TableColumn fx:id="enonceCol" prefWidth="299.0" text="Enoncé de section" />
-                  <TableColumn fx:id="actionCol" prefWidth="139.0" text="Action" />
-              </columns>
+            <TableView fx:id="tableSection" prefHeight="299.0" prefWidth="569.0">
+               <columns>
+                  <TableColumn fx:id="numCol" prefWidth="95.33334350585938" text="Num°" />
+                  <TableColumn fx:id="typeCol" prefWidth="82.0" text="Type" />
+                  <TableColumn fx:id="enonceCol" prefWidth="198.0" text="Section Statement" />
+                  <TableColumn fx:id="actionCol" prefWidth="192.0" text="  Action" />
+               </columns>
                <VBox.margin>
-                  <Insets left="50.0" right="50.0" />
+                  <Insets left="85.0" right="140.0" top="10.0" />
                </VBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </TableView>
             <HBox alignment="CENTER" prefHeight="68.0" prefWidth="794.0" spacing="50.0">
                <children>
-                  <JFXButton fx:id="terminer" onAction="#handleClicksSaveProject" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Terminer" textFill="WHITE" />
+                  <JFXButton fx:id="terminer" onAction="#handleClicksSaveProject" prefHeight="39.0" prefWidth="97.0" style="-fx-background-color: #A53860;" text="Done" textFill="WHITE" />
                   <JFXButton fx:id="cancel" onAction="#handleClicksCancelProject" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: fff0f3;" text="Cancel" />
                </children>
             </HBox>
