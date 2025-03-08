@@ -1106,7 +1106,6 @@ public class EditerProjet implements Initializable {
         }
     }
 
-
     private String formatLatex(String text) {
         //todo check if there is something missing
         return text

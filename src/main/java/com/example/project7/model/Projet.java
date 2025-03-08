@@ -30,6 +30,16 @@ public class Projet {
         this.devoir = new ArrayList<>();
     }
 
+
+    public Projet(int idProjet, String nomProjet, String localisationProjet, String typeProjet, Date date) {
+        this.idProjet = idProjet;
+        this.nomProjet = nomProjet;
+        this.localisationProjet = localisationProjet;
+        this.typeProjet = TypeProjet.getTypeProjet(typeProjet);
+        this.date = date;
+        this.devoir = new ArrayList<>();
+    }
+
     public int getIdProjet() {
         return idProjet;
     }

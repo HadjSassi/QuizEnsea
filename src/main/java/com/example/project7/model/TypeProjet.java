@@ -13,4 +13,13 @@ public enum TypeProjet {
     public String getNomProjet() {
         return nomProjet;
     }
+
+    public static TypeProjet getTypeProjet(String nomProjet) {
+        for (TypeProjet type : TypeProjet.values()) {
+            if (type.getNomProjet().equalsIgnoreCase(nomProjet)) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

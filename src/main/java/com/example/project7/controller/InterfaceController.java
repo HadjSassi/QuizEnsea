@@ -1,6 +1,7 @@
 package com.example.project7.controller;
 
 import com.example.project7.FxmlLoader;
+import com.example.project7.controller.edition.OpenProjet;
 import com.example.project7.controller.edition.SelectionTypeProjet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +38,6 @@ public class InterfaceController implements Initializable {
     }
 
 
-
     @FXML
     void handleClicksNew(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
@@ -55,11 +55,13 @@ public class InterfaceController implements Initializable {
     void handleClicksOpen(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
         Parent view = object.getPane("openinterf");
-        //view.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+        OpenProjet controller = (OpenProjet) object.getController();
+        if (controller != null) {
+            controller.setParentPane(anchorpane3);
+        }
         anchorpane3.getChildren().removeAll();
         anchorpane3.getChildren().setAll(view);
     }
-
 
 
     @FXML
