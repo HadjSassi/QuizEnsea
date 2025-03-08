@@ -13,7 +13,7 @@ public class Test extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("editer_quiz/_2_EditerProjet.fxml"));
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Municipal");
+        primaryStage.setTitle("HadjSassi");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
