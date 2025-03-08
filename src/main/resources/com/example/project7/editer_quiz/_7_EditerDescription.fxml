@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerDescription">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerDescription">
    <children>
       <VBox layoutX="-6.0" layoutY="-1.0" prefHeight="600.0" prefWidth="803.0">
          <children>
@@ -34,14 +30,14 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="57.0" prefWidth="803.0">
                <children>
-                  <Button fx:id="addImageButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClickAddImage" prefHeight="39.0" prefWidth="159.0" style="-fx-background-color: #A53860;" text="Add an imag" textFill="WHITE">
+                  <Button fx:id="addImageButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleClickAddImage" prefHeight="39.0" prefWidth="159.0" style="-fx-background-color: #A53860;" text="Add an image" textFill="WHITE">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
-            <TableView fx:id="tableViewImages" prefHeight="340.0" prefWidth="763.0">
+            <TableView fx:id="tableViewImages" editable="true" prefHeight="340.0" prefWidth="763.0">
               <columns>
                 <TableColumn fx:id="cheminCol" prefWidth="272.0" text="Image path" />
                 <TableColumn fx:id="legendCol" prefWidth="317.0" text="Image caption" />

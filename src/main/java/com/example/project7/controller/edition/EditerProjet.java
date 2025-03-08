@@ -124,7 +124,7 @@ public class EditerProjet implements Initializable {
 
         Scene popupScene = new Scene(popupVBox, 350, 250);
         popupStage.setScene(popupScene);
-        popupStage.setTitle("Modifier l'entête d'examen");
+        popupStage.setTitle("Edit the exam header");
         popupStage.show();
     }
 
@@ -161,7 +161,7 @@ public class EditerProjet implements Initializable {
 
         Scene popupScene = new Scene(popupVBox, 350, 250);
         popupStage.setScene(popupScene);
-        popupStage.setTitle("Modifier l'entête de réponse");
+        popupStage.setTitle("Edit Response Header");
         popupStage.show();
     }
 
@@ -926,9 +926,16 @@ public class EditerProjet implements Initializable {
 
             for (ResponseLatex r : responseLatexList) {
                 if (r.isCorrect) {
-                    texcontentBuilder.append("\t\t\t\\bonne{").append(formatLatex(r.reponse)).append("}\n");
+                    if(r.score == maxCorrect)
+                        texcontentBuilder.append("\t\t\t\\bonne{").append(formatLatex(r.reponse)).append("}\n");
+                    else
+                        texcontentBuilder.append("\t\t\t\\bonne{").append(formatLatex(r.reponse)).append("}\\bareme{"+r.score+"}\n");
                 } else {
-                    texcontentBuilder.append("\t\t\t\\mauvaise{").append(formatLatex(r.reponse)).append("}\n");
+                    if(r.score == maxIncorrect)
+                        texcontentBuilder.append("\t\t\t\\mauvaise{").append(formatLatex(r.reponse)).append("}\n");
+                    else
+                        texcontentBuilder.append("\t\t\t\\mauvaise{").append(formatLatex(r.reponse)).append("}\\bareme{"+r.score+"}\n");
+
                 }
             }
             texcontentBuilder.append("\t\t\\end{reponseshoriz}\n");

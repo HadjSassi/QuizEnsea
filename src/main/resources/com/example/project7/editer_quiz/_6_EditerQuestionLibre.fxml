@@ -2,13 +2,10 @@
 
 <?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQuestion">
+<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQuestion">
    <children>
       <VBox prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -70,7 +67,7 @@
                         <Insets right="100.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="60.0" text=".." GridPane.columnIndex="1">
+                  <Button mnemonicParsing="false" onAction="#modfiyQuestion" prefHeight="39.0" prefWidth="60.0" text=".." GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets left="340.0" />
                      </GridPane.margin>

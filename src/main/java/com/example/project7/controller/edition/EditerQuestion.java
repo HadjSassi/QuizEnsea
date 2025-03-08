@@ -9,9 +9,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mysql_connection.MySqlConnection;
 
 import java.net.URL;
@@ -357,5 +364,41 @@ public class EditerQuestion implements Initializable {
             e.printStackTrace();
             System.err.println("Error loading QCU data: " + e.getMessage());
         }
+    }
+
+    public void modfiyQuestion(ActionEvent events) {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initStyle(StageStyle.UTILITY);
+
+        VBox popupVBox = new VBox(10);
+        popupVBox.setPadding(new Insets(20));
+
+        TextArea responseTextArea = new TextArea(enonceQuestion.getText());
+
+
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        Button saveButton = new Button("Modifier");
+        saveButton.setOnAction(event -> {
+            enonceQuestion.setText(responseTextArea.getText());
+
+            popupStage.close();
+        });
+
+        Button closeButton = new Button("Fermer");
+        closeButton.setOnAction(event -> {
+            popupStage.close();
+        });
+
+        buttonBox.getChildren().addAll(saveButton, closeButton);
+
+        popupVBox.getChildren().addAll(responseTextArea, buttonBox);
+
+        Scene popupScene = new Scene(popupVBox, 350, 250);
+        popupStage.setScene(popupScene);
+        popupStage.setTitle("Edit the Question");
+        popupStage.show();
     }
 }
