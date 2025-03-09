@@ -12,6 +12,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -21,7 +25,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mysql_connection.MySqlConnection;
 
+import java.awt.*;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -1182,8 +1190,83 @@ public class EditerProjet implements Initializable {
 
         texcontentBuilder.append(generateFooter());
 
-        //todo remove this line and save a file in the specific folder with the config file.
-        System.out.println(texcontentBuilder.toString());
+        saveToFile(texcontentBuilder.toString());
+
+        generatePDF();
+
+        FxmlLoader object = new FxmlLoader();
+        Parent view = object.getPane("Home");
+        parentPane.getChildren().removeAll();
+        parentPane.getChildren().setAll(view);
+
     }
+
+    private void saveToFile(String content) {
+        File directory = new File(this.projet.getLocalisationProjet()+"\\"+this.projet.getNomProjet());
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(directory, this.devoir.getNomDevoir()+".tex")))) {
+            writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (InputStream styleStream = getClass().getResourceAsStream("/com/example/project7/latex/automultiplechoice.sty")) {
+            if (styleStream == null) {
+                System.err.println("Resource automultiplechoice.sty not found.");
+                return;
+            }
+            // Define the destination path (copy the file alongside the .tex file)
+            File destinationFile = new File(directory, "automultiplechoice.sty");
+            Files.copy(styleStream, destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDF() {
+        // Define the directory and .tex file
+        File directory = new File(this.projet.getLocalisationProjet() + File.separator + this.projet.getNomProjet());
+        File texFile = new File(directory, this.devoir.getNomDevoir() + ".tex");
+
+        // Use the relative filename so the output is created in the same directory
+        ProcessBuilder processBuilder = new ProcessBuilder("pdflatex", texFile.getName());
+        processBuilder.directory(directory);
+        processBuilder.redirectErrorStream(true);  // Merge standard error with standard output
+
+        try {
+            Process process = processBuilder.start();
+            // Optionally, read the output from the pdflatex process
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("PDF generated successfully.");
+                // Attempt to open the PDF file in the default PDF viewer
+                File pdfFile = new File(directory, this.devoir.getNomDevoir() + ".pdf");
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    if (pdfFile.exists()) {
+                        desktop.open(pdfFile);
+                    } else {
+                        System.err.println("PDF file not found: " + pdfFile.getAbsolutePath());
+                    }
+                } else {
+                    System.err.println("Desktop is not supported on this platform.");
+                }
+            } else {
+                System.err.println("PDF generation failed with exit code: " + exitCode);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
