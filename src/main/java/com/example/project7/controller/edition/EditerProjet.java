@@ -240,7 +240,7 @@ public class EditerProjet implements Initializable {
     }
 
     private void processInsertImportedSection(SectionRow sectionRow) {
-        String newSectionId = sectionRow.getId() + "_" + devoir.getIdControle() + "_" + System.currentTimeMillis();
+        String newSectionId = sectionRow.getId() + "_" + System.currentTimeMillis();
         String sectionType = sectionRow.getType();
         int newSectionOrdre = 0;
         try (Connection conn = MySqlConnection.getOracleConnection()) {
@@ -452,17 +452,15 @@ public class EditerProjet implements Initializable {
 
                 } else {
                     intializeHeaders();
-                    String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, nombreExemplaire, randomSeed, examHeader, reponseHeader, projetId, creationDate) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)";
+                    String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, examHeader, reponseHeader, projetId, creationDate) " +
+                            "VALUES (?, ?, ?, ?, ?, CURRENT_DATE)";
 
                     try (PreparedStatement insertStatement = connection.prepareStatement(insertControleQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
                         insertStatement.setString(1, nomDevoir.getText());
                         insertStatement.setString(2, typeDevoir.getText());
-                        insertStatement.setInt(3, Integer.parseInt(nombreExemplaire.getText()));
-                        insertStatement.setInt(4, Integer.parseInt(randomSeed.getText()));
-                        insertStatement.setString(5, examHeader.getText());
-                        insertStatement.setString(6, reponseHeader.getText());
-                        insertStatement.setInt(7, projet.getIdProjet());
+                        insertStatement.setString(3, examHeader.getText());
+                        insertStatement.setString(4, reponseHeader.getText());
+                        insertStatement.setInt(5, projet.getIdProjet());
 
                         int rowsAffected = insertStatement.executeUpdate();
                         if (rowsAffected > 0) {
@@ -564,8 +562,8 @@ public class EditerProjet implements Initializable {
 
         this.examHeader.setText(examHeaderText);
         this.reponseHeader.setText(reponseHeaderText);
-        this.randomSeed.setText("1");
-        this.examHeader.setText("123");
+        this.randomSeed.setText("12345678");
+        this.nombreExemplaire.setText("1");
 
     }
 

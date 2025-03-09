@@ -27,7 +27,7 @@ public class Controle {
         this.nombreExemplaire = 1;
         this.randomSeed = 12345678;
         this.examHeader = "";
-        this . reponseHeader = "";
+        this.reponseHeader = "";
         this.creationDate = new Date(1,1,2000);
     }
 
@@ -127,5 +127,19 @@ public class Controle {
 
     public Date getCreationDate() {
         return creationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Controle{" +
+                "idControle=" + idControle +
+                ", nomDevoir='" + nomDevoir + '\'' +
+                ", typeDevoir=" + typeDevoir +
+                ", fontDevoir=" + fontDevoir +
+                ", formatQuestion=" + formatQuestion +
+                ", nombreExemplaire=" + nombreExemplaire +
+                ", randomSeed=" + randomSeed +
+                ", creationDate=" + creationDate +
+                '}';
     }
 }

@@ -68,7 +68,7 @@ public class EditerSection implements Initializable {
         updateSection( identifiantSection.getText());
 
         if (identifiantSection.getText().trim().equals("")) {
-            String sectionId = "Section#" + numberOfSection;
+            String sectionId = "Section#" + numberOfSection + "_" + devoir.getIdControle() ;
             updateSection(sectionId);
             //identifiantSection.setText(sectionId);
         }
@@ -101,7 +101,7 @@ public class EditerSection implements Initializable {
             if (newContent != null) {
                 sectionPane.getChildren().setAll(newContent);
 
-                String sectionId = "Section#" + numberOfSection;
+                String sectionId = "Section#" + numberOfSection+ "_" + devoir.getIdControle() ;
 
                 currentController = loader.getController();
                 updateSection(sectionId);

@@ -11,10 +11,7 @@ import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -59,16 +56,23 @@ public class OpenProjet implements Initializable {
     public void openProject(ActionEvent event) {
         //get the selected projet from the tableview
         Projet currentProjet = projectTable.getSelectionModel().getSelectedItem();
-        FxmlLoader object = new FxmlLoader();
-        Parent view = object.getPane("editer_quiz/_2_EditerProjet");
-        EditerProjet controller = (EditerProjet) object.getController();
-        if (controller != null) {
-            controller.setProjet(currentProjet);
-            controller.setParentPane(parentPane);
-        }
-        if (parentPane != null) {
-            parentPane.getChildren().removeAll();
-            parentPane.getChildren().setAll(view);
+        if (currentProjet != null) {
+            FxmlLoader object = new FxmlLoader();
+            Parent view = object.getPane("editer_quiz/_2_EditerProjet");
+            EditerProjet controller = (EditerProjet) object.getController();
+            if (controller != null) {
+                controller.setProjet(currentProjet);
+                controller.setParentPane(parentPane);
+            }
+            if (parentPane != null) {
+                parentPane.getChildren().removeAll();
+                parentPane.getChildren().setAll(view);
+            }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("You need to select a project first");
+            alert.setHeaderText("You need to select a project first to open ");
+            alert.showAndWait();
         }
     }
 
@@ -128,7 +132,38 @@ public class OpenProjet implements Initializable {
     }
 
     private void handleDelete(int index){
-        //todo delete the project after warning confirmation!
+        Projet project = projectTable.getItems().get(index);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete project : " + project.getIdProjet() + "?");
+        alert.setContentText("This action cannot be undone, but the files in "+ project.getLocalisationProjet()+" will remain");
+
+        ButtonType confirm = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType cancel = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+        alert.getButtonTypes().setAll(confirm, cancel);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == confirm) {
+                String deleteQuery = "DELETE FROM projet WHERE idProjet = ?";
+                try (Connection connection = MySqlConnection.getOracleConnection();
+                     PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+
+                    statement.setInt(1, project.getIdProjet());
+                    int rowsAffected = statement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        projectTable.getItems().remove(index);
+                    } else {
+                        System.err.println("No project found to delete with identifier: " + project.getIdProjet());
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.err.println("Error deleting project: " + e.getMessage());
+                }
+            }
+        });
     }
 
 }
