@@ -1,6 +1,5 @@
 package com.example.project7.model;
 
-//todo you need to remove from the database the numberOfSections!
 public class Section {
     private String idSection;
     private int ordreSection;

@@ -14,7 +14,17 @@ public enum TypeDevoir {
         this.nomDevoir = nomDevoir;
     }
 
+    public static TypeDevoir getTypeDevoir(String typeDevoir) {
+        for(TypeDevoir td : TypeDevoir.values()) {
+            if(td.getNomDevoir().equals(typeDevoir)) {
+                return td;
+            }
+        }
+        return null;
+    }
+
     public String getNomDevoir() {
         return nomDevoir;
     }
+
 }

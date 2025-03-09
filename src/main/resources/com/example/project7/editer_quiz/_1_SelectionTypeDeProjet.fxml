@@ -39,10 +39,6 @@
                   </Label>
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <MenuButton fx:id="typeProject" mnemonicParsing="false" prefHeight="39.0" prefWidth="486.0" text="Basic Model" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Basic Model" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
                      <GridPane.margin>
                         <Insets bottom="15.0" right="30.0" top="20.0" />
                      </GridPane.margin>

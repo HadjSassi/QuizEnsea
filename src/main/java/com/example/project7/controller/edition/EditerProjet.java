@@ -24,8 +24,8 @@ import mysql_connection.MySqlConnection;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class EditerProjet implements Initializable {
     }
 
     @FXML
-    public void modifyExamHeader(ActionEvent events){
+    public void modifyExamHeader(ActionEvent events) {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.initStyle(StageStyle.UTILITY);
@@ -129,7 +129,7 @@ public class EditerProjet implements Initializable {
     }
 
     @FXML
-    public void modifyReponseHeader(ActionEvent events){
+    public void modifyReponseHeader(ActionEvent events) {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.initStyle(StageStyle.UTILITY);
@@ -249,7 +249,7 @@ public class EditerProjet implements Initializable {
                 stmt.setInt(1, this.devoir.getIdControle());
                 try (ResultSet resultSet = stmt.executeQuery()) {
                     if (resultSet.next()) {
-                        newSectionOrdre = resultSet.getInt("cnt")+1;
+                        newSectionOrdre = resultSet.getInt("cnt") + 1;
                     }
                     String insertQuery = "INSERT INTO section (idSection, controleID, ordreSection)" +
                             " values (?,?,?)";
@@ -425,7 +425,7 @@ public class EditerProjet implements Initializable {
     private void insertControleData() {
         devoir = new Controle();
 
-        String checkControleQuery = "SELECT idControle FROM Controle WHERE projetId = ?";
+        String checkControleQuery = "SELECT idControle, nomDevoir, typeDevoir, nombreExemplaire, randomSeed, examHeader, reponseHeader, creationDate FROM Controle WHERE projetId = ?";
 
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkControleQuery)) {
@@ -433,8 +433,23 @@ public class EditerProjet implements Initializable {
 
             try (ResultSet resultSet = checkStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    int idControl = resultSet.getInt("idControle");
-                    devoir.setIdControle(idControl);
+                    devoir.setIdControle(resultSet.getInt("idControle"));
+                    devoir.setNomDevoir(resultSet.getString("nomDevoir"));
+                    devoir.setTypeDevoir(resultSet.getString("typeDevoir"));
+                    devoir.setNombreExemplaire(resultSet.getInt("nombreExemplaire"));
+                    devoir.setRandomSeed(resultSet.getInt("randomSeed"));
+                    devoir.setExamHeader(resultSet.getString("examHeader"));
+                    devoir.setReponseHeader(resultSet.getString("reponseHeader"));
+                    devoir.setCreationDate(resultSet.getDate("creationDate"));
+
+                    this.nomDevoir.setText(devoir.getNomDevoir());
+                    this.typeDevoir.setText(devoir.getTypeDevoir());
+                    this.nombreExemplaire.setText(String.valueOf(devoir.getNombreExemplaire()));
+                    this.randomSeed.setText(String.valueOf(devoir.getRandomSeed()));
+                    this.examHeader.setText(devoir.getExamHeader());
+                    this.reponseHeader.setText(devoir.getReponseHeader());
+                    this.dateDevoir.setValue(devoir.getCreationDate().toLocalDate());
+
                 } else {
                     intializeHeaders();
                     String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, nombreExemplaire, randomSeed, examHeader, reponseHeader, projetId, creationDate) " +
@@ -443,8 +458,8 @@ public class EditerProjet implements Initializable {
                     try (PreparedStatement insertStatement = connection.prepareStatement(insertControleQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
                         insertStatement.setString(1, nomDevoir.getText());
                         insertStatement.setString(2, typeDevoir.getText());
-                        insertStatement.setInt(3, 1);
-                        insertStatement.setInt(4, 12345678);
+                        insertStatement.setInt(3, Integer.parseInt(nombreExemplaire.getText()));
+                        insertStatement.setInt(4, Integer.parseInt(randomSeed.getText()));
                         insertStatement.setString(5, examHeader.getText());
                         insertStatement.setString(6, reponseHeader.getText());
                         insertStatement.setInt(7, projet.getIdProjet());
@@ -474,22 +489,7 @@ public class EditerProjet implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //todo remove these five following lines!
-        projet = new Projet("Test1", "C:\\Users\\Hadj Sassi\\Desktop\\ENSEA\\2024-2025\\Project\\Nissrine", TypeProjet.BasicModel);
-        projet.setIdProjet(1);
-        projet.setDate(new Date());
-        nomDevoir.setText(this.projet.getNomProjet());
-        randomSeed.setText("12345678");
-        nombreExemplaire.setText("1");
-        intializeHeaders();
-        //todo till here
-        this.insertControleData();
-        fetchAndUpdateTableView();
-
-
         dateDevoir.setValue(LocalDate.now());
-
-
 
         for (TypeDevoir type : TypeDevoir.values()) {
             MenuItem menuItem = new MenuItem(type.getNomDevoir());
@@ -540,7 +540,7 @@ public class EditerProjet implements Initializable {
         loadSectionData();
     }
 
-    private void intializeHeaders(){
+    private void intializeHeaders() {
         String examHeaderText =
                 "Dans ce document, vous trouverez d'abord les questions puis ensuite les feuilles de réponses (à rendre). " +
                         "In this document, you will first find the questions then the pages for the answers.\n" +
@@ -564,6 +564,8 @@ public class EditerProjet implements Initializable {
 
         this.examHeader.setText(examHeaderText);
         this.reponseHeader.setText(reponseHeaderText);
+        this.randomSeed.setText("1");
+        this.examHeader.setText("123");
 
     }
 
@@ -926,15 +928,15 @@ public class EditerProjet implements Initializable {
 
             for (ResponseLatex r : responseLatexList) {
                 if (r.isCorrect) {
-                    if(r.score == maxCorrect)
+                    if (r.score == maxCorrect)
                         texcontentBuilder.append("\t\t\t\\bonne{").append(formatLatex(r.reponse)).append("}\n");
                     else
-                        texcontentBuilder.append("\t\t\t\\bonne{").append(formatLatex(r.reponse)).append("}\\bareme{"+r.score+"}\n");
+                        texcontentBuilder.append("\t\t\t\\bonne{").append(formatLatex(r.reponse)).append("}\\bareme{" + r.score + "}\n");
                 } else {
-                    if(r.score == maxIncorrect)
+                    if (r.score == maxIncorrect)
                         texcontentBuilder.append("\t\t\t\\mauvaise{").append(formatLatex(r.reponse)).append("}\n");
                     else
-                        texcontentBuilder.append("\t\t\t\\mauvaise{").append(formatLatex(r.reponse)).append("}\\bareme{"+r.score+"}\n");
+                        texcontentBuilder.append("\t\t\t\\mauvaise{").append(formatLatex(r.reponse)).append("}\\bareme{" + r.score + "}\n");
 
                 }
             }
@@ -1033,18 +1035,18 @@ public class EditerProjet implements Initializable {
         }
     }
 
-    private void verifyNomDevoir(){
-        if(this.nomDevoir.getText().trim().isEmpty())
+    private void verifyNomDevoir() {
+        if (this.nomDevoir.getText().trim().isEmpty())
             nomDevoir.setText(this.projet.getNomProjet());
     }
 
-    private void verifyNombreExemplaire(){
-        if(this.nombreExemplaire.getText().trim().isEmpty())
+    private void verifyNombreExemplaire() {
+        if (this.nombreExemplaire.getText().trim().isEmpty())
             this.nombreExemplaire.setText("1");
     }
 
-    private void verifyRandomSeed(){
-        if(this.randomSeed.getText().trim().isEmpty())
+    private void verifyRandomSeed() {
+        if (this.randomSeed.getText().trim().isEmpty())
             this.randomSeed.setText("12345678");
     }
 
@@ -1056,12 +1058,12 @@ public class EditerProjet implements Initializable {
         alert.showAndWait();
     }
 
-    private void saveProject(){
+    private void saveProject() {
         verifyNomDevoir();
         verifyRandomSeed();
         verifyNombreExemplaire();
 
-        int exemplaire,seed;
+        int exemplaire, seed;
 
         try {
             exemplaire = Integer.parseInt(nombreExemplaire.getText().trim());
@@ -1094,8 +1096,7 @@ public class EditerProjet implements Initializable {
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows > 0) {
-                //todo remove the following comment and let the content
-                //showAlert("Succès", "Le contrôle a été ajouté avec succès.");
+                showAlert("Succès", "Le contrôle a été ajouté avec succès.");
             } else {
                 showAlert("Erreur", "Échec de la mise à jour du contrôle.");
             }

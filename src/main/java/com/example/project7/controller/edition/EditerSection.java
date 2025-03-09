@@ -147,9 +147,6 @@ public class EditerSection implements Initializable {
              PreparedStatement fetchStatement = connection.prepareStatement(fetchSectionsQuery);
              PreparedStatement updateStatement = connection.prepareStatement(updateOrderQuery)) {
 
-            //todo remove the following line
-            this.devoir.setIdControle(1);
-
             fetchStatement.setInt(1, this.devoir.getIdControle());
             try (ResultSet resultSet = fetchStatement.executeQuery()) {
                 int newOrder = 1;
