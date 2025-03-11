@@ -563,7 +563,6 @@ public class EditerProjet implements Initializable {
         this.reponseHeader.setText(reponseHeaderText);
         this.randomSeed.setText("12345678");
         this.nombreExemplaire.setText("1");
-
     }
 
     private void handleMoveUp(int index) {
@@ -1027,9 +1026,10 @@ public class EditerProjet implements Initializable {
         }
     }
 
-    private void verifyNomDevoir() {
+    private String verifyNomDevoir() {
         if (this.nomDevoir.getText().trim().isEmpty())
             nomDevoir.setText(this.projet.getNomProjet());
+        return this.nomDevoir.getText();
     }
 
     private void verifyNombreExemplaire() {
@@ -1073,6 +1073,8 @@ public class EditerProjet implements Initializable {
         String updateQuery = "UPDATE Controle SET nomDevoir = ?, typeDevoir = ?, nombreExemplaire = ?, randomSeed = ?, " +
                 "examHeader = ?, reponseHeader = ?, creationDate = ? WHERE idControle = ?";
 
+        String updateProjectQuery = "UPDATE projet SET creationDate = CURRENT_DATE WHERE idProjet = ? ";
+
         try (Connection conn = MySqlConnection.getOracleConnection();
              PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
 
@@ -1089,8 +1091,31 @@ public class EditerProjet implements Initializable {
 
             if (affectedRows > 0) {
                 showAlert("Succès", "Le contrôle a été ajouté avec succès.");
+                this.devoir.setNomDevoir(nomDevoir.getText());
+                this.devoir.setTypeDevoir(typeDevoir.getText());
+                this.devoir.setNombreExemplaire(exemplaire);
+                this.devoir.setRandomSeed(seed);
+                this.devoir.setExamHeader(examHeader.getText());
+                this.devoir.setReponseHeader(reponseHeader.getText());
+                this.devoir.setCreationDate(Date.valueOf(dateDevoir.getValue().toString()));
             } else {
                 showAlert("Erreur", "Échec de la mise à jour du contrôle.");
+            }
+
+        } catch (SQLException e) {
+            showAlert("Erreur", "Erreur lors de la mise à jour du contrôle : " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        try (Connection conn = MySqlConnection.getOracleConnection();
+             PreparedStatement pstmt = conn.prepareStatement(updateProjectQuery)) {
+
+            pstmt.setInt(1,projet.getIdProjet() );
+
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows <= 0) {
+                showAlert("Erreur", "Il y'a un erreur de mise à jour de projet!");
             }
 
         } catch (SQLException e) {
@@ -1188,12 +1213,11 @@ public class EditerProjet implements Initializable {
     }
 
     private void saveToFile(String content) {
-        File directory = new File(this.projet.getLocalisationProjet()+"\\"+this.projet.getNomProjet());
+        File directory = new File(this.projet.getLocalisationProjet() + "\\" + this.projet.getNomProjet());
         if (!directory.exists()) {
             directory.mkdir();
         }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(directory, this.devoir.getNomDevoir()+".tex")))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(directory, verifyNomDevoir()+ ".tex")))) {
             writer.write(content);
         } catch (IOException e) {
             e.printStackTrace();

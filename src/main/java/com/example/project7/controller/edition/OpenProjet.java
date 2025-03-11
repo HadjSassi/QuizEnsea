@@ -104,7 +104,7 @@ public class OpenProjet implements Initializable {
     }
 
     public void fetchAndUpdateTableView() {
-        String query = "SELECT * FROM projet";
+        String query = "SELECT * FROM projet order by creationDate desc";
 
         ObservableList<Projet> sectionData = FXCollections.observableArrayList();
 
