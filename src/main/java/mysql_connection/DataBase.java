@@ -111,15 +111,10 @@ public class DataBase {
                 "idImage INT AUTO_INCREMENT PRIMARY KEY, " +
                 "descriptionID INT, " +
                 "imagePath VARCHAR(255), " +
+                "legendText VARCHAR(255), " +
+                "imageWidth FLOAT,"+
                 "FOREIGN KEY (descriptionID) REFERENCES Description(idDescription) ON DELETE CASCADE);";
         statement.executeUpdate(createDescriptionImagesQuery);
-
-        String createDescriptionLegendsQuery = "CREATE TABLE IF NOT EXISTS Description_Legends (" +
-                "idLegend INT AUTO_INCREMENT PRIMARY KEY, " +
-                "descriptionID INT, " +
-                "legendText VARCHAR(255), " +
-                "FOREIGN KEY (descriptionID) REFERENCES Description(idDescription) ON DELETE CASCADE);";
-        statement.executeUpdate(createDescriptionLegendsQuery);
 
         String createFontDevoirQuery = "CREATE TABLE IF NOT EXISTS FontDevoir (" +
                 "idFontDevoir INT AUTO_INCREMENT PRIMARY KEY, " +

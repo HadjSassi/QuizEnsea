@@ -10,7 +10,6 @@ select * from QCM_Reponses;
 select * from QuestionLibre;
 select * from Description;
 select * from Description_Images;
-select * from Description_Legends;
 select * from FontDevoir;
 select * from FormatQuestion;
 select * from Reponse;
@@ -26,7 +25,6 @@ desc QCM_Reponses;
 desc QuestionLibre;
 desc Description;
 desc Description_Images;
-desc Description_Legends;
 desc FontDevoir;
 desc FormatQuestion;
 desc Reponse;
@@ -106,19 +104,15 @@ CREATE TABLE IF NOT EXISTS Description
     FOREIGN KEY (sectionID) REFERENCES Section (idSection) ON DELETE CASCADE
 );
 
+drop table description_images;
+
 CREATE TABLE IF NOT EXISTS Description_Images
 (
     idImage       INT AUTO_INCREMENT PRIMARY KEY,
     descriptionID INT,
     imagePath     VARCHAR(255),
-    FOREIGN KEY (descriptionID) REFERENCES Description (idDescription) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS Description_Legends
-(
-    idLegend      INT AUTO_INCREMENT PRIMARY KEY,
-    descriptionID INT,
     legendText    VARCHAR(255),
+    imageWidth      FLOAT,
     FOREIGN KEY (descriptionID) REFERENCES Description (idDescription) ON DELETE CASCADE
 );
 

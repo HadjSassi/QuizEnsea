@@ -44,6 +44,9 @@ public class EditerDescription implements Initializable {
     private TableColumn<RowTableSection ,Void> actionCol;
 
     @FXML
+    private TableColumn<RowTableSection ,Void> witdthCol;
+
+    @FXML
     private Button cancelDescription;
 
     private Section section;
@@ -100,12 +103,15 @@ public class EditerDescription implements Initializable {
             description.setTexte(descriptionTextArea.getText());
             ArrayList<String> imagePaths = new ArrayList<>();
             ArrayList<String> imageLegends = new ArrayList<>();
+            ArrayList<Double> imageWidths = new ArrayList<>();
             for (RowTableSection row : tableViewImages.getItems()) {
                 imagePaths.add(row.getChemin());
                 imageLegends.add(row.getLegend());
+                imageWidths.add(row.getWidth());
             }
             description.setImages(imagePaths);
             description.setLegends(imageLegends);
+            description.setWidths(imageWidths);
             createSection();
             createDescription();
             this.section.getDevoir().getController().fetchAndUpdateTableView();
@@ -156,6 +162,34 @@ public class EditerDescription implements Initializable {
                 } else {
                     HBox buttons = new HBox(5, supprimerButton);
                     setGraphic(buttons);
+                }
+            }
+        });
+
+        // Width Column with ComboBox
+        witdthCol.setCellFactory(col -> new TableCell<RowTableSection, Void>() {
+            private final ComboBox<Double> widthComboBox = new ComboBox<>();
+
+            {
+                widthComboBox.getItems().addAll(2.0, 1.0, 0.75, 0.5, 0.25);
+                widthComboBox.setOnAction(event -> {
+                    RowTableSection row = getTableView().getItems().get(getIndex());
+                    row.setWidth(widthComboBox.getValue());
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    RowTableSection row = getTableView().getItems().get(getIndex());
+                    if (row.getWidth() == 0) {
+                        row.setWidth(1.0);
+                    }
+                    widthComboBox.setValue(row.getWidth());
+                    setGraphic(widthComboBox);
                 }
             }
         });
@@ -227,8 +261,7 @@ public class EditerDescription implements Initializable {
 
     private void createDescription() {
         String insertDescriptionQuery = "INSERT INTO description (texte, sectionID) VALUES (?, ?)";
-        String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath) VALUES (?, ?)";
-        String insertLegendQuery = "INSERT INTO Description_Legends (descriptionID, legendText) VALUES (?, ?)";
+        String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath,legendText,imageWidth) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = MySqlConnection.getOracleConnection()) {
             connection.setAutoCommit(false);
@@ -245,22 +278,16 @@ public class EditerDescription implements Initializable {
                             description.setIdSection(String.valueOf(descriptionID));
 
                             try (PreparedStatement insertImageStmt = connection.prepareStatement(insertImageQuery)) {
-                                for (String image : description.getImages()) {
+                                for (int i = 0 ; i < description.getImages().size(); i++) {
                                     insertImageStmt.setInt(1, descriptionID);
-                                    insertImageStmt.setString(2, image);
+                                    insertImageStmt.setString(2, description.getImages().get(i));
+                                    insertImageStmt.setString(3, description.getLegends().get(i));
+                                    insertImageStmt.setDouble(4, description.getWidths().get(i));
                                     insertImageStmt.addBatch();
                                 }
                                 insertImageStmt.executeBatch();
                             }
 
-                            try (PreparedStatement insertLegendStmt = connection.prepareStatement(insertLegendQuery)) {
-                                for (String legend : description.getLegends()) {
-                                    insertLegendStmt.setInt(1, descriptionID);
-                                    insertLegendStmt.setString(2, legend);
-                                    insertLegendStmt.addBatch();
-                                }
-                                insertLegendStmt.executeBatch();
-                            }
 
                             connection.commit();
                         }
@@ -278,8 +305,7 @@ public class EditerDescription implements Initializable {
 
     private void loadFieldFromSectionId(String idSection) {
         String fetchQCUQuery = "SELECT * FROM description WHERE sectionID = ?";
-        String fetchImagesQuery = "SELECT imagePath FROM Description_Images WHERE descriptionID = ?";
-        String fetchLegendsQuery = "SELECT legendText FROM Description_Legends WHERE descriptionID = ?";
+        String fetchImagesQuery = "SELECT imagePath,legendText,imageWidth FROM Description_Images WHERE descriptionID = ?";
         int idDescription = 0;
         try (Connection connection = MySqlConnection.getOracleConnection();
              PreparedStatement qcuStatement = connection.prepareStatement(fetchQCUQuery)){
@@ -293,29 +319,30 @@ public class EditerDescription implements Initializable {
                 idDescription = resultSet.getInt("idDescription");
                 descriptionTextArea.setText(description.getTexte());
                 ArrayList<String> images = new ArrayList<>();
+                ArrayList<String> legends = new ArrayList<>();
+                ArrayList<Double> widths = new ArrayList<>();
                 try (PreparedStatement imageStatement = connection.prepareStatement(fetchImagesQuery)) {
                     imageStatement.setInt(1, idDescription);
                     ResultSet imageResultSet = imageStatement.executeQuery();
                     while (imageResultSet.next()) {
                         String imagePath = imageResultSet.getString("imagePath");
+                        String imageLegend = imageResultSet.getString("legendText");
+                        Double imageWidth = imageResultSet.getDouble("imageWidth");
                         images.add(imagePath);
+                        legends.add(imageLegend);
+                        widths.add(imageWidth);
                     }
                 }
                 description.setImages(images);
-                ArrayList<String> legends = new ArrayList<>();
-                try (PreparedStatement legendStatement = connection.prepareStatement(fetchLegendsQuery)) {
-                    legendStatement.setInt(1, idDescription);
-                    ResultSet legendResultSet = legendStatement.executeQuery();
-                    while (legendResultSet.next()) {
-                        legends.add(legendResultSet.getString("legendText"));
-                    }
-                }
                 description.setLegends(legends);
+                description.setWidths(widths);
+
                 ObservableList<RowTableSection> tableData = FXCollections.observableArrayList();
                 for (int i = 0; i < images.size(); i++) {
                     String imagePath = images.get(i);
                     String legend = (i < legends.size()) ? legends.get(i) : "";
-                    tableData.add(new RowTableSection(imagePath, legend, 0));
+                    double imageWidth = (i < widths.size()) ? widths.get(i) : 1.0f;
+                    tableData.add(new RowTableSection(imagePath, legend, 0,imageWidth));
                 }
                 tableViewImages.setItems(tableData);
             }

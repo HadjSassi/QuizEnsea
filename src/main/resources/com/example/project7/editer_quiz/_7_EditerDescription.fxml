@@ -39,9 +39,10 @@
             </HBox>
             <TableView fx:id="tableViewImages" editable="true" prefHeight="340.0" prefWidth="763.0">
               <columns>
-                <TableColumn fx:id="cheminCol" prefWidth="272.0" text="Image path" />
-                <TableColumn fx:id="legendCol" prefWidth="317.0" text="Image caption" />
-                  <TableColumn fx:id="actionCol" prefWidth="173.0" text="Action on Image" />
+                <TableColumn fx:id="cheminCol" prefWidth="86.99998092651367" text="Image path" />
+                <TableColumn fx:id="legendCol" prefWidth="452.0000228881836" text="Image caption" />
+                  <TableColumn fx:id="witdthCol" prefWidth="121.33331298828125" text="Image Width" />
+                  <TableColumn fx:id="actionCol" prefWidth="100.33331298828125" text="Action on Image" />
               </columns>
                <VBox.margin>
                   <Insets left="20.0" right="20.0" top="30.0" />

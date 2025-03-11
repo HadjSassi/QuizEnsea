@@ -323,19 +323,10 @@ public class EditerProjet implements Initializable {
                     }
 
                     if (newDescriptionId != -1) {
-                        String insertDescriptionImagesQuery = "INSERT INTO description_images (descriptionID, imagePath) " +
-                                "SELECT ?, imagePath FROM description_images WHERE descriptionID = ?";
+                        String insertDescriptionImagesQuery = "INSERT INTO description_images (descriptionID, imagePath, legendText, imageWidth) " +
+                                "SELECT ?, imagePath, legendText, imageWidth FROM description_images WHERE descriptionID = ?";
 
                         try (PreparedStatement stmt2 = conn.prepareStatement(insertDescriptionImagesQuery)) {
-                            stmt2.setInt(1, newDescriptionId);
-                            stmt2.setInt(2, getOldDescriptionID(sectionRow.getId()));
-                            stmt2.executeUpdate();
-                        }
-
-                        String insertDescriptionLegendsQuery = "INSERT INTO description_legends (descriptionID, legendText) " +
-                                "SELECT ?, legendText FROM description_legends WHERE descriptionID = ?";
-
-                        try (PreparedStatement stmt2 = conn.prepareStatement(insertDescriptionLegendsQuery)) {
                             stmt2.setInt(1, newDescriptionId);
                             stmt2.setInt(2, getOldDescriptionID(sectionRow.getId()));
                             stmt2.executeUpdate();
@@ -1007,35 +998,30 @@ public class EditerProjet implements Initializable {
     }
 
     private void processImagesAndLegends(Connection conn, int idDescription, StringBuilder texcontentBuilder) throws SQLException {
-        PreparedStatement psImages = conn.prepareStatement("SELECT idImage, imagePath FROM Description_Images WHERE descriptionID = ?");
+        PreparedStatement psImages = conn.prepareStatement("SELECT idImage, imagePath, legendText, imageWidth FROM Description_Images WHERE descriptionID = ?");
         psImages.setInt(1, idDescription);
         ResultSet rsImages = psImages.executeQuery();
 
-        PreparedStatement psLegends = conn.prepareStatement("SELECT idLegend, legendText FROM Description_Legends WHERE descriptionID = ?");
-        psLegends.setInt(1, idDescription);
-        ResultSet rsLegends = psLegends.executeQuery();
 
         List<String> images = new ArrayList<>();
         List<String> legends = new ArrayList<>();
+        List<Double> widths = new ArrayList<>();
 
         while (rsImages.next()) {
             images.add(rsImages.getString("imagePath"));
+            legends.add(rsImages.getString("legendText"));
+            widths.add(rsImages.getDouble("imageWidth"));
         }
 
-        while (rsLegends.next()) {
-            legends.add(rsLegends.getString("legendText"));
-        }
 
         rsImages.close();
         psImages.close();
-        rsLegends.close();
-        psLegends.close();
 
         for (int i = 0; i < images.size(); i++) {
             String imagePath = images.get(i).replace("\\", "/");
             texcontentBuilder.append("\\begin{figure}[H]\n");
             texcontentBuilder.append("    \\centering\n");
-            texcontentBuilder.append("    \\includegraphics[width=1\\linewidth]{\\detokenize{").append(imagePath).append("}}\n");
+            texcontentBuilder.append("    \\includegraphics[width=").append(widths.get(i)).append("\\linewidth]{\\detokenize{").append(imagePath).append("}}\n");
             texcontentBuilder.append("    \\caption{\\detokenize{").append(legends.get(i)).append("}}\n");
             texcontentBuilder.append("\\end{figure}\n");
         }

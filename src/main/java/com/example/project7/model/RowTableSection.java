@@ -7,6 +7,7 @@ public class RowTableSection {
     private int ordre;
     private String chemin;
     private String legend;
+    private double width;
 
     public RowTableSection(String idSection, String type, String question, int ordre) {
         this.idSection = idSection;
@@ -19,6 +20,13 @@ public class RowTableSection {
         this.chemin = chemin;
         this.legend = legend;
         this.ordre = ordre;
+    }
+
+    public RowTableSection(String chemin, String legend, int ordre, double width) {
+        this.chemin = chemin;
+        this.legend = legend;
+        this.ordre = ordre;
+        this.width = width;
     }
 
     public String getIdSection() {
@@ -67,5 +75,13 @@ public class RowTableSection {
 
     public void setLegend(String legend) {
         this.legend = legend;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(Double width) {
+        this.width = width;
     }
 }
