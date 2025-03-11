@@ -7,13 +7,13 @@ public enum TypeNumero {
     Majuscule("Majuscule"),
     Miniscule("Miniscule");
 
-    private final String nom;
+    private final String value;
 
     TypeNumero(String nom) {
-        this.nom = nom;
+        this.value = nom;
     }
 
-    public String getNom() {
-        return nom;
+    public String getValue() {
+        return value;
     }
 }

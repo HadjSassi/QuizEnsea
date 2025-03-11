@@ -1,6 +1,7 @@
 package com.example.project7.controller;
 
 import com.example.project7.FxmlLoader;
+import com.example.project7.controller.edition.OpenProjet;
 import com.example.project7.controller.edition.SelectionTypeProjet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,22 +21,12 @@ import java.util.ResourceBundle;
 public class InterfaceController implements Initializable {
 
     @FXML
-    private AnchorPane anchorpane1;
-
-    @FXML
-    private BorderPane mainPane;
-
-    @FXML
     private AnchorPane anchorpane3;
-
-    @FXML
-    private AnchorPane anchorpane2;
 
     @FXML
     public Label name;
 
 
-    //todo for the Acceuil Window
     @FXML
     void handleClicksAccueil(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
@@ -45,7 +36,6 @@ public class InterfaceController implements Initializable {
         anchorpane3.getChildren().setAll(view);
 
     }
-
 
 
     @FXML
@@ -61,19 +51,19 @@ public class InterfaceController implements Initializable {
     }
 
 
-    //todo for the open window
     @FXML
     void handleClicksOpen(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
         Parent view = object.getPane("openinterf");
-        //view.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+        OpenProjet controller = (OpenProjet) object.getController();
+        if (controller != null) {
+            controller.setParentPane(anchorpane3);
+        }
         anchorpane3.getChildren().removeAll();
         anchorpane3.getChildren().setAll(view);
     }
 
 
-
-    //todo for the settings window
     @FXML
     void handleClicksSetting(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
@@ -84,7 +74,6 @@ public class InterfaceController implements Initializable {
     }
 
 
-    //todo for the help window
     @FXML
     void handleClicksHelp(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();

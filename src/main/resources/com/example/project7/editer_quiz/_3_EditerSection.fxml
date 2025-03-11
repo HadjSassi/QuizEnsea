@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorpane3" prefHeight="620.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerSection">
+<AnchorPane fx:id="anchorpane3" prefHeight="620.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerSection">
     <children>
         <VBox prefHeight="709.0" prefWidth="794.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -24,10 +19,10 @@
                         <TextField fx:id="identifiantSection" onKeyTyped="#handleInputIdentifier" prefHeight="31.0" prefWidth="196.0" promptText="Please enter the section identifier!" />
                         <SplitMenuButton fx:id="typeSection" mnemonicParsing="false" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #A3B18A;" text="Please Select type of the Section ">
                             <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeDescription" text="Description" />
                                 <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCU" text="QCU" />
                                 <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCM" text="QCM" />
                         <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeQuestion" text="Free Question" />
-                        <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeDescription" text="Description" />
                             </items>
                         </SplitMenuButton>
                </children>

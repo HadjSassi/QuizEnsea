@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
 <?import com.jfoenix.controls.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.SelectionTypeProjet">
+<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.SelectionTypeProjet">
    <children>
       <VBox prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -42,10 +39,6 @@
                   </Label>
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <MenuButton fx:id="typeProject" mnemonicParsing="false" prefHeight="39.0" prefWidth="486.0" text="Basic Model" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Basic Model" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
                      <GridPane.margin>
                         <Insets bottom="15.0" right="30.0" top="20.0" />
                      </GridPane.margin>
@@ -55,6 +48,14 @@
                         <Insets right="30.0" />
                      </GridPane.margin>
                   </TextField>
+                  <Label fx:id="locationLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="309.0" layoutY="109.0" prefHeight="0.0" prefWidth="439.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="80.0" />
+                     </GridPane.margin>
+                  </Label>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <TextField fx:id="location" prefHeight="39.0" prefWidth="380.0" promptText="Please choose the project location" />
@@ -62,7 +63,7 @@
                            <graphic>
                               <ImageView fitHeight="28.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../img/img_5.png" />
+                                    <Image url="@../images/img_5.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
@@ -71,6 +72,14 @@
                         <Insets right="30.0" />
                      </GridPane.margin>
                   </HBox>
+                  <Label fx:id="nameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="130.0" layoutY="69.0" prefHeight="0.0" prefWidth="439.0" textFill="RED" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="80.0" />
+                     </GridPane.margin>
+                  </Label>
                </children>
                <VBox.margin>
                   <Insets right="20.0" top="20.0" />

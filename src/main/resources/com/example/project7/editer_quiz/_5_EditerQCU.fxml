@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQCU">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQCU">
    <children>
       <VBox layoutX="-2.0" layoutY="-1.0" prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -19,8 +14,8 @@
                   <Pane prefHeight="100.0" prefWidth="796.0">
                      <children>
                         <Label layoutX="38.0" layoutY="37.0" prefHeight="27.0" prefWidth="119.0" text="The question :" />
-                        <TextField fx:id="enonceQuestion" layoutX="224.0" layoutY="31.0" prefHeight="39.0" prefWidth="471.0" promptText="Please enter the statement of the question !" />
-                        <Button layoutX="708.0" layoutY="31.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="14.0" text="Button" />
+                        <TextArea fx:id="enonceQuestion" layoutX="224.0" layoutY="31.0" prefHeight="39.0" prefWidth="446.0" promptText="Please enter the statement of the question !" />
+                        <Button layoutX="684.0" layoutY="31.0" mnemonicParsing="false" onAction="#modfiyQuestion" prefHeight="39.0" prefWidth="48.0" text="..." />
                      </children>
                   </Pane>
                </children>
@@ -29,9 +24,9 @@
                <children>
                   <Pane prefHeight="0.0" prefWidth="744.0">
                      <children>
-                        <TextField fx:id="reponseCorrect" layoutX="293.0" layoutY="41.0" prefHeight="39.0" prefWidth="378.0" promptText="Please enter the correct answer!" />
-                        <Button layoutX="685.0" layoutY="41.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="14.0" text="Button" />
-                        <TextField fx:id="baremePos" layoutX="199.0" layoutY="41.0" prefHeight="39.0" prefWidth="76.0" promptText="1,2,3,...." />
+                        <TextArea fx:id="reponseCorrect" layoutX="293.0" layoutY="41.0" prefHeight="39.0" prefWidth="350.0" promptText="Please enter the correct answer!" />
+                        <Button layoutX="661.0" layoutY="41.0" mnemonicParsing="false" onAction="#modifyCorrectAnswer" prefHeight="39.0" prefWidth="48.0" text="..." />
+                        <TextField fx:id="baremePos" layoutX="199.0" layoutY="41.0" onKeyTyped="#handleInputNumber" prefHeight="39.0" prefWidth="76.0" promptText="1,2,3,...." />
                         <Label layoutX="14.0" layoutY="27.0" prefHeight="67.0" prefWidth="185.0" text="Grading scale for the &#10;correct answers :" />
                      </children>
                   </Pane>
@@ -41,23 +36,24 @@
                <children>
                   <Pane prefHeight="14.0" prefWidth="744.0">
                      <children>
-                        <TextField fx:id="reponseCorrect1" layoutX="291.0" layoutY="8.0" prefHeight="39.0" prefWidth="378.0" promptText="Please enter the incorrect answer!" />
-                        <Button layoutX="684.0" layoutY="8.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="14.0" text="Button" />
-                        <TextField fx:id="baremeNegDefault" layoutX="199.0" layoutY="8.0" prefHeight="39.0" prefWidth="76.0" promptText="0,-1,...." />
+                        <TextField fx:id="baremeNegDefault" layoutX="199.0" layoutY="8.0" onKeyTyped="#handleInputNumber" prefHeight="39.0" prefWidth="76.0" promptText="0,-1,...." />
                         <Label layoutX="14.0" layoutY="7.0" prefHeight="67.0" prefWidth="179.0" text="Grading scale for the &#10;incorrect answers :" />
-                        <Button fx:id="ajouterMauvaiseReponse" layoutX="199.0" layoutY="55.0" mnemonicParsing="false" onAction="#handleClicksAddWrongResponce" prefHeight="31.0" prefWidth="236.0" text="Add Incorrect answer" textAlignment="CENTER" />
+                        <Button fx:id="ajouterMauvaiseReponse" layoutX="305.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleClicksAddWrongResponce" prefHeight="31.0" prefWidth="339.0" text="Add an Incorrect answer and its Grade" textAlignment="CENTER" />
                      </children>
                   </Pane>
                </children>
             </HBox>
             <HBox prefHeight="302.0" prefWidth="774.0" spacing="10.0">
                <children>
-                  <TableView fx:id="incorrectTableView" prefHeight="233.0" prefWidth="775.0">
+                  <TableView fx:id="incorrectTableView" editable="true" prefHeight="266.0" prefWidth="745.0">
                      <columns>
-                        <TableColumn fx:id="responseColumn" prefWidth="601.0" text="Answer" />
-                        <TableColumn fx:id="scoreColumn" prefWidth="94.0" text="Grade" />
-                        <TableColumn prefWidth="79.0" text="Action" />
+                        <TableColumn fx:id="responseColumn" prefWidth="542.9999860525131" text="Answer" />
+                        <TableColumn fx:id="scoreColumn" minWidth="0.0" prefWidth="46.3333740234375" text="Grade" />
+                        <TableColumn fx:id="actionColumn" prefWidth="150.0" text="Action" />
                      </columns>
+                     <HBox.margin>
+                        <Insets left="25.0" right="10.0" />
+                     </HBox.margin>
                   </TableView>
                </children>
                <VBox.margin>

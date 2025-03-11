@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import com.jfoenix.controls.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQCM">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQCM">
    <children>
       <VBox layoutX="-2.0" layoutY="-1.0" prefHeight="600.0" prefWidth="794.0">
          <children>
@@ -19,43 +15,49 @@
                   <Pane prefHeight="100.0" prefWidth="796.0">
                      <children>
                         <Label layoutX="76.0" layoutY="40.0" prefHeight="27.0" prefWidth="115.0" text="The question :" />
-                        <TextField fx:id="enonceQuestion" layoutX="199.0" layoutY="31.0" prefHeight="44.0" prefWidth="506.0" promptText="Please enter the statement of the question !" />
-                        <Button layoutX="714.0" layoutY="34.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="58.0" text=".." />
+                        <TextArea fx:id="enonceQuestion" layoutX="199.0" layoutY="31.0" prefHeight="44.0" prefWidth="522.0" promptText="Please enter the statement of the question !" />
+                        <Button layoutX="734.0" layoutY="34.0" mnemonicParsing="false" onAction="#modfiyQuestion" prefHeight="39.0" prefWidth="37.0" text="..." />
                      </children>
                   </Pane>
                </children>
             </HBox>
             <GridPane prefHeight="169.0" prefWidth="794.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.0" minWidth="10.0" prefWidth="200.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="193.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="297.0" minWidth="10.0" prefWidth="177.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="224.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="304.00001525878906" minWidth="10.0" prefWidth="278.6666666666667" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="115.33333333333331" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="297.0" minWidth="10.0" prefWidth="280.33333333333337" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="121.0" />
               </columnConstraints>
               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="106.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="75.0000057220459" minHeight="10.0" prefHeight="70.0000057220459" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="113.0" minHeight="10.0" prefHeight="37.9999942779541" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="89.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label prefHeight="95.0" prefWidth="174.0" text="The default grading&#10;scale :&#10;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="The default grading&#10;scale :&#10;" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="279.0" text="The default incorrect grading scale :&#10;" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="34.0" prefWidth="279.0" text="The default correct grading scale :&#10;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="baremePosDefault" prefHeight="39.0" prefWidth="127.0" promptText="1 , 2, ...." GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="baremePosDefault" onKeyTyped="#handleInputNumber" prefHeight="39.0" prefWidth="110.0" promptText="1 , 2, 3, ...." GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="baremeNegDefault" prefHeight="31.0" prefWidth="182.0" promptText="0 , -1, ...." GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <TextField fx:id="baremeNegDefault" onKeyTyped="#handleInputNumber" prefHeight="31.0" prefWidth="182.0" promptText="0 , -1,  -2, -3,...." GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="408.0" text="Correct Answers Section" textAlignment="CENTER" GridPane.columnSpan="2" />
-                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="384.0" text="Incorrect Answers Section" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" />
+                  <Label alignment="CENTER" prefHeight="47.0" prefWidth="394.0" text="Correct Answers Section" textAlignment="CENTER" GridPane.columnSpan="2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" prefHeight="21.0" prefWidth="384.0" text="Incorrect Answers Section" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
                   <Button fx:id="ajouterBonneReponse" mnemonicParsing="false" onAction="#handleClicksAddGoodResponce" prefHeight="31.0" prefWidth="217.0" style="-fx-background-color: #8F6373;" text="Add a correct answer" textAlignment="CENTER" textFill="WHITE" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   <Button fx:id="ajouterMauvaiseReponse" mnemonicParsing="false" onAction="#handleClicksAddWrongResponce" prefHeight="31.0" prefWidth="236.0" style="-fx-background-color: #8F6373;" text="Add an incorrect answer" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                </children>
@@ -65,18 +67,18 @@
             </GridPane>
             <HBox prefHeight="302.0" prefWidth="774.0" spacing="10.0">
                <children>
-                  <TableView fx:id="correctTableView" prefHeight="217.0" prefWidth="383.0">
+                  <TableView fx:id="correctTableView" editable="true" prefHeight="217.0" prefWidth="383.0">
                     <columns>
-                      <TableColumn fx:id="responsePosColumn" prefWidth="207.0" text="Answer" />
-                      <TableColumn fx:id="scorePosColumn" prefWidth="77.0" text="Grade" />
-                        <TableColumn fx:id="actionPosColumn" prefWidth="93.0" text="Action" />
+                      <TableColumn fx:id="responsePosColumn" prefWidth="179.99999523162842" text="Answer" />
+                      <TableColumn fx:id="scorePosColumn" prefWidth="48.0" text="Grade" />
+                        <TableColumn fx:id="actionPosColumn" prefWidth="152.6666717529297" text="Action" />
                     </columns>
                   </TableView>
-                  <TableView fx:id="incorrectTableView" prefHeight="100.0" prefWidth="392.0">
+                  <TableView fx:id="incorrectTableView" editable="true" prefHeight="100.0" prefWidth="392.0">
                     <columns>
-                      <TableColumn fx:id="responseNegColumn" prefWidth="241.0" text="Answer" />
-                      <TableColumn fx:id="scoreNegColumn" prefWidth="64.0" text="Grade" />
-                        <TableColumn fx:id="actionNegColumn" prefWidth="75.0" text="Action" />
+                      <TableColumn fx:id="responseNegColumn" prefWidth="190.99996948242188" text="Answer" />
+                      <TableColumn fx:id="scoreNegColumn" prefWidth="44.33331298828125" text="Grade" />
+                        <TableColumn fx:id="actionNegColumn" prefWidth="150.33331298828125" text="Action" />
                     </columns>
                   </TableView>
                </children>

@@ -2,7 +2,7 @@ package com.example.project7.model;
 
 public class QuestionLibre  extends Section{
     private String question;
-    private int scoreTotal;
+    private float scoreTotal;
     private int nombreScore;
     private int nombreLigne;
     private float tailleLigne;
@@ -25,11 +25,11 @@ public class QuestionLibre  extends Section{
         this.question = question;
     }
 
-    public int getScoreTotal() {
+    public float getScoreTotal() {
         return scoreTotal;
     }
 
-    public void setScoreTotal(int scoreTotal) {
+    public void setScoreTotal(float scoreTotal) {
         this.scoreTotal = scoreTotal;
     }
 

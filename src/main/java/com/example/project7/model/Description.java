@@ -7,11 +7,13 @@ public class Description extends Section{
     private String texte;
     private ArrayList<String> images;
     private ArrayList<String> legends;
+    private ArrayList<Double> widths;
 
     public Description(){
         texte = "";
         images = new ArrayList<>();
         legends = new ArrayList<>();
+        widths = new ArrayList<>();
     }
 
     public String getTexte() {
@@ -36,5 +38,23 @@ public class Description extends Section{
 
     public void setLegends(ArrayList<String> legends) {
         this.legends = legends;
+    }
+
+    public ArrayList<Double> getWidths() {
+        return widths;
+    }
+
+    public void setWidths(ArrayList<Double> widths) {
+        this.widths = widths;
+    }
+
+    @Override
+    public String toString() {
+        return "Description{" +
+                "texte='" + texte + '\'' +
+                ", images=" + images +
+                ", legends=" + legends +
+                ", widths=" + widths +
+                "} " + super.toString();
     }
 }
