@@ -1,8 +1,7 @@
-src/main/java/mysql_connection/Password.java
+./src/main/java/mysql_connection/Password.java
 .init
 
 target/
-.init
 
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

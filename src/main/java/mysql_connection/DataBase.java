@@ -55,6 +55,7 @@ public class DataBase {
                 "idControle INT AUTO_INCREMENT PRIMARY KEY, " +
                 "nomDevoir VARCHAR(255) NOT NULL, " +
                 "typeDevoir VARCHAR(255), " +
+                "nombreExemplaire INT DEFAULT (1), " +
                 "randomSeed INT  DEFAULT (12345678), " +
                 "examHeader TEXT, " +
                 "reponseHeader TEXT, " +
