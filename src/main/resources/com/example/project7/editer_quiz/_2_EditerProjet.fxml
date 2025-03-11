@@ -64,7 +64,7 @@
                         <Insets left="30.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="nombreExemplaire" prefHeight="39.0" prefWidth="155.0" promptText="Copie" GridPane.rowIndex="3">
+                  <TextField fx:id="nombreExemplaire" onKeyTyped="#handleInputNumber" prefHeight="39.0" prefWidth="155.0" promptText="Copie" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="230.0" right="20.0" />
                      </GridPane.margin>
@@ -77,7 +77,7 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="randomSeed" prefHeight="42.0" prefWidth="162.0" promptText="Random Seed" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TextField fx:id="randomSeed" onKeyTyped="#handleInputNumber" prefHeight="42.0" prefWidth="162.0" promptText="Random Seed" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="200.0" right="38.0" />
                      </GridPane.margin>

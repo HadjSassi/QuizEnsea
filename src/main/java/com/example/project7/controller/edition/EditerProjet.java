@@ -17,6 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -97,6 +98,18 @@ public class EditerProjet implements Initializable {
         nomDevoir.setText(this.projet.getNomProjet());
         this.insertControleData();
         fetchAndUpdateTableView();
+    }
+
+    @FXML
+    public void handleInputNumber(KeyEvent event) {
+        TextField textField = (TextField) event.getSource();
+        String currentText = textField.getText();
+
+        String sanitizedText = currentText.replaceAll("[^\\d]", "");
+
+
+        textField.setText(sanitizedText);
+        textField.positionCaret(sanitizedText.length());
     }
 
     @FXML

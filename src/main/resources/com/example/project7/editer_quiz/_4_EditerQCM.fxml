@@ -40,12 +40,12 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="baremePosDefault" prefHeight="39.0" prefWidth="110.0" promptText="1 , 2, 3, ...." GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="baremePosDefault" onKeyTyped="#handleInputNumber" prefHeight="39.0" prefWidth="110.0" promptText="1 , 2, 3, ...." GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="baremeNegDefault" prefHeight="31.0" prefWidth="182.0" promptText="0 , -1,  -2, -3,...." GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <TextField fx:id="baremeNegDefault" onKeyTyped="#handleInputNumber" prefHeight="31.0" prefWidth="182.0" promptText="0 , -1,  -2, -3,...." GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="20.0" />
                      </GridPane.margin>

@@ -26,7 +26,7 @@
                      <children>
                         <TextArea fx:id="reponseCorrect" layoutX="293.0" layoutY="41.0" prefHeight="39.0" prefWidth="350.0" promptText="Please enter the correct answer!" />
                         <Button layoutX="661.0" layoutY="41.0" mnemonicParsing="false" onAction="#modifyCorrectAnswer" prefHeight="39.0" prefWidth="48.0" text="..." />
-                        <TextField fx:id="baremePos" layoutX="199.0" layoutY="41.0" prefHeight="39.0" prefWidth="76.0" promptText="1,2,3,...." />
+                        <TextField fx:id="baremePos" layoutX="199.0" layoutY="41.0" onKeyTyped="#handleInputNumber" prefHeight="39.0" prefWidth="76.0" promptText="1,2,3,...." />
                         <Label layoutX="14.0" layoutY="27.0" prefHeight="67.0" prefWidth="185.0" text="Grading scale for the &#10;correct answers :" />
                      </children>
                   </Pane>
@@ -36,7 +36,7 @@
                <children>
                   <Pane prefHeight="14.0" prefWidth="744.0">
                      <children>
-                        <TextField fx:id="baremeNegDefault" layoutX="199.0" layoutY="8.0" prefHeight="39.0" prefWidth="76.0" promptText="0,-1,...." />
+                        <TextField fx:id="baremeNegDefault" layoutX="199.0" layoutY="8.0" onKeyTyped="#handleInputNumber" prefHeight="39.0" prefWidth="76.0" promptText="0,-1,...." />
                         <Label layoutX="14.0" layoutY="7.0" prefHeight="67.0" prefWidth="179.0" text="Grading scale for the &#10;incorrect answers :" />
                         <Button fx:id="ajouterMauvaiseReponse" layoutX="305.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleClicksAddWrongResponce" prefHeight="31.0" prefWidth="339.0" text="Add an Incorrect answer and its Grade" textAlignment="CENTER" />
                      </children>

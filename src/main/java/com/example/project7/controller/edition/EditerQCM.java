@@ -544,4 +544,25 @@ public class EditerQCM implements Initializable {
         popupStage.show();
     }
 
+    @FXML
+    public void handleInputNumber(KeyEvent event) {
+        TextField textField = (TextField) event.getSource();
+        String currentText = textField.getText();
+
+        // Allow only digits and an optional leading "-"
+        String sanitizedText = currentText.replaceAll("[^\\d-]", "");
+
+        // Ensure "-" is only at the start and not repeated
+        if (sanitizedText.length() > 1) {
+            sanitizedText = sanitizedText.replaceAll("(?<!^)-", ""); // Remove "-" if not at the start
+        }
+
+        // Limit to 3 characters (including possible "-")
+        if (sanitizedText.length() > 3) {
+            sanitizedText = sanitizedText.substring(0, 3);
+        }
+
+        textField.setText(sanitizedText);
+        textField.positionCaret(sanitizedText.length());
+    }
 }

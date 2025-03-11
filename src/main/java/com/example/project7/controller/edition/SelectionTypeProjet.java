@@ -181,6 +181,10 @@ public class SelectionTypeProjet implements Initializable {
             this.nameLabel.setText("You need to enter the name of your project!");
             return false;
         }
+        if (!name.getText().trim().matches("[a-zA-Z0-9 _-]+")) {
+            this.nameLabel.setText("The project name must not contain special characters!");
+            return false;
+        }
         if (!Character.isLetter(name.getText().charAt(0))) {
             this.nameLabel.setText("Your project name should start with a letter!");
             return false;
