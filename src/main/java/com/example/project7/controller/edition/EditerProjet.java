@@ -985,7 +985,8 @@ public class EditerProjet implements Initializable {
             String texte = rsDescription.getString("texte");
 
             texcontentBuilder.append("\n\t\\element{general}{\n");
-            texcontentBuilder.append("\t\t").append(formatLatex(texte)).append("\\\\\n");
+            if(!texte.trim().isEmpty())
+                texcontentBuilder.append("\t\t").append(formatLatex(texte)).append("\\\\\n");
 
             // Process images and legends
             processImagesAndLegends(conn, idDescription, texcontentBuilder);
