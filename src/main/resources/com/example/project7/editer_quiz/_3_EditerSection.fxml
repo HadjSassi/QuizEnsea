@@ -9,31 +9,35 @@
     <children>
         <VBox prefHeight="709.0" prefWidth="794.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-            <HBox alignment="CENTER" prefHeight="49.0" prefWidth="794.0" spacing="10.0">
-               <children>
+                <HBox alignment="CENTER" prefHeight="49.0" prefWidth="794.0" spacing="70.0">
+                    <children>
+                        <SplitMenuButton fx:id="typeSection" mnemonicParsing="false" onAction="#ProjectTypeButton" prefHeight="39.0" prefWidth="267.0" style="-fx-background-color: #A3B18A;" text="Please Select type of the Section ">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeDescription" text="Description" />
+                                <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCU" text="QCU" />
+                                <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCM" text="QCM" />
+                                <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeQuestion" text="Free Question" />
+                            </items>
+                        </SplitMenuButton>
                         <Label text="Section Identifier">
                             <font>
                                 <Font size="20.0" />
                             </font>
+                            <HBox.margin>
+                                <Insets right="-10.0" />
+                            </HBox.margin>
                         </Label>
                         <TextField fx:id="identifiantSection" onKeyTyped="#handleInputIdentifier" prefHeight="31.0" prefWidth="196.0" promptText="Please enter the section identifier!" />
-                        <SplitMenuButton fx:id="typeSection" mnemonicParsing="false" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #A3B18A;" text="Please Select type of the Section ">
-                            <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeDescription" text="Description" />
-                                <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCU" text="QCU" />
-                                <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCM" text="QCM" />
-                        <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeQuestion" text="Free Question" />
-                            </items>
-                        </SplitMenuButton>
-               </children>
-               <VBox.margin>
-                  <Insets left="5.0" />
-               </VBox.margin>
-            </HBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="5.0" />
+                    </VBox.margin>
+                </HBox>
                 <AnchorPane fx:id="sectionPane" prefHeight="562.0" prefWidth="794.0">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin></AnchorPane>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </AnchorPane>
             </children>
             <padding>
                 <Insets bottom="10.0" top="10.0" />

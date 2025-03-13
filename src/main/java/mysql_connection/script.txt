@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS Projet
     nomProjet          VARCHAR(255) NOT NULL,
     localisationProjet VARCHAR(255),
     typeProjet         VARCHAR(100),
-    creationDate       DATE DEFAULT (CURRENT_DATE)
+    creationDate       TIMESTAMP  DEFAULT (CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE IF NOT EXISTS Controle
@@ -47,7 +47,6 @@ CREATE TABLE IF NOT EXISTS Controle
     idControle           INT AUTO_INCREMENT PRIMARY KEY,
     nomDevoir            VARCHAR(255) NOT NULL,
     typeDevoir           VARCHAR(255),
-    nombreExemplaire INT DEFAULT (1),
     randomSeed           INT  DEFAULT (12345678),
     examHeader           TEXT,
     reponseHeader        TEXT,

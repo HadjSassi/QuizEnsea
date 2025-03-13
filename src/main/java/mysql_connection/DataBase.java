@@ -48,7 +48,7 @@ public class DataBase {
                 "nomProjet VARCHAR(255) NOT NULL, " +
                 "localisationProjet VARCHAR(255), " +
                 "typeProjet VARCHAR(100), " +
-                "creationDate DATE DEFAULT (CURRENT_DATE));";
+                "creationDate TIMESTAMP  DEFAULT (CURRENT_TIMESTAMP ));";
         statement.executeUpdate(createProjetQuery);
 
         String createControleQuery = "CREATE TABLE IF NOT EXISTS Controle (" +

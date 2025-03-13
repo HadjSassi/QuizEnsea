@@ -264,24 +264,65 @@ public class EditerQCM implements Initializable {
 
 
         correctTableView.setItems(FXCollections.observableArrayList());
+
+        enonceQuestion.setWrapText(true);
+
     }
 
-    private void removeSection() {
-        String deleteQuery = "DELETE FROM section WHERE idSection = ?";
-        try (Connection connection = MySqlConnection.getOracleConnection();
-             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+    private void updateQCM() {
+        String updateQcmQuery = "UPDATE qcm SET question = ? WHERE idQCM = ?";
+        String deleteResponsesQuery = "DELETE FROM qcm_reponses WHERE qcmID = ?";
+        String insertResponseQuery = "INSERT INTO qcm_reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
-            statement.setString(1, section.getIdSection());
-            statement.executeUpdate();
+        try (Connection connection = MySqlConnection.getOracleConnection()) {
+            connection.setAutoCommit(false);
+
+            // Mise à jour du texte de la question dans la table qcm
+            try (PreparedStatement updateStmt = connection.prepareStatement(updateQcmQuery)) {
+                updateStmt.setString(1, enonceQuestion.getText());
+                updateStmt.setInt(2, Integer.parseInt(qcm.getIdSection()));
+                updateStmt.executeUpdate();
+            }
+
+            // Suppression des anciennes réponses
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteResponsesQuery)) {
+                deleteStmt.setInt(1, Integer.parseInt(qcm.getIdSection()));
+                deleteStmt.executeUpdate();
+            }
+
+            // Insertion des nouvelles réponses (correctes et incorrectes)
+            try (PreparedStatement insertStmt = connection.prepareStatement(insertResponseQuery)) {
+                // Réponses correctes
+                for (Reponse response : correctTableView.getItems()) {
+                    insertStmt.setInt(1, Integer.parseInt(qcm.getIdSection()));
+                    insertStmt.setString(2, response.getResponse());
+                    insertStmt.setInt(3, response.getScore());
+                    insertStmt.setBoolean(4, true);
+                    insertStmt.addBatch();
+                }
+                // Réponses incorrectes
+                for (Reponse response : incorrectTableView.getItems()) {
+                    insertStmt.setInt(1, Integer.parseInt(qcm.getIdSection()));
+                    insertStmt.setString(2, response.getResponse());
+                    insertStmt.setInt(3, response.getScore());
+                    insertStmt.setBoolean(4, false);
+                    insertStmt.addBatch();
+                }
+                insertStmt.executeBatch();
+            }
+
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error deleting section: " + e.getMessage());
+            System.err.println("Error updating QCM: " + e.getMessage());
         }
     }
 
     private void updateSection() {
-        removeSection();
-        handleClicksAddQCM(null);
+        updateQCM();
+        this.section.getDevoir().getController().fetchAndUpdateTableView();
+        Stage stage = (Stage) cancelQcm.getScene().getWindow();
+        stage.close();
     }
 
     private boolean checkSectionExists(String idSection) {
@@ -417,6 +458,7 @@ public class EditerQCM implements Initializable {
         popupVBox.setPadding(new Insets(20));
 
         TextArea responseTextArea = new TextArea(reponse.getResponse());
+        responseTextArea.setWrapText(true);
         responseTextArea.setPrefSize(300, 150);
 
         TextField scoreTextField = new TextField(String.valueOf(reponse.getScore()));
@@ -517,7 +559,7 @@ public class EditerQCM implements Initializable {
         popupVBox.setPadding(new Insets(20));
 
         TextArea responseTextArea = new TextArea(enonceQuestion.getText());
-
+        responseTextArea.setWrapText(true);
 
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);

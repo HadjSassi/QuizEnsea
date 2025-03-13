@@ -224,22 +224,64 @@ public class EditerDescription implements Initializable {
         return false;
     }
 
-    private void removeSection() {
-        String deleteQuery = "DELETE FROM section WHERE idSection = ?";
-        try (Connection connection = MySqlConnection.getOracleConnection();
-             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+    private void updateDescription() {
+        String updateDescriptionQuery = "UPDATE description SET texte = ? WHERE sectionID = ?";
+        String deleteImagesQuery = "DELETE FROM Description_Images WHERE descriptionID = (SELECT idDescription FROM description WHERE sectionID = ?)";
+        String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath, legendText, imageWidth) VALUES (?, ?, ?, ?)";
 
-            statement.setString(1, section.getIdSection());
-            statement.executeUpdate();
+        try (Connection connection = MySqlConnection.getOracleConnection()) {
+            connection.setAutoCommit(false);
+            // Mise à jour du texte de la description
+            try (PreparedStatement updateStmt = connection.prepareStatement(updateDescriptionQuery)) {
+                updateStmt.setString(1, descriptionTextArea.getText());
+                updateStmt.setString(2, this.section.getIdSection());
+                updateStmt.executeUpdate();
+            }
+
+            // Suppression des anciennes images
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteImagesQuery)) {
+                deleteStmt.setString(1, this.section.getIdSection());
+                deleteStmt.executeUpdate();
+            }
+
+            // Insertion des nouvelles images
+            // On récupère l'idDescription correspondant à cette section
+            int descriptionID = 0;
+            String fetchDescriptionIdQuery = "SELECT idDescription FROM description WHERE sectionID = ?";
+            try (PreparedStatement fetchStmt = connection.prepareStatement(fetchDescriptionIdQuery)) {
+                fetchStmt.setString(1, this.section.getIdSection());
+                try (ResultSet rs = fetchStmt.executeQuery()) {
+                    if (rs.next()) {
+                        descriptionID = rs.getInt("idDescription");
+                    }
+                }
+            }
+
+            try (PreparedStatement insertImageStmt = connection.prepareStatement(insertImageQuery)) {
+                for (int i = 0; i < tableViewImages.getItems().size(); i++) {
+                    RowTableSection row = tableViewImages.getItems().get(i);
+                    insertImageStmt.setInt(1, descriptionID);
+                    insertImageStmt.setString(2, row.getChemin());
+                    insertImageStmt.setString(3, row.getLegend());
+                    insertImageStmt.setDouble(4, row.getWidth());
+                    insertImageStmt.addBatch();
+                }
+                insertImageStmt.executeBatch();
+            }
+
+            connection.commit();
+            // Vous pouvez rafraîchir la vue ou notifier l'utilisateur ici
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error deleting section: " + e.getMessage());
+            System.err.println("Erreur lors de la mise à jour de la description : " + e.getMessage());
         }
     }
 
     private void updateSection() {
-        removeSection();
-        handleClickAddDescription(null);
+        updateDescription();
+        this.section.getDevoir().getController().fetchAndUpdateTableView();
+        Stage stage = (Stage) cancelDescription.getScene().getWindow();
+        stage.close();
     }
 
     private void createSection() {

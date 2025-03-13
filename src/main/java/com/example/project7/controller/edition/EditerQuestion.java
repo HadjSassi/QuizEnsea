@@ -206,6 +206,7 @@ public class EditerQuestion implements Initializable {
         this.nombreLignes.setText("3");
         this.tailleLigne.setText("0.5");
         this.questionLibre = new QuestionLibre();
+        enonceQuestion.setWrapText(true);
     }
 
     private boolean checkSectionExists(String idSection) {
@@ -242,11 +243,38 @@ public class EditerQuestion implements Initializable {
         }
     }
 
-    private void updateSection() {
-        removeSection();
-        ajouterQuestion(null);
+    private void updateQuestion() {
+        String updateQuery = "UPDATE questionlibre SET question = ?, scoreTotal = ?, nombreScore = ?, nombreLigne = ?, tailleLigne = ?, rappel = ? WHERE sectionID = ?";
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+
+            // Prépare les valeurs en récupérant les données saisies par l'utilisateur
+            updateStmt.setString(1, enonceQuestion.getText().trim());
+            updateStmt.setFloat(2, Float.parseFloat(scoringTotale.getText().trim()));
+            updateStmt.setInt(3, Integer.parseInt(nombreScore.getText().trim()));
+            updateStmt.setInt(4, Integer.parseInt(nombreLignes.getText().trim()));
+            updateStmt.setFloat(5, Float.parseFloat(tailleLigne.getText().trim()));
+            updateStmt.setString(6, rappelQuestion.getText().trim());
+            updateStmt.setString(7, section.getIdSection());
+
+            int rowsAffected = updateStmt.executeUpdate();
+            if (rowsAffected <= 0) {
+                System.err.println("Aucun enregistrement mis à jour pour cette section.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de la mise à jour de la question: " + e.getMessage());
+        }
     }
 
+
+    private void updateSection() {
+        updateQuestion();
+        this.section.getDevoir().getController().fetchAndUpdateTableView();
+        Stage stage = (Stage) cancelQuestion.getScene().getWindow();
+        stage.close();
+    }
 
     @FXML
     public void handleInputNumber(KeyEvent event) {
@@ -375,7 +403,7 @@ public class EditerQuestion implements Initializable {
         popupVBox.setPadding(new Insets(20));
 
         TextArea responseTextArea = new TextArea(enonceQuestion.getText());
-
+        responseTextArea.setWrapText(true);
 
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);

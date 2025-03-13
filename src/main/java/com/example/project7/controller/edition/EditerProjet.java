@@ -122,7 +122,7 @@ public class EditerProjet implements Initializable {
         popupVBox.setPadding(new Insets(20));
 
         TextArea responseTextArea = new TextArea(examHeader.getText());
-
+        responseTextArea.setWrapText(true);
 
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
@@ -159,7 +159,7 @@ public class EditerProjet implements Initializable {
         popupVBox.setPadding(new Insets(20));
 
         TextArea responseTextArea = new TextArea(reponseHeader.getText());
-
+        responseTextArea.setWrapText(true);
 
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
@@ -261,7 +261,14 @@ public class EditerProjet implements Initializable {
     }
 
     private void processInsertImportedSection(SectionRow sectionRow) {
-        String newSectionId = sectionRow.getId() + "_" + System.currentTimeMillis();
+        String originalId = sectionRow.getId();
+        String baseId = originalId;
+        int pos = originalId.indexOf("__");
+        if (pos != -1) {
+            // On garde la partie avant "__"
+            baseId = originalId.substring(0, pos);
+        }
+        String newSectionId = baseId + "__" + System.currentTimeMillis();
         String sectionType = sectionRow.getType();
         int newSectionOrdre = 0;
         try (Connection conn = MySqlConnection.getOracleConnection()) {
@@ -546,7 +553,8 @@ public class EditerProjet implements Initializable {
             }
         });
 
-
+        examHeader.setWrapText(true);
+        reponseHeader.setWrapText(true);
         loadSectionData();
     }
 
@@ -1043,7 +1051,8 @@ public class EditerProjet implements Initializable {
     private String verifyNomDevoir() {
         if (this.nomDevoir.getText().trim().isEmpty())
             nomDevoir.setText(this.projet.getNomProjet());
-        return this.nomDevoir.getText();
+        //return this.nomDevoir.getText();
+        return "Preremplie-ensemble";
     }
 
     private void verifyNombreExemplaire() {
@@ -1087,7 +1096,7 @@ public class EditerProjet implements Initializable {
         String updateQuery = "UPDATE Controle SET nomDevoir = ?, typeDevoir = ?, nombreExemplaire = ?, randomSeed = ?, " +
                 "examHeader = ?, reponseHeader = ?, creationDate = ? WHERE idControle = ?";
 
-        String updateProjectQuery = "UPDATE projet SET creationDate = CURRENT_DATE WHERE idProjet = ? ";
+        String updateProjectQuery = "UPDATE projet SET creationDate = CURRENT_TIMESTAMP WHERE idProjet = ? ";
 
         try (Connection conn = MySqlConnection.getOracleConnection();
              PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
@@ -1253,7 +1262,7 @@ public class EditerProjet implements Initializable {
     private void generatePDF() {
         // Define the directory and .tex file
         File directory = new File(this.projet.getLocalisationProjet() + File.separator + this.projet.getNomProjet());
-        File texFile = new File(directory, this.devoir.getNomDevoir() + ".tex");
+        File texFile = new File(directory, verifyNomDevoir() + ".tex");
 
         // Use the relative filename so the output is created in the same directory
         ProcessBuilder processBuilder = new ProcessBuilder("pdflatex", texFile.getName());
@@ -1273,7 +1282,7 @@ public class EditerProjet implements Initializable {
             if (exitCode == 0) {
                 System.out.println("PDF generated successfully.");
                 // Attempt to open the PDF file in the default PDF viewer
-                File pdfFile = new File(directory, this.devoir.getNomDevoir() + ".pdf");
+                File pdfFile = new File(directory, verifyNomDevoir() + ".pdf");
                 if (Desktop.isDesktopSupported()) {
                     Desktop desktop = Desktop.getDesktop();
                     if (pdfFile.exists()) {

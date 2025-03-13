@@ -101,11 +101,13 @@ public class EditerSection implements Initializable {
             if (newContent != null) {
                 sectionPane.getChildren().setAll(newContent);
 
-                String sectionId = "Section#" + numberOfSection+ "_" + devoir.getIdControle() ;
-
+                String currentId = identifiantSection.getText().trim();
+                if (currentId.isEmpty()) {
+                    currentId = "Section#" + numberOfSection + "_" + devoir.getIdControle();
+                }
                 currentController = loader.getController();
-                updateSection(sectionId);
-                identifiantSection.setText(sectionId);
+                updateSection(currentId);
+                identifiantSection.setText(currentId);
 
             } else {
                 System.err.println("Le contenu pour " + fxmlFileName + " n'a pas pu être chargé.");
@@ -119,21 +121,26 @@ public class EditerSection implements Initializable {
     @FXML
     public void handleClicksAddQCM(ActionEvent event) {
         loadContentToSectionPane("_4_EditerQCM");
+        typeSection.setText("QCM");
+
     }
 
     @FXML
     public void handleClicksAddQCU(ActionEvent event) {
         loadContentToSectionPane("_5_EditerQCU");
+        typeSection.setText("QCU");
     }
 
     @FXML
     public void handleClicksAddFreeQuestion(ActionEvent event) {
         loadContentToSectionPane("_6_EditerQuestionLibre");
+        typeSection.setText("Free Question");
     }
 
     @FXML
     public void handleClicksAddFreeDescription(ActionEvent event) {
         loadContentToSectionPane("_7_EditerDescription");
+        typeSection.setText("Description");
     }
 
     @Override
@@ -268,5 +275,10 @@ public class EditerSection implements Initializable {
 
             }
         }
+    }
+
+    @FXML
+    private void ProjectTypeButton(ActionEvent event){
+        typeSection.show();
     }
 }
