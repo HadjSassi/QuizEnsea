@@ -1,11 +1,7 @@
 package com.example.project7.controller.edition;
 
-import com.example.project7.model.QCM;
 import com.example.project7.model.QuestionLibre;
-import com.example.project7.model.Reponse;
 import com.example.project7.model.Section;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,8 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
 import java.util.ResourceBundle;
-
-import static com.example.project7.laguage.en.StringLang.*;
 
 public class EditerQuestion implements Initializable {
 
@@ -79,12 +73,12 @@ public class EditerQuestion implements Initializable {
         String element = scoringTotale.getText().trim();
 
         if (element.isEmpty()) {
-            if (!scoringTotale.getStyleClass().contains(Textdanger.getValue())) {
-                scoringTotale.getStyleClass().add(Textdanger.getValue());
-                this.scoringTotale.setText(NbrValue1.getValue());
+            if (!scoringTotale.getStyleClass().contains("text-field-danger")) {
+                scoringTotale.getStyleClass().add("text-field-danger");
+                this.scoringTotale.setText("1");
             }
         } else {
-            scoringTotale.getStyleClass().removeAll(Textdanger.getValue());
+            scoringTotale.getStyleClass().removeAll("text-field-danger");
         }
     }
 
@@ -92,12 +86,12 @@ public class EditerQuestion implements Initializable {
         String element = nombreScore.getText().trim();
 
         if (element.isEmpty()) {
-            if (!nombreScore.getStyleClass().contains(Textdanger.getValue())) {
-                nombreScore.getStyleClass().add(Textdanger.getValue());
+            if (!nombreScore.getStyleClass().contains("text-field-danger")) {
+                nombreScore.getStyleClass().add("text-field-danger");
                 this.nombreScore.setText("2");
             }
         } else {
-            nombreScore.getStyleClass().removeAll(Textdanger.getValue());
+            nombreScore.getStyleClass().removeAll("text-field-danger");
         }
     }
 
@@ -105,12 +99,12 @@ public class EditerQuestion implements Initializable {
         String element = nombreLignes.getText().trim();
 
         if (element.isEmpty()) {
-            if (!nombreLignes.getStyleClass().contains(Textdanger.getValue())) {
-                nombreLignes.getStyleClass().add(Textdanger.getValue());
+            if (!nombreLignes.getStyleClass().contains("text-field-danger")) {
+                nombreLignes.getStyleClass().add("text-field-danger");
                 this.nombreLignes.setText("3");
             }
         } else {
-            nombreLignes.getStyleClass().removeAll(Textdanger.getValue());
+            nombreLignes.getStyleClass().removeAll("text-field-danger");
         }
     }
 
@@ -118,12 +112,12 @@ public class EditerQuestion implements Initializable {
         String element = tailleLigne.getText().trim();
 
         if (element.isEmpty()) {
-            if (!tailleLigne.getStyleClass().contains(Textdanger.getValue())) {
-                tailleLigne.getStyleClass().add(Textdanger.getValue());
+            if (!tailleLigne.getStyleClass().contains("text-field-danger")) {
+                tailleLigne.getStyleClass().add("text-field-danger");
                 this.tailleLigne.setText("0.5");
             }
         } else {
-            tailleLigne.getStyleClass().removeAll(Textdanger.getValue());
+            tailleLigne.getStyleClass().removeAll("text-field-danger");
         }
     }
 
@@ -131,12 +125,12 @@ public class EditerQuestion implements Initializable {
         String question = enonceQuestion.getText().trim();
 
         if (question.isEmpty()) {
-            if (!enonceQuestion.getStyleClass().contains(Textdanger.getValue())) {
-                enonceQuestion.getStyleClass().add(Textdanger.getValue());
+            if (!enonceQuestion.getStyleClass().contains("text-field-danger")) {
+                enonceQuestion.getStyleClass().add("text-field-danger");
             }
             return false;
         } else {
-            enonceQuestion.getStyleClass().removeAll(Textdanger.getValue());
+            enonceQuestion.getStyleClass().removeAll("text-field-danger");
             return true;
         }
     }
@@ -145,12 +139,12 @@ public class EditerQuestion implements Initializable {
         String question = rappelQuestion.getText().trim();
 
         if (question.isEmpty()) {
-            if (!rappelQuestion.getStyleClass().contains(Textdanger.getValue())) {
-                rappelQuestion.getStyleClass().add(Textdanger.getValue());
+            if (!rappelQuestion.getStyleClass().contains("text-field-danger")) {
+                rappelQuestion.getStyleClass().add("text-field-danger");
                 this.rappelQuestion.setText(this.rappel);
             }
         } else {
-            rappelQuestion.getStyleClass().removeAll(Textdanger.getValue());
+            rappelQuestion.getStyleClass().removeAll("text-field-danger");
         }
     }
 
@@ -166,12 +160,12 @@ public class EditerQuestion implements Initializable {
             if (checkSectionExists(this.section.getIdSection())) {
                 // Show confirmation alert
                 Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                confirmationAlert.setTitle(SectionExists.getValue());
-                confirmationAlert.setHeaderText( SectionAlreadyExist.getValue());
-                confirmationAlert.setContentText(SectionId.getValue() + this.section.getIdSection() +Sectionexistedeja.getValue());
+                confirmationAlert.setTitle("Section Exists");
+                confirmationAlert.setHeaderText("La section existe déjà");
+                confirmationAlert.setContentText("Section avec l'identifiant " + this.section.getIdSection() + " existe déjà, voulez vous l'écraser?");
 
-                ButtonType modifyButton = new ButtonType(Modifier.getValue());
-                ButtonType cancelButton = new ButtonType(cancel.getValue(), ButtonBar.ButtonData.CANCEL_CLOSE);
+                ButtonType modifyButton = new ButtonType("Modifier");
+                ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
 
                 confirmationAlert.getButtonTypes().setAll(modifyButton, cancelButton);
 
@@ -201,13 +195,14 @@ public class EditerQuestion implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Random random = new Random();
         int x = random.nextInt(999999999);
-        this.rappel = QuesNmr.getValue() + String.valueOf(x);
+        this.rappel = "QuestionN°" + String.valueOf(x);
         this.rappelQuestion.setText(this.rappel);
-        this.scoringTotale.setText(NbrValue1.getValue());
-        this.nombreScore.setText(NbrValue2.getValue());
-        this.nombreLignes.setText(NbrValue3.getValue());
-        this.tailleLigne.setText(NbrValue05.getValue());
+        this.scoringTotale.setText("1");
+        this.nombreScore.setText("2");
+        this.nombreLignes.setText("3");
+        this.tailleLigne.setText("0.5");
         this.questionLibre = new QuestionLibre();
+        enonceQuestion.setWrapText(true);
     }
 
     private boolean checkSectionExists(String idSection) {
@@ -225,7 +220,7 @@ public class EditerQuestion implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrcheckExist.getValue() + e.getMessage());
+            System.err.println("Error checking section existence: " + e.getMessage());
         }
 
         return false; // Default to false if there's an error
@@ -240,22 +235,49 @@ public class EditerQuestion implements Initializable {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrdltSec.getValue() + e.getMessage());
+            System.err.println("Error deleting section: " + e.getMessage());
         }
     }
 
-    private void updateSection() {
-        removeSection();
-        ajouterQuestion(null);
+    private void updateQuestion() {
+        String updateQuery = "UPDATE questionlibre SET question = ?, scoreTotal = ?, nombreScore = ?, nombreLigne = ?, tailleLigne = ?, rappel = ? WHERE sectionID = ?";
+
+        try (Connection connection = MySqlConnection.getOracleConnection();
+             PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+
+            // Prépare les valeurs en récupérant les données saisies par l'utilisateur
+            updateStmt.setString(1, enonceQuestion.getText().trim());
+            updateStmt.setFloat(2, Float.parseFloat(scoringTotale.getText().trim()));
+            updateStmt.setInt(3, Integer.parseInt(nombreScore.getText().trim()));
+            updateStmt.setInt(4, Integer.parseInt(nombreLignes.getText().trim()));
+            updateStmt.setFloat(5, Float.parseFloat(tailleLigne.getText().trim()));
+            updateStmt.setString(6, rappelQuestion.getText().trim());
+            updateStmt.setString(7, section.getIdSection());
+
+            int rowsAffected = updateStmt.executeUpdate();
+            if (rowsAffected <= 0) {
+                System.err.println("Aucun enregistrement mis à jour pour cette section.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de la mise à jour de la question: " + e.getMessage());
+        }
     }
 
+
+    private void updateSection() {
+        updateQuestion();
+        this.section.getDevoir().getController().fetchAndUpdateTableView();
+        Stage stage = (Stage) cancelQuestion.getScene().getWindow();
+        stage.close();
+    }
 
     @FXML
     public void handleInputNumber(KeyEvent event) {
         TextField textField = (TextField) event.getSource();
         String currentText = textField.getText();
 
-        String sanitizedText = currentText.replaceAll(character.getValue(), espace.getValue());
+        String sanitizedText = currentText.replaceAll("[^\\d]", "");
 
 
         textField.setText(sanitizedText);
@@ -268,13 +290,13 @@ public class EditerQuestion implements Initializable {
         String currentText = textField.getText();
 
         // Keep only valid float characters (digits and a single dot)
-        String sanitizedText = currentText.replaceAll(character.getValue(), espace.getValue());
+        String sanitizedText = currentText.replaceAll("[^\\d.]", "");
 
         // Allow only one decimal point
-        int firstDotIndex = sanitizedText.indexOf(point.getValue());
+        int firstDotIndex = sanitizedText.indexOf(".");
         if (firstDotIndex != -1) {
             sanitizedText = sanitizedText.substring(0, firstDotIndex + 1)
-                    + sanitizedText.substring(firstDotIndex + 1).replaceAll(slash.getValue(), espace.getValue());
+                    + sanitizedText.substring(firstDotIndex + 1).replaceAll("\\.", "");
         }
 
         textField.setText(sanitizedText);
@@ -294,7 +316,7 @@ public class EditerQuestion implements Initializable {
             insertStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(Errinsert.getValue() + e.getMessage());
+            System.err.println("Error inserting Section data: " + e.getMessage());
         }
     }
 
@@ -321,11 +343,11 @@ public class EditerQuestion implements Initializable {
                     }
                 }
             } else {
-                System.err.println(  failInsrtQcudata.getValue());
+                System.err.println("Failed to insert QCU data.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrInsrtQcudata.getValue() + e.getMessage());
+            System.err.println("Error inserting QCU data: " + e.getMessage());
         }
     }
 
@@ -345,13 +367,13 @@ public class EditerQuestion implements Initializable {
             ResultSet qcuResultSet = qcuStatement.executeQuery();
             if (qcuResultSet.next()) {
                 questionLibre = new QuestionLibre();
-                questionLibre.setIdSection(qcuResultSet.getString(SecID.getValue()));
-                questionLibre.setQuestion(qcuResultSet.getString(question.getValue()));
-                questionLibre.setRappel(qcuResultSet.getString(RAPPEL.getValue()));
-                questionLibre.setTailleLigne(qcuResultSet.getFloat( taillelign.getValue()));
-                questionLibre.setNombreLigne(qcuResultSet.getInt(nbrligne.getValue()));
-                questionLibre.setNombreScore(qcuResultSet.getInt(nbrscore.getValue()));
-                questionLibre.setScoreTotal(qcuResultSet.getFloat(scoretotal.getValue()));
+                questionLibre.setIdSection(qcuResultSet.getString("sectionID"));
+                questionLibre.setQuestion(qcuResultSet.getString("question"));
+                questionLibre.setRappel(qcuResultSet.getString("rappel"));
+                questionLibre.setTailleLigne(qcuResultSet.getFloat("tailleLigne"));
+                questionLibre.setNombreLigne(qcuResultSet.getInt("nombreLigne"));
+                questionLibre.setNombreScore(qcuResultSet.getInt("nombreScore"));
+                questionLibre.setScoreTotal(qcuResultSet.getFloat("scoreTotal"));
 
                 enonceQuestion.setText(questionLibre.getQuestion());
                 rappelQuestion.setText(questionLibre.getRappel());
@@ -364,7 +386,7 @@ public class EditerQuestion implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrloadingQCU.getValue()+ e.getMessage());
+            System.err.println("Error loading QCU data: " + e.getMessage());
         }
     }
 
@@ -377,19 +399,19 @@ public class EditerQuestion implements Initializable {
         popupVBox.setPadding(new Insets(20));
 
         TextArea responseTextArea = new TextArea(enonceQuestion.getText());
-
+        responseTextArea.setWrapText(true);
 
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button(Modifier.getValue());
+        Button saveButton = new Button("Modifier");
         saveButton.setOnAction(event -> {
             enonceQuestion.setText(responseTextArea.getText());
 
             popupStage.close();
         });
 
-        Button closeButton = new Button(close.getValue());
+        Button closeButton = new Button("Fermer");
         closeButton.setOnAction(event -> {
             popupStage.close();
         });
@@ -400,7 +422,7 @@ public class EditerQuestion implements Initializable {
 
         Scene popupScene = new Scene(popupVBox, 350, 250);
         popupStage.setScene(popupScene);
-        popupStage.setTitle(EdtQues.getValue());
+        popupStage.setTitle("Edit the Question");
         popupStage.show();
     }
 }

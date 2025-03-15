@@ -1,6 +1,5 @@
 package com.example.project7.model;
 
-
 public class FontDevoir {
 
     private String nomPolice;

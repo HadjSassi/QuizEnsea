@@ -1,7 +1,6 @@
 package com.example.project7.controller.edition;
 
 import com.example.project7.FxmlLoader;
-import com.example.project7.laguage.en.StringLang;
 import com.example.project7.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,8 +37,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
-
-import static com.example.project7.laguage.en.StringLang.*;
 
 
 public class EditerProjet implements Initializable {
@@ -124,19 +121,19 @@ public class EditerProjet implements Initializable {
         popupVBox.setPadding(new Insets(20));
 
         TextArea responseTextArea = new TextArea(examHeader.getText());
-
+        responseTextArea.setWrapText(true);
 
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button(Modifier.getValue());
+        Button saveButton = new Button("Modifier");
         saveButton.setOnAction(event -> {
             examHeader.setText(responseTextArea.getText());
 
             popupStage.close();
         });
 
-        Button closeButton = new Button(Fermer.getValue());
+        Button closeButton = new Button("Fermer");
         closeButton.setOnAction(event -> {
             popupStage.close();
         });
@@ -147,7 +144,7 @@ public class EditerProjet implements Initializable {
 
         Scene popupScene = new Scene(popupVBox, 350, 250);
         popupStage.setScene(popupScene);
-        popupStage.setTitle(Editheader.getValue());
+        popupStage.setTitle("Edit the exam header");
         popupStage.show();
     }
 
@@ -161,19 +158,19 @@ public class EditerProjet implements Initializable {
         popupVBox.setPadding(new Insets(20));
 
         TextArea responseTextArea = new TextArea(reponseHeader.getText());
-
+        responseTextArea.setWrapText(true);
 
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button(Modifier.getValue());
+        Button saveButton = new Button("Modifier");
         saveButton.setOnAction(event -> {
             reponseHeader.setText(responseTextArea.getText());
 
             popupStage.close();
         });
 
-        Button closeButton = new Button(Fermer.getValue());
+        Button closeButton = new Button("Fermer");
         closeButton.setOnAction(event -> {
             popupStage.close();
         });
@@ -184,7 +181,7 @@ public class EditerProjet implements Initializable {
 
         Scene popupScene = new Scene(popupVBox, 350, 250);
         popupStage.setScene(popupScene);
-        popupStage.setTitle(EditResHeader.getValue());
+        popupStage.setTitle("Edit Response Header");
         popupStage.show();
     }
 
@@ -192,18 +189,18 @@ public class EditerProjet implements Initializable {
     public void handleClicksAddSection(ActionEvent event) {
         try {
             FxmlLoader object = new FxmlLoader();
-            Parent view = object.getPane(editerQuizSec.getValue());
+            Parent view = object.getPane("editer_quiz/_3_EditerSection");
 
             Scene popupScene = new Scene(view);
             Stage popupStage = new Stage();
 
-            popupStage.setTitle(AjoutSec.getValue());
+            popupStage.setTitle("Ajouter une Section");
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.initStyle(StageStyle.TRANSPARENT);
             popupStage.initOwner(terminer.getScene().getWindow());
             popupStage.setScene(popupScene);
             popupStage.setResizable(false);
-            popupScene.getStylesheets().add(getClass().getResource(CheminStyle.getValue()).toExternalForm());
+            popupScene.getStylesheets().add(getClass().getResource("/com/example/project7/css/styles.css").toExternalForm());
 
             EditerSection controller = (EditerSection) object.getController();
             if (controller != null) {
@@ -215,7 +212,7 @@ public class EditerProjet implements Initializable {
 
             popupStage.showAndWait();
         } catch (Exception e) {
-            System.out.println(Errtext.getValue() + e.getMessage());
+            System.out.println("Erreur lors de l'ouverture de la popup : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -224,15 +221,15 @@ public class EditerProjet implements Initializable {
     public void handleClicksImportSection(ActionEvent event) {
         Stage modalStage = new Stage();
         modalStage.initModality(Modality.APPLICATION_MODAL);
-        modalStage.setTitle(SelSect.getValue());
+        modalStage.setTitle("Select a Section");
 
         // TableView setup
         TableView<SectionRow> tableView = new TableView<>();
-        TableColumn<SectionRow, Integer> idColumn = new TableColumn<>(ID.getValue());
-        TableColumn<SectionRow, String> nameColumn = new TableColumn<>(TypSec.getValue());
+        TableColumn<SectionRow, Integer> idColumn = new TableColumn<>("ID");
+        TableColumn<SectionRow, String> nameColumn = new TableColumn<>("Section Type");
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<>(id.getValue()));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>(type.getValue()));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
 
         tableView.getColumns().addAll(idColumn, nameColumn);
 
@@ -240,7 +237,7 @@ public class EditerProjet implements Initializable {
         tableView.setItems(getSectionsFromDatabase());
 
         // Select Button
-        Button selectButton = new Button(Select.getValue());
+        Button selectButton = new Button("Select");
         selectButton.setOnAction(e -> insertImportedSection(modalStage, tableView));
 
         // Layout
@@ -263,7 +260,14 @@ public class EditerProjet implements Initializable {
     }
 
     private void processInsertImportedSection(SectionRow sectionRow) {
-        String newSectionId = sectionRow.getId() + tiret.getValue() + System.currentTimeMillis();
+        String originalId = sectionRow.getId();
+        String baseId = originalId;
+        int pos = originalId.indexOf("__");
+        if (pos != -1) {
+            // On garde la partie avant "__"
+            baseId = originalId.substring(0, pos);
+        }
+        String newSectionId = baseId + "__" + System.currentTimeMillis();
         String sectionType = sectionRow.getType();
         int newSectionOrdre = 0;
         try (Connection conn = MySqlConnection.getOracleConnection()) {
@@ -272,7 +276,7 @@ public class EditerProjet implements Initializable {
                 stmt.setInt(1, this.devoir.getIdControle());
                 try (ResultSet resultSet = stmt.executeQuery()) {
                     if (resultSet.next()) {
-                        newSectionOrdre = resultSet.getInt(cnt.getValue()) + 1;
+                        newSectionOrdre = resultSet.getInt("cnt") + 1;
                     }
                     String insertQuery = "INSERT INTO section (idSection, controleID, ordreSection)" +
                             " values (?,?,?)";
@@ -284,7 +288,7 @@ public class EditerProjet implements Initializable {
                     }
                 }
             }
-            if (QCU.getValue().equals(sectionType) || QCM.getValue().equals(sectionType)) {
+            if ("QCU".equals(sectionType) || "QCM".equals(sectionType)) {
                 int newQcmID = -1;
                 String insertQcmQuery = "INSERT INTO qcm (sectionID, isQCU, question) " +
                         "SELECT ?, isQCU, question FROM qcm WHERE sectionID = ?";
@@ -309,7 +313,7 @@ public class EditerProjet implements Initializable {
                     stmt.executeUpdate();
                 }
 
-            } else if (QuesLibre.getValue().equals(sectionType)) {
+            } else if ("QuestionLibre".equals(sectionType)) {
                 String insertQuestionQuery = "INSERT INTO questionlibre (sectionID, question, scoreTotal, nombreScore," +
                         "nombreLigne, tailleLigne,rappel) " +
                         "SELECT ?,question, scoreTotal, nombreScore,nombreLigne, tailleLigne,rappel " +
@@ -320,7 +324,7 @@ public class EditerProjet implements Initializable {
                     stmt.setString(2, sectionRow.getId());
                     stmt.executeUpdate();
                 }
-            } else if (Descrpt.getValue().equals(sectionType)) {
+            } else if ("Description".equals(sectionType)) {
                 int newDescriptionId = -1;
 
                 String insertDescriptionQuery = "INSERT INTO description (sectionID, texte) " +
@@ -352,7 +356,7 @@ public class EditerProjet implements Initializable {
             fetchAndUpdateTableView();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrimpSec.getValue() + e.getMessage());
+            System.err.println("Error while inserting imported section: " + e.getMessage());
         }
     }
 
@@ -373,7 +377,7 @@ public class EditerProjet implements Initializable {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                sections.add(new SectionRow(rs.getString(idsec.getValue()), rs.getString(type.getValue())));
+                sections.add(new SectionRow(rs.getString("idSection"), rs.getString("type")));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -389,7 +393,7 @@ public class EditerProjet implements Initializable {
             stmt.setString(1, sectionId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(idqcm.getValue());
+                    return rs.getInt("idQCM");
                 }
             }
         } catch (SQLException e) {
@@ -405,7 +409,7 @@ public class EditerProjet implements Initializable {
             stmt.setString(1, sectionId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(iddesp.getValue());
+                    return rs.getInt("idDescription");
                 }
             }
         } catch (SQLException e) {
@@ -417,19 +421,19 @@ public class EditerProjet implements Initializable {
     @FXML
     public void handleClicksCancelProject(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(ConfCancel.getValue());
-        alert.setHeaderText(CancelModif.getValue());
-        alert.setContentText(popupmodif.getValue());
+        alert.setTitle("Confirm Cancel");
+        alert.setHeaderText("Are you sure to cancel the modifications ?");
+        alert.setContentText("All modifications will be lost!");
 
-        ButtonType buttonTypeYes = new ButtonType(oui.getValue());
-        ButtonType buttonTypeNo = new ButtonType(Non.getValue());
+        ButtonType buttonTypeYes = new ButtonType("Oui");
+        ButtonType buttonTypeNo = new ButtonType("Non");
 
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 FxmlLoader object = new FxmlLoader();
-                Parent view = object.getPane(Home.getValue());
+                Parent view = object.getPane("Home");
                 parentPane.getChildren().removeAll();
                 parentPane.getChildren().setAll(view);
             }
@@ -447,14 +451,14 @@ public class EditerProjet implements Initializable {
 
             try (ResultSet resultSet = checkStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    devoir.setIdControle(resultSet.getInt(idcontr.getValue()));
-                    devoir.setNomDevoir(resultSet.getString(nomdev.getValue()));
-                    devoir.setTypeDevoir(resultSet.getString(typedev.getValue()));
-                    devoir.setNombreExemplaire(resultSet.getInt(nombrexemplaire.getValue()));
-                    devoir.setRandomSeed(resultSet.getInt(randseed.getValue()));
-                    devoir.setExamHeader(resultSet.getString(Examheader.getValue()));
-                    devoir.setReponseHeader(resultSet.getString(Respheader.getValue()));
-                    devoir.setCreationDate(resultSet.getDate(CreationDate.getValue()));
+                    devoir.setIdControle(resultSet.getInt("idControle"));
+                    devoir.setNomDevoir(resultSet.getString("nomDevoir"));
+                    devoir.setTypeDevoir(resultSet.getString("typeDevoir"));
+                    devoir.setNombreExemplaire(resultSet.getInt("nombreExemplaire"));
+                    devoir.setRandomSeed(resultSet.getInt("randomSeed"));
+                    devoir.setExamHeader(resultSet.getString("examHeader"));
+                    devoir.setReponseHeader(resultSet.getString("reponseHeader"));
+                    devoir.setCreationDate(resultSet.getDate("creationDate"));
 
                     this.nomDevoir.setText(devoir.getNomDevoir());
                     this.typeDevoir.setText(devoir.getTypeDevoir());
@@ -485,17 +489,17 @@ public class EditerProjet implements Initializable {
                                 }
                             }
                         } else {
-                            System.err.println(Failedinsertdata.getValue());
+                            System.err.println("Failed to insert Controle data.");
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
-                        System.err.println(Errdata.getValue() + e.getMessage());
+                        System.err.println("Error inserting data into Controle table: " + e.getMessage());
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrControle.getValue() + e.getMessage());
+            System.err.println("Error checking Controle table: " + e.getMessage());
         }
     }
 
@@ -514,15 +518,15 @@ public class EditerProjet implements Initializable {
         }
 
 
-        numCol.setCellValueFactory(new PropertyValueFactory<>(idsec.getValue()));
-        typeCol.setCellValueFactory(new PropertyValueFactory<>(type.getValue()));
-        enonceCol.setCellValueFactory(new PropertyValueFactory<>(question.getValue()));
+        numCol.setCellValueFactory(new PropertyValueFactory<>("idSection"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        enonceCol.setCellValueFactory(new PropertyValueFactory<>("question"));
 
         actionCol.setCellFactory(col -> new TableCell<RowTableSection, Void>() {
-            private final Button moveUpButton = new Button(StringLang.moveUpButton.getValue());
-            private final Button modifierButton = new Button(StringLang.modifierButton.getValue());
-            private final Button supprimerButton = new Button(StringLang.supprimerButton.getValue());
-            private final Button moveDownButton = new Button(StringLang.moveDownButton.getValue());
+            private final Button moveUpButton = new Button("↑");
+            private final Button modifierButton = new Button("i");
+            private final Button supprimerButton = new Button("X");
+            private final Button moveDownButton = new Button("↓");
 
             {
                 moveUpButton.setOnAction(event -> handleMoveUp(getIndex()));
@@ -548,21 +552,37 @@ public class EditerProjet implements Initializable {
             }
         });
 
-
+        examHeader.setWrapText(true);
+        reponseHeader.setWrapText(true);
         loadSectionData();
     }
 
     private void intializeHeaders() {
         String examHeaderText =
-                ConsignesQuestions.getValue();
+                "Dans ce document, vous trouverez d'abord les questions puis ensuite les feuilles de réponses (à rendre). " +
+                        "In this document, you will first find the questions then the pages for the answers.\n" +
+                        "\t\t\t \n" +
+                        "Les questions faisant apparaître le symbole :¨: peuvent présenter zéro, une ou plusieurs bonnes réponses. " +
+                        "Les autres ont une unique bonne réponse. Des points négatifs sont affectés aux mauvaises réponses. " +
+                        "La pondération des mauvaises réponses est nulle pour les premières fausses réponses mais ensuite la pondération (négative) " +
+                        "des mauvaises réponses augmente avec le nombre de mauvaises réponses.\n" +
+                        "\t\t\t \n" +
+                        "Questions with the symbol :¨: may have zero, one or more correct answers. The others have a single correct answer. " +
+                        "Negative points are assigned for wrong answers. The weight of wrong answers is zero for the first few wrong answers, " +
+                        "but then the (negative) weight of wrong answers increases with the number of wrong answers.\n" +
+                        "\t\t\t \n" +
+                        "Un document ressource est distribué en plus de ce document. Vous devez utiliser les informations de ce document en priorité. " +
+                        "A resource document is distributed in addition to this document. You should use the information in this document as a priority.\n" +
+                        "\t\t\t ";
 
         String reponseHeaderText =
-               Consigne2.getValue();
+                "2 feuilles (4 pages) à détacher : seuls documents à rendre pour la partie Microprocesseur de cet examen. \n" +
+                        "\t\t\t2 detachable sheets (4 pages): only documents to be returned for the Microprocessor exam.";
 
         this.examHeader.setText(examHeaderText);
         this.reponseHeader.setText(reponseHeaderText);
-        this.randomSeed.setText(Randseedpardefaut.getValue());
-        this.nombreExemplaire.setText(NbrValue1.getValue());
+        this.randomSeed.setText("12345678");
+        this.nombreExemplaire.setText("1");
     }
 
     private void handleMoveUp(int index) {
@@ -585,11 +605,11 @@ public class EditerProjet implements Initializable {
             statement.setString(2, section.getIdSection());
             int rowsAffected = statement.executeUpdate();
             if (!(rowsAffected > 0)) {
-                System.err.println(Failedtoupdatesection.getValue() + section.getIdSection());
+                System.err.println("Failed to update section: " + section.getIdSection());
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(Errorupdatingsection.getValue() + e.getMessage());
+            System.err.println("Error updating section: " + e.getMessage());
         }
     }
 
@@ -601,18 +621,18 @@ public class EditerProjet implements Initializable {
     private void handleModify(RowTableSection section) {
         try {
             FxmlLoader object = new FxmlLoader();
-            Parent view = object.getPane(editerQuizSec.getValue());
+            Parent view = object.getPane("editer_quiz/_3_EditerSection");
 
             Scene popupScene = new Scene(view);
             Stage popupStage = new Stage();
 
-            popupStage.setTitle(ModifierSectionQCU.getValue());
+            popupStage.setTitle("Modifier Section QCU");
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.initStyle(StageStyle.TRANSPARENT);
             popupStage.initOwner(terminer.getScene().getWindow());
             popupStage.setScene(popupScene);
             popupStage.setResizable(false);
-            popupScene.getStylesheets().add(getClass().getResource(CheminStyle.getValue()).toExternalForm());
+            popupScene.getStylesheets().add(getClass().getResource("/com/example/project7/css/styles.css").toExternalForm());
 
             EditerSection controller = (EditerSection) object.getController();
             if (controller != null) {
@@ -624,7 +644,7 @@ public class EditerProjet implements Initializable {
 
             popupStage.showAndWait();
         } catch (Exception e) {
-            System.out.println(Erreurlorsdeouverturedelapopup.getValue() + e.getMessage());
+            System.out.println("Erreur lors de l'ouverture de la popup : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -633,12 +653,12 @@ public class EditerProjet implements Initializable {
         RowTableSection section = tableSection.getItems().get(index);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(ConfirmDeletion.getValue());
-        alert.setHeaderText(SureofDeletemssg.getValue() + section.getIdSection() + PointIntegoration.getValue());
-        alert.setContentText(thisactionCantBeDone.getValue());
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete section : " + section.getIdSection() + "?");
+        alert.setContentText("This action cannot be undone.");
 
-        ButtonType confirm = new ButtonType(oui.getValue(), ButtonBar.ButtonData.YES);
-        ButtonType cancel = new ButtonType(Non.getValue(), ButtonBar.ButtonData.NO);
+        ButtonType confirm = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType cancel = new ButtonType("No", ButtonBar.ButtonData.NO);
 
         alert.getButtonTypes().setAll(confirm, cancel);
 
@@ -654,11 +674,11 @@ public class EditerProjet implements Initializable {
                     if (rowsAffected > 0) {
                         tableSection.getItems().remove(index);
                     } else {
-                        System.err.println(Nosect.getValue() + section.getIdSection());
+                        System.err.println("No section found to delete with idSection: " + section.getIdSection());
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    System.err.println(Errsect.getValue() + e.getMessage());
+                    System.err.println("Error deleting section: " + e.getMessage());
                 }
             }
         });
@@ -764,27 +784,27 @@ public class EditerProjet implements Initializable {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    String idSection = resultSet.getString(idsec.getValue());
-                    String type = resultSet.getString(StringLang.type.getValue());
+                    String idSection = resultSet.getString("idSection");
+                    String type = resultSet.getString("type");
 
                     // Determine the correct type
-                    if (type.equals(QuesLibre.getValue())) {
-                        type = QuesLibre.getValue().toString();
-                    } else if (type.equals(QcuetQcm.getValue())) {
-                        type = resultSet.getBoolean(isQCU.getValue()) ? QCU.getValue() : QCM.getValue();
+                    if (type.equals("QuestionLibre")) {
+                        type = "QuestionLibre";
+                    } else if (type.equals("QCU/QCM")) {
+                        type = resultSet.getBoolean("isQCU") ? "QCU" : "QCM";
                     } else {
-                        type = Descrpt.getValue(); // For descriptions
+                        type = "Description"; // For descriptions
                     }
 
-                    String question = resultSet.getString(StringLang.question.getValue());
-                    int ordre = resultSet.getInt(OrdreSect.getValue());
+                    String question = resultSet.getString("question");
+                    int ordre = resultSet.getInt("ordreSection");
 
                     sectionData.add(new RowTableSection(idSection, type, question, ordre));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(Errdataloading.getValue() + e.getMessage());
+            System.err.println("Error loading section data: " + e.getMessage());
         }
 
         // Set the ObservableList to the TableView to refresh the data
@@ -887,7 +907,7 @@ public class EditerProjet implements Initializable {
         psQcm.setString(1, idSection);
         ResultSet rsQcm = psQcm.executeQuery();
         if (rsQcm.next()) {
-            int qcmID = rsQcm.getInt(idqcm.getValue());
+            int qcmID = rsQcm.getInt("idQCM");
             rsQcm.close();
             psQcm.close();
 
@@ -897,9 +917,9 @@ public class EditerProjet implements Initializable {
 
             List<ResponseLatex> responseLatexList = new ArrayList<>();
             while (rsResponses.next()) {
-                String rep = rsResponses.getString(response.getValue());
-                int score = rsResponses.getInt(StringLang.score.getValue());
-                boolean isCorrect = rsResponses.getBoolean(correct.getValue());
+                String rep = rsResponses.getString("reponse");
+                int score = rsResponses.getInt("score");
+                boolean isCorrect = rsResponses.getBoolean("isCorrect");
                 responseLatexList.add(new ResponseLatex(rep, score, isCorrect));
             }
             rsResponses.close();
@@ -947,11 +967,11 @@ public class EditerProjet implements Initializable {
         psFreeQuestion.setString(1, idSection);
         ResultSet rsFreeQuestion = psFreeQuestion.executeQuery();
         if (rsFreeQuestion.next()) {
-            int nombreLigne = rsFreeQuestion.getInt(nbrligne.getValue());
-            double tailleLigne = rsFreeQuestion.getDouble(taillelign.getValue());
-            String rappel = rsFreeQuestion.getString(RAPPEL.getValue());
-            int scoreTotal = rsFreeQuestion.getInt(scoretotal.getValue());
-            int nombreScore = rsFreeQuestion.getInt(nbrscore.getValue());
+            int nombreLigne = rsFreeQuestion.getInt("nombreLigne");
+            double tailleLigne = rsFreeQuestion.getDouble("tailleLigne");
+            String rappel = rsFreeQuestion.getString("rappel");
+            int scoreTotal = rsFreeQuestion.getInt("scoreTotal");
+            int nombreScore = rsFreeQuestion.getInt("nombreScore");
 
             texcontentBuilder.append("\n\t\\element{general}{\n");
             texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}\n");
@@ -981,8 +1001,8 @@ public class EditerProjet implements Initializable {
         ResultSet rsDescription = psDescription.executeQuery();
 
         while (rsDescription.next()) {
-            int idDescription = rsDescription.getInt(iddesp.getValue());
-            String texte = rsDescription.getString(text.getValue());
+            int idDescription = rsDescription.getInt("idDescription");
+            String texte = rsDescription.getString("texte");
 
             texcontentBuilder.append("\n\t\\element{general}{\n");
             if(!texte.trim().isEmpty())
@@ -1008,9 +1028,9 @@ public class EditerProjet implements Initializable {
         List<Double> widths = new ArrayList<>();
 
         while (rsImages.next()) {
-            images.add(rsImages.getString(imagpath.getValue()));
-            legends.add(rsImages.getString(legendtext.getValue()));
-            widths.add(rsImages.getDouble(imgwidth.getValue()));
+            images.add(rsImages.getString("imagePath"));
+            legends.add(rsImages.getString("legendText"));
+            widths.add(rsImages.getDouble("imageWidth"));
         }
 
 
@@ -1030,17 +1050,18 @@ public class EditerProjet implements Initializable {
     private String verifyNomDevoir() {
         if (this.nomDevoir.getText().trim().isEmpty())
             nomDevoir.setText(this.projet.getNomProjet());
-        return this.nomDevoir.getText();
+        //return this.nomDevoir.getText();
+        return "Preremplie-ensemble";
     }
 
     private void verifyNombreExemplaire() {
         if (this.nombreExemplaire.getText().trim().isEmpty())
-            this.nombreExemplaire.setText(NbrValue1.getValue());
+            this.nombreExemplaire.setText("1");
     }
 
     private void verifyRandomSeed() {
         if (this.randomSeed.getText().trim().isEmpty())
-            this.randomSeed.setText(randseed.getValue());
+            this.randomSeed.setText("12345678");
     }
 
     private void showAlert(String title, String message) {
@@ -1062,19 +1083,19 @@ public class EditerProjet implements Initializable {
             exemplaire = Integer.parseInt(nombreExemplaire.getText().trim());
         } catch (NumberFormatException e) {
             exemplaire = 1;
-            nombreExemplaire.setText(NbrValue1.getValue());
+            nombreExemplaire.setText("1");
         }
         try {
             seed = Integer.parseInt(randomSeed.getText().trim());
         } catch (NumberFormatException e) {
             seed = 12345678;
-            randomSeed.setText(Randseedpardefaut.getValue());
+            randomSeed.setText("12345678");
         }
 
         String updateQuery = "UPDATE Controle SET nomDevoir = ?, typeDevoir = ?, nombreExemplaire = ?, randomSeed = ?, " +
                 "examHeader = ?, reponseHeader = ?, creationDate = ? WHERE idControle = ?";
 
-        String updateProjectQuery = "UPDATE projet SET creationDate = CURRENT_DATE WHERE idProjet = ? ";
+        String updateProjectQuery = "UPDATE projet SET creationDate = CURRENT_TIMESTAMP WHERE idProjet = ? ";
 
         try (Connection conn = MySqlConnection.getOracleConnection();
              PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
@@ -1091,7 +1112,7 @@ public class EditerProjet implements Initializable {
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows > 0) {
-                showAlert(succes.getValue(), succesContr.getValue());
+                showAlert("Succès", "Le contrôle a été ajouté avec succès.");
                 this.devoir.setNomDevoir(nomDevoir.getText());
                 this.devoir.setTypeDevoir(typeDevoir.getText());
                 this.devoir.setNombreExemplaire(exemplaire);
@@ -1100,11 +1121,11 @@ public class EditerProjet implements Initializable {
                 this.devoir.setReponseHeader(reponseHeader.getText());
                 this.devoir.setCreationDate(Date.valueOf(dateDevoir.getValue().toString()));
             } else {
-                showAlert(Err.getValue(), FailedUpdtaeContr.getValue());
+                showAlert("Erreur", "Échec de la mise à jour du contrôle.");
             }
 
         } catch (SQLException e) {
-            showAlert(Err.getValue(), Errupdate.getValue() + e.getMessage());
+            showAlert("Erreur", "Erreur lors de la mise à jour du contrôle : " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -1116,11 +1137,11 @@ public class EditerProjet implements Initializable {
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows <= 0) {
-                showAlert(Err.getValue(),ErrUpdateProjet.getValue());
+                showAlert("Erreur", "Il y'a un erreur de mise à jour de projet!");
             }
 
         } catch (SQLException e) {
-            showAlert(Err.getValue(), ErrControl.getValue()+ e.getMessage());
+            showAlert("Erreur", "Erreur lors de la mise à jour du contrôle : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -1178,13 +1199,13 @@ public class EditerProjet implements Initializable {
                 String type = row.getType();
                 String question = row.getQuestion();
                 String idSection = row.getIdSection();
-                String idSectionLatex = idSection.replace(diez.getValue(), Deuxpoints.getValue());
+                String idSectionLatex = idSection.replace("#", " : ");
 
-                if (type.equals(QCM.getValue()) || type.equals(QCU.getValue())) {
+                if (type.equals("QCM") || type.equals("QCU")) {
                     processQCM(conn, idSection, question, idSectionLatex, texcontentBuilder);
-                } else if (type.equals(QuesLibre.getValue())) {
+                } else if (type.equals("QuestionLibre")) {
                     processFreeQuestion(conn, idSection, question, idSectionLatex, texcontentBuilder);
-                } else if (type.equals(Descrpt.getValue())) {
+                } else if (type.equals("Description")) {
                     processDescription(conn, idSection, texcontentBuilder);
                 }
             }
@@ -1207,7 +1228,7 @@ public class EditerProjet implements Initializable {
         generatePDF();
 
         FxmlLoader object = new FxmlLoader();
-        Parent view = object.getPane(home.getValue());
+        Parent view = object.getPane("Home");
         parentPane.getChildren().removeAll();
         parentPane.getChildren().setAll(view);
 
@@ -1218,19 +1239,19 @@ public class EditerProjet implements Initializable {
         if (!directory.exists()) {
             directory.mkdir();
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(directory, verifyNomDevoir()+ tex.getValue())))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(directory, verifyNomDevoir()+ ".tex")))) {
             writer.write(content);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        try (InputStream styleStream = getClass().getResourceAsStream(pathAMC.getValue())) {
+        try (InputStream styleStream = getClass().getResourceAsStream("/com/example/project7/latex/automultiplechoice.sty")) {
             if (styleStream == null) {
-                System.err.println(RessourcenotFound.getValue());
+                System.err.println("Resource automultiplechoice.sty not found.");
                 return;
             }
             // Define the destination path (copy the file alongside the .tex file)
-            File destinationFile = new File(directory,  AMCfihcierSTY.getValue());
+            File destinationFile = new File(directory, "automultiplechoice.sty");
             Files.copy(styleStream, destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
@@ -1240,10 +1261,10 @@ public class EditerProjet implements Initializable {
     private void generatePDF() {
         // Define the directory and .tex file
         File directory = new File(this.projet.getLocalisationProjet() + File.separator + this.projet.getNomProjet());
-        File texFile = new File(directory, this.devoir.getNomDevoir() + tex.getValue());
+        File texFile = new File(directory, verifyNomDevoir() + ".tex");
 
         // Use the relative filename so the output is created in the same directory
-        ProcessBuilder processBuilder = new ProcessBuilder(pdflatex.getValue(), texFile.getName());
+        ProcessBuilder processBuilder = new ProcessBuilder("pdflatex", texFile.getName());
         processBuilder.directory(directory);
         processBuilder.redirectErrorStream(true);  // Merge standard error with standard output
 
@@ -1258,21 +1279,21 @@ public class EditerProjet implements Initializable {
             }
             int exitCode = process.waitFor();
             if (exitCode == 0) {
-                System.out.println(pdfSucces.getValue());
+                System.out.println("PDF generated successfully.");
                 // Attempt to open the PDF file in the default PDF viewer
-                File pdfFile = new File(directory, this.devoir.getNomDevoir() + pdf.getValue());
+                File pdfFile = new File(directory, verifyNomDevoir() + ".pdf");
                 if (Desktop.isDesktopSupported()) {
                     Desktop desktop = Desktop.getDesktop();
                     if (pdfFile.exists()) {
                         desktop.open(pdfFile);
                     } else {
-                        System.err.println(PDFNOTFOUND.getValue() + pdfFile.getAbsolutePath());
+                        System.err.println("PDF file not found: " + pdfFile.getAbsolutePath());
                     }
                 } else {
-                    System.err.println(DESKTOPnotsupported.getValue());
+                    System.err.println("Desktop is not supported on this platform.");
                 }
             } else {
-                System.err.println(pdfFAIL.getValue() + exitCode);
+                System.err.println("PDF generation failed with exit code: " + exitCode);
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

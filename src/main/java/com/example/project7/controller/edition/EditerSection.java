@@ -22,8 +22,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static com.example.project7.laguage.en.StringLang.*;
-
 public class EditerSection implements Initializable {
 
     private static int numberOfSection = 0;
@@ -54,7 +52,7 @@ public class EditerSection implements Initializable {
         updateSection( identifiantSection.getText());
         initializeNumberOfSection();
         numberOfSection++;
-        loadContentToSectionPane(EdtDescrpt.getValue());
+        loadContentToSectionPane("_7_EditerDescription");
     }
 
     public void setParentPane(AnchorPane parentPane) {
@@ -69,8 +67,8 @@ public class EditerSection implements Initializable {
     public void handleInputIdentifier(KeyEvent event) {
         updateSection( identifiantSection.getText());
 
-        if (identifiantSection.getText().trim().equals(espace.getValue())) {
-            String sectionId = section.getValue()+ numberOfSection + tiret.getValue() + devoir.getIdControle() ;
+        if (identifiantSection.getText().trim().equals("")) {
+            String sectionId = "Section#" + numberOfSection + "_" + devoir.getIdControle() ;
             updateSection(sectionId);
             //identifiantSection.setText(sectionId);
         }
@@ -98,44 +96,51 @@ public class EditerSection implements Initializable {
     private void loadContentToSectionPane(String fxmlFileName) {
         try {
             FxmlLoader loader = new FxmlLoader();
-            AnchorPane newContent = loader.getPane(Pane.getValue() + fxmlFileName);
+            AnchorPane newContent = loader.getPane("editer_quiz/" + fxmlFileName);
 
             if (newContent != null) {
                 sectionPane.getChildren().setAll(newContent);
 
-                String sectionId = section.getValue() + numberOfSection+ tiret.getValue() + devoir.getIdControle() ;
-
+                String currentId = identifiantSection.getText().trim();
+                if (currentId.isEmpty()) {
+                    currentId = "Section#" + numberOfSection + "_" + devoir.getIdControle();
+                }
                 currentController = loader.getController();
-                updateSection(sectionId);
-                identifiantSection.setText(sectionId);
+                updateSection(currentId);
+                identifiantSection.setText(currentId);
 
             } else {
-                System.err.println(content.getValue() + fxmlFileName + CantCharge.getValue());
+                System.err.println("Le contenu pour " + fxmlFileName + " n'a pas pu être chargé.");
             }
         } catch (Exception e) {
-            System.err.println(Errchargement.getValue() + fxmlFileName + fxml.getValue());
+            System.err.println("Erreur lors du chargement de " + fxmlFileName + ".fxml");
             e.printStackTrace();
         }
     }
 
     @FXML
     public void handleClicksAddQCM(ActionEvent event) {
-        loadContentToSectionPane(EditerQCM.getValue());
+        loadContentToSectionPane("_4_EditerQCM");
+        typeSection.setText("QCM");
+
     }
 
     @FXML
     public void handleClicksAddQCU(ActionEvent event) {
-        loadContentToSectionPane(EditerQCU.getValue());
+        loadContentToSectionPane("_5_EditerQCU");
+        typeSection.setText("QCU");
     }
 
     @FXML
     public void handleClicksAddFreeQuestion(ActionEvent event) {
-        loadContentToSectionPane(EditerQuestion.getValue());
+        loadContentToSectionPane("_6_EditerQuestionLibre");
+        typeSection.setText("Free Question");
     }
 
     @FXML
     public void handleClicksAddFreeDescription(ActionEvent event) {
-        loadContentToSectionPane(EditerDesp.getValue());
+        loadContentToSectionPane("_7_EditerDescription");
+        typeSection.setText("Description");
     }
 
     @Override
@@ -154,7 +159,7 @@ public class EditerSection implements Initializable {
                 int newOrder = 1;
                 // Start iterating through the sections
                 while (resultSet.next()) {
-                    String idSection = resultSet.getString(idsec.getValue());
+                    String idSection = resultSet.getString("idSection");
 
                     // Prepare the update statement
                     updateStatement.setInt(1, newOrder); // Set the new ordreSection value
@@ -174,7 +179,7 @@ public class EditerSection implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrOrderSec.getValue() + e.getMessage());
+            System.err.println("Error updating section order: " + e.getMessage());
         }
     }
 
@@ -183,7 +188,7 @@ public class EditerSection implements Initializable {
     }
 
     public void handleClicksModifyQCM(RowTableSection selection) {
-        loadContentToSectionPane(EditerQCM.getValue());
+        loadContentToSectionPane("_4_EditerQCM");
         if (currentController instanceof EditerQCM) {
             EditerQCM controller = (EditerQCM) currentController;
 
@@ -195,12 +200,12 @@ public class EditerSection implements Initializable {
                 controller.setSectionUpdating(section);
             }
         } else {
-            System.err.println(MssgContollErr.getValue());
+            System.err.println("Current controller is not an instance of EditerQCU.");
         }
     }
 
     public void handleClicksModifyQCU(RowTableSection selection) {
-        loadContentToSectionPane( EditerQCU.getValue());
+        loadContentToSectionPane("_5_EditerQCU");
         if (currentController instanceof EditerQCU) {
             EditerQCU controller = (EditerQCU) currentController;
 
@@ -212,12 +217,12 @@ public class EditerSection implements Initializable {
                 controller.setSectionUpdating(section);
             }
         } else {
-            System.err.println(MssgContollErr.getValue());
+            System.err.println("Current controller is not an instance of EditerQCU.");
         }
     }
 
     public void handleClicksModifyFreeQuestion(RowTableSection selection) {
-        loadContentToSectionPane(EditerDesp.getValue());
+        loadContentToSectionPane("_6_EditerQuestionLibre");
         if (currentController instanceof EditerQuestion) {
             EditerQuestion controller = (EditerQuestion) currentController;
 
@@ -229,12 +234,12 @@ public class EditerSection implements Initializable {
                 controller.setSectionUpdating(section);
             }
         } else {
-            System.err.println(MssgContollErr.getValue());
+            System.err.println("Current controller is not an instance of EditerQCU.");
         }
     }
 
     public void handleClicksModifyFreeDescription(RowTableSection selection) {
-        loadContentToSectionPane(EditerDesp.getValue());
+        loadContentToSectionPane("_7_EditerDescription");
         if (currentController instanceof EditerDescription) {
             EditerDescription controller = (EditerDescription) currentController;
 
@@ -246,7 +251,7 @@ public class EditerSection implements Initializable {
                 controller.setSectionUpdating(section);
             }
         } else {
-            System.err.println(MssgContollErr.getValue());
+            System.err.println("Current controller is not an instance of EditerQCU.");
         }
     }
 
@@ -266,9 +271,14 @@ public class EditerSection implements Initializable {
                     handleClicksModifyFreeDescription(section);
                     break;
                 default:
-                    System.out.println( OUCHY.getValue());
+                    System.out.println("OUCHY!!");
 
             }
         }
+    }
+
+    @FXML
+    private void ProjectTypeButton(ActionEvent event){
+        typeSection.show();
     }
 }

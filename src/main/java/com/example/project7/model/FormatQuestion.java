@@ -1,8 +1,5 @@
 package com.example.project7.model;
 
-import static com.example.project7.laguage.en.StringLang.Deuxpoints;
-import static com.example.project7.laguage.en.StringLang.question;
-
 public class FormatQuestion {
     private String premierTexte;
     private Boolean isNumerated;
@@ -10,10 +7,10 @@ public class FormatQuestion {
     private String DeuxiemeTexte;
 
     public FormatQuestion() {
-        this.premierTexte = "question";
+        this.premierTexte = "Question";
         this.isNumerated = true;
         this.numeroIncremente = TypeNumero.Arabe;
-        this.DeuxiemeTexte = " : ";
+        this.DeuxiemeTexte = ":";
     }
 
     public String getPremierTexte() {

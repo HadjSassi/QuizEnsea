@@ -8,16 +8,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static com.example.project7.laguage.en.StringLang.*;
 
 
 public class InterfaceController implements Initializable {
@@ -56,7 +50,7 @@ public class InterfaceController implements Initializable {
     @FXML
     void handleClicksOpen(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
-        Parent view = object.getPane( "openinterf");
+        Parent view = object.getPane("openinterf");
         OpenProjet controller = (OpenProjet) object.getController();
         if (controller != null) {
             controller.setParentPane(anchorpane3);

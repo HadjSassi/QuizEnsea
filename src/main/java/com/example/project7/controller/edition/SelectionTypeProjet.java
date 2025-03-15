@@ -23,9 +23,6 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import static com.example.project7.laguage.en.StringLang.*;
-import static com.example.project7.laguage.en.StringLang.userHome;
-
 public class SelectionTypeProjet implements Initializable {
 
     @FXML
@@ -72,7 +69,7 @@ public class SelectionTypeProjet implements Initializable {
             if (idProjet != -1) {
                 if (createProjectDirectory(projectLocation, projectName)) {
                     FxmlLoader object = new FxmlLoader();
-                    Parent view = object.getPane(EdtQuizetPrjt.getValue());
+                    Parent view = object.getPane("editer_quiz/_2_EditerProjet");
                     EditerProjet controller = (EditerProjet) object.getController();
                     Projet projet = new Projet(idProjet,projectName, projectLocation, selectedType, new Date());
 
@@ -85,10 +82,10 @@ public class SelectionTypeProjet implements Initializable {
                         parentPane.getChildren().setAll(view);
                     }
                 } else {
-                    locationLabel.setText(ErrCreatingFolder.getValue());
+                    locationLabel.setText("Error occurred while creating the project folder!");
                 }
             } else {
-                nameLabel.setText(ErrCreatingPrjt.getValue());
+                nameLabel.setText("Error occurred while creating the project!");
             }
         }
     }
@@ -134,7 +131,7 @@ public class SelectionTypeProjet implements Initializable {
     @FXML
     public void handleClicksCancel(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
-        Parent view = object.getPane(Home.getValue());
+        Parent view = object.getPane("Home");
         parentPane.getChildren().removeAll();
         parentPane.getChildren().setAll(view);
     }
@@ -169,30 +166,30 @@ public class SelectionTypeProjet implements Initializable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            this.nameLabel.setText(ErrVerfNamePrj.getValue());
+            this.nameLabel.setText("Database error: Could not verify project name!");
             return true;
         }
 
         if (exists) {
-            this.nameLabel.setText(NameAlreadyExists.getValue());
+            this.nameLabel.setText("Your project name already exists!");
         }
         return exists;
     }
 
     private boolean verifyProjectName() {
         if (name.getText().trim().isEmpty()) {
-            this.nameLabel.setText(EnterNamePrjt.getValue());
+            this.nameLabel.setText("You need to enter the name of your project!");
             return false;
         }
-        if (!name.getText().trim().matches("[a-zA-Z0-9 _-]+")) {  // i let this bec the name of the project works like that
-            this.nameLabel.setText(NoSpecCHAR.getValue());
+        if (!name.getText().trim().matches("[a-zA-Z0-9 _-]+")) {
+            this.nameLabel.setText("The project name must not contain special characters!");
             return false;
         }
         if (!Character.isLetter(name.getText().charAt(0))) {
-            this.nameLabel.setText(StartWithLETTER.getValue());
+            this.nameLabel.setText("Your project name should start with a letter!");
             return false;
         }
-        this.nameLabel.setText(espace.getValue());
+        this.nameLabel.setText("");
         return !findInDatabase();
     }
 
@@ -200,16 +197,16 @@ public class SelectionTypeProjet implements Initializable {
         String locationText = location.getText().trim();
 
         if (locationText.isEmpty()) {
-            locationLabel.setText(ChoosePrjtPATH.getValue());
+            locationLabel.setText("You need to choose a project location!");
             return false;
         }
         java.io.File directory = new java.io.File(locationText);
 
         if (!directory.exists() || !directory.isDirectory()) {
-            locationLabel.setText( PathNOTFound.getValue());
+            locationLabel.setText("The selected location is not valid or does not exist.");
             return false;
         }
-        locationLabel.setText(espace.getValue());
+        locationLabel.setText("");
         return true;
     }
 
@@ -217,7 +214,7 @@ public class SelectionTypeProjet implements Initializable {
     private void handleLocationBrowse(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
 
-        directoryChooser.setInitialDirectory(new java.io.File(System.getProperty(userHome.getValue())));
+        directoryChooser.setInitialDirectory(new java.io.File(System.getProperty("user.home")));
 
         java.io.File selectedDirectory = directoryChooser.showDialog(((Stage) name.getScene().getWindow()));
 

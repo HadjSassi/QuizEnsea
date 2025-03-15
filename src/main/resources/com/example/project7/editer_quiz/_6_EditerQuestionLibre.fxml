@@ -1,77 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQuestion">
+<AnchorPane prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerQuestion">
    <children>
       <VBox prefHeight="600.0" prefWidth="794.0">
          <children>
             <GridPane prefHeight="512.0" prefWidth="794.0">
                <children>
-                  <Label prefHeight="27.0" prefWidth="194.0" text="     Enter the Question :" GridPane.halignment="CENTER">
+                  <Label text="Enter the Question :" GridPane.halignment="RIGHT">
                      <GridPane.margin>
-                        <Insets left="100.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Label prefHeight="27.0" prefWidth="189.0" text="             Score range :" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <Label text="Score range :" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets left="120.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Label prefHeight="27.0" prefWidth="276.0" text="                      Number of items :" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <Label text="Number of items :" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                      <GridPane.margin>
-                        <Insets left="40.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Label text="Please enter the number of lines :" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Label prefHeight="27.0" prefWidth="303.0" text="Please enter the size between lines :" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Label prefHeight="27.0" prefWidth="269.0" text="     Enter the Question Reminder :" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <Label prefHeight="27.0" prefWidth="262.0" text="               ( the right of the Box )&quot;" textFill="#c60e5e" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+                  <Label text="Please enter the number of lines :" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label text="Please enter the size between lines :" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                  <Label text="Enter the Question Reminder :" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                  <Label text="( the right of the Box )&quot;" textFill="#c60e5e" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextArea fx:id="enonceQuestion" prefHeight="168.0" prefWidth="325.0" promptText="Please enter the question" GridPane.columnIndex="1">
+                  <TextArea fx:id="enonceQuestion" prefHeight="168.0" prefWidth="325.0" promptText="Please enter the question" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets bottom="10.0" right="100.0" top="10.0" />
                      </GridPane.margin>
                   </TextArea>
-                  <TextField fx:id="scoringTotale" onKeyTyped="#handleInputFloat" promptText="Please enter the score range" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="scoringTotale" onKeyTyped="#handleInputFloat" promptText="Please enter the score range" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets right="100.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="nombreScore" onKeyTyped="#handleInputNumber" prefHeight="39.0" prefWidth="285.0" promptText="items" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id="nombreScore" onKeyTyped="#handleInputNumber" prefHeight="39.0" prefWidth="285.0" promptText="items" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets right="100.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="nombreLignes" onKeyTyped="#handleInputNumber" promptText="Number of lines" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TextField fx:id="nombreLignes" onKeyTyped="#handleInputNumber" promptText="Number of lines" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="100.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="tailleLigne" onKeyTyped="#handleInputFloat" promptText="The size between lines" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <TextField fx:id="tailleLigne" onKeyTyped="#handleInputFloat" promptText="The size between lines" GridPane.columnIndex="2" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets right="100.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="rappelQuestion" promptText="The Question Reminder" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <TextField fx:id="rappelQuestion" promptText="The Question Reminder" GridPane.columnIndex="2" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets right="100.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" onAction="#modfiyQuestion" prefHeight="20.0" prefWidth="36.0" text="..." GridPane.columnIndex="1">
+                  <Button mnemonicParsing="false" onAction="#modfiyQuestion" prefHeight="20.0" prefWidth="36.0" text="..." GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets left="340.0" />
                      </GridPane.margin>
                   </Button>
                </children>
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="382.0" minWidth="10.0" prefWidth="349.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="382.0" minWidth="10.0" prefWidth="310.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="382.0" minWidth="10.0" prefWidth="77.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="430.0" minWidth="10.0" prefWidth="425.0" />
                </columnConstraints>
                <padding>

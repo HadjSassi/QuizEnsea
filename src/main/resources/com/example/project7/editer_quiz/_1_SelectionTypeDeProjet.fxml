@@ -63,7 +63,7 @@
                            <graphic>
                               <ImageView fitHeight="28.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/img_5.png" />
+                                    <Image url="@../../../../../../../../../../../../amctest/resources/resources/com/example/project7/images/img_5.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>

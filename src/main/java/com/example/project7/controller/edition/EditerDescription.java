@@ -25,8 +25,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static com.example.project7.laguage.en.StringLang.*;
-
 public class EditerDescription implements Initializable {
 
 
@@ -64,7 +62,7 @@ public class EditerDescription implements Initializable {
         FileChooser fileChooser = new FileChooser();
 
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter(imgfiles.getValue(), png.getValue(), jpg.getValue(), jpeg.getValue())
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
 
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -73,7 +71,7 @@ public class EditerDescription implements Initializable {
             String fullPath = selectedFile.getAbsolutePath();
             String fileName = selectedFile.getName();
 
-            int lastDotIndex = fileName.lastIndexOf(point.getValue());
+            int lastDotIndex = fileName.lastIndexOf(".");
             String legend = (lastDotIndex != -1) ? fileName.substring(0, lastDotIndex) : fileName;
 
             RowTableSection newRow = new RowTableSection(fullPath, legend,0);
@@ -85,12 +83,12 @@ public class EditerDescription implements Initializable {
     public void handleClickAddDescription(ActionEvent event) {
         if (checkSectionExists(this.section.getIdSection())) {
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmationAlert.setTitle(SectionExists.getValue());
-            confirmationAlert.setHeaderText(SectionAlreadyExist.getValue());
-            confirmationAlert.setContentText(SectionId.getValue() + this.section.getIdSection() +  Sectionexistedeja.getValue());
+            confirmationAlert.setTitle("Section Exists");
+            confirmationAlert.setHeaderText("La section existe déjà");
+            confirmationAlert.setContentText("Section avec l'identifiant " + this.section.getIdSection() + " existe déjà, voulez vous l'écraser?");
 
-            ButtonType modifyButton = new ButtonType(Modifier.getValue());
-            ButtonType cancelButton = new ButtonType(cancel.getValue(), ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType modifyButton = new ButtonType("Modifier");
+            ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
 
             confirmationAlert.getButtonTypes().setAll(modifyButton, cancelButton);
 
@@ -147,7 +145,7 @@ public class EditerDescription implements Initializable {
         });
 
         actionCol.setCellFactory(col -> new TableCell<RowTableSection, Void>() {
-            private final Button supprimerButton = new Button(x.getValue());
+            private final Button supprimerButton = new Button("X");
 
             {
 
@@ -220,28 +218,70 @@ public class EditerDescription implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrcheckExist.getValue() + e.getMessage());
+            System.err.println("Error checking section existence: " + e.getMessage());
         }
 
         return false;
     }
 
-    private void removeSection() {
-        String deleteQuery = "DELETE FROM section WHERE idSection = ?";
-        try (Connection connection = MySqlConnection.getOracleConnection();
-             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+    private void updateDescription() {
+        String updateDescriptionQuery = "UPDATE description SET texte = ? WHERE sectionID = ?";
+        String deleteImagesQuery = "DELETE FROM Description_Images WHERE descriptionID = (SELECT idDescription FROM description WHERE sectionID = ?)";
+        String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath, legendText, imageWidth) VALUES (?, ?, ?, ?)";
 
-            statement.setString(1, section.getIdSection());
-            statement.executeUpdate();
+        try (Connection connection = MySqlConnection.getOracleConnection()) {
+            connection.setAutoCommit(false);
+            // Mise à jour du texte de la description
+            try (PreparedStatement updateStmt = connection.prepareStatement(updateDescriptionQuery)) {
+                updateStmt.setString(1, descriptionTextArea.getText());
+                updateStmt.setString(2, this.section.getIdSection());
+                updateStmt.executeUpdate();
+            }
+
+            // Suppression des anciennes images
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteImagesQuery)) {
+                deleteStmt.setString(1, this.section.getIdSection());
+                deleteStmt.executeUpdate();
+            }
+
+            // Insertion des nouvelles images
+            // On récupère l'idDescription correspondant à cette section
+            int descriptionID = 0;
+            String fetchDescriptionIdQuery = "SELECT idDescription FROM description WHERE sectionID = ?";
+            try (PreparedStatement fetchStmt = connection.prepareStatement(fetchDescriptionIdQuery)) {
+                fetchStmt.setString(1, this.section.getIdSection());
+                try (ResultSet rs = fetchStmt.executeQuery()) {
+                    if (rs.next()) {
+                        descriptionID = rs.getInt("idDescription");
+                    }
+                }
+            }
+
+            try (PreparedStatement insertImageStmt = connection.prepareStatement(insertImageQuery)) {
+                for (int i = 0; i < tableViewImages.getItems().size(); i++) {
+                    RowTableSection row = tableViewImages.getItems().get(i);
+                    insertImageStmt.setInt(1, descriptionID);
+                    insertImageStmt.setString(2, row.getChemin());
+                    insertImageStmt.setString(3, row.getLegend());
+                    insertImageStmt.setDouble(4, row.getWidth());
+                    insertImageStmt.addBatch();
+                }
+                insertImageStmt.executeBatch();
+            }
+
+            connection.commit();
+            // Vous pouvez rafraîchir la vue ou notifier l'utilisateur ici
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrDELETE.getValue() + e.getMessage());
+            System.err.println("Erreur lors de la mise à jour de la description : " + e.getMessage());
         }
     }
 
     private void updateSection() {
-        removeSection();
-        handleClickAddDescription(null);
+        updateDescription();
+        this.section.getDevoir().getController().fetchAndUpdateTableView();
+        Stage stage = (Stage) cancelDescription.getScene().getWindow();
+        stage.close();
     }
 
     private void createSection() {
@@ -257,7 +297,7 @@ public class EditerDescription implements Initializable {
             insertStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(Errinsert.getValue() + e.getMessage());
+            System.err.println("Error inserting Section data: " + e.getMessage());
         }
     }
 
@@ -295,13 +335,13 @@ public class EditerDescription implements Initializable {
                         }
                     }
                 } else {
-                    System.err.println(FailedInsertion.getValue());
+                    System.err.println("Échec de l'insertion de la description.");
                     connection.rollback();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrInsert.getValue()+ e.getMessage());
+            System.err.println("Erreur lors de l'insertion : " + e.getMessage());
         }
     }
 
@@ -316,9 +356,9 @@ public class EditerDescription implements Initializable {
             ResultSet resultSet = qcuStatement.executeQuery();
             if (resultSet.next()) {
                 description = new Description();
-                description.setIdSection(resultSet.getString(idsec.getValue()));
-                description.setTexte(resultSet.getString(text.getValue()));
-                idDescription = resultSet.getInt(iddesp.getValue());
+                description.setIdSection(resultSet.getString("sectionID"));
+                description.setTexte(resultSet.getString("texte"));
+                idDescription = resultSet.getInt("idDescription");
                 descriptionTextArea.setText(description.getTexte());
                 ArrayList<String> images = new ArrayList<>();
                 ArrayList<String> legends = new ArrayList<>();
@@ -327,9 +367,9 @@ public class EditerDescription implements Initializable {
                     imageStatement.setInt(1, idDescription);
                     ResultSet imageResultSet = imageStatement.executeQuery();
                     while (imageResultSet.next()) {
-                        String imagePath = imageResultSet.getString(imagpath.getValue());
-                        String imageLegend = imageResultSet.getString(legendtext.getValue());
-                        Double imageWidth = imageResultSet.getDouble(imgwidth.getValue());
+                        String imagePath = imageResultSet.getString("imagePath");
+                        String imageLegend = imageResultSet.getString("legendText");
+                        Double imageWidth = imageResultSet.getDouble("imageWidth");
                         images.add(imagePath);
                         legends.add(imageLegend);
                         widths.add(imageWidth);
@@ -351,7 +391,7 @@ public class EditerDescription implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println(ErrloadingQCU.getValue() + e.getMessage());
+            System.err.println("Error loading QCU data: " + e.getMessage());
         }
     }
 
