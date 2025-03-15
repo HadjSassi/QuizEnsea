@@ -1,6 +1,7 @@
 package com.example.project7.controller.edition;
 
 import com.example.project7.FxmlLoader;
+import com.example.project7.laguage.en.StringLang;
 import com.example.project7.model.Projet;
 import com.example.project7.model.RowTableSection;
 import com.example.project7.model.TypeProjet;
@@ -24,6 +25,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.ResourceBundle;
+
+import static com.example.project7.laguage.en.StringLang.*;
 
 public class OpenProjet implements Initializable {
 
@@ -58,7 +61,7 @@ public class OpenProjet implements Initializable {
         Projet currentProjet = projectTable.getSelectionModel().getSelectedItem();
         if (currentProjet != null) {
             FxmlLoader object = new FxmlLoader();
-            Parent view = object.getPane("editer_quiz/_2_EditerProjet");
+            Parent view = object.getPane(EdtQuizetPrjt.getValue());
             EditerProjet controller = (EditerProjet) object.getController();
             if (controller != null) {
                 controller.setProjet(currentProjet);
@@ -70,8 +73,8 @@ public class OpenProjet implements Initializable {
             }
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("You need to select a project first");
-            alert.setHeaderText("You need to select a project first to open ");
+            alert.setTitle(SelectPrjt.getValue());
+            alert.setHeaderText(SelectPrjtOPen.getValue());
             alert.showAndWait();
         }
     }
@@ -79,12 +82,12 @@ public class OpenProjet implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fetchAndUpdateTableView();
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("nomProjet"));
-        localCol.setCellValueFactory(new PropertyValueFactory<>("localisationProjet"));
-        typeCol.setCellValueFactory(new PropertyValueFactory<>("typeProjet"));
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>(nomProjet.getValue()));
+        localCol.setCellValueFactory(new PropertyValueFactory<>( PathPrjt.getValue()));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>(typePrjt.getValue()));
+        dateCol.setCellValueFactory(new PropertyValueFactory<>(date.toString()));
         actionCol.setCellFactory(col -> new TableCell<Projet, Void>() {
-            private final Button supprimerButton = new Button("X");
+            private final Button supprimerButton = new Button(StringLang.supprimerButton.getValue());
             {
 
                 supprimerButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
@@ -113,11 +116,11 @@ public class OpenProjet implements Initializable {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    int idProject = resultSet.getInt("idProjet");
-                    String nomProjet = resultSet.getString("nomProjet");
-                    String localisationProjet = resultSet.getString("localisationProjet");
-                    String typeProjet = resultSet.getString("typeProjet");
-                    Date dateProjet = resultSet.getDate("creationDate");
+                    int idProject = resultSet.getInt(idPrjt.getValue());
+                    String nomProjet = resultSet.getString(StringLang.nomProjet.getValue());
+                    String localisationProjet = resultSet.getString(PathPrjt.getValue());
+                    String typeProjet = resultSet.getString(typePrjt.getValue());
+                    Date dateProjet = resultSet.getDate(CreationDate.getValue());
 
 
                     sectionData.add(new Projet(idProject, nomProjet, localisationProjet, typeProjet,dateProjet));
@@ -125,7 +128,7 @@ public class OpenProjet implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error loading section data: " + e.getMessage());
+            System.err.println(Errdataloading.getValue() + e.getMessage());
         }
 
         projectTable.setItems(sectionData);
@@ -135,12 +138,12 @@ public class OpenProjet implements Initializable {
         Projet project = projectTable.getItems().get(index);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Deletion");
-        alert.setHeaderText("Are you sure you want to delete project : " + project.getIdProjet() + "?");
-        alert.setContentText("This action cannot be undone, but the files in "+ project.getLocalisationProjet()+" will remain");
+        alert.setTitle( ConfirmDeletion.getValue());
+        alert.setHeaderText(SureDeletePrjt.getValue() + project.getIdProjet() + PointIntegoration.getValue());
+        alert.setContentText(ThisActUNDONE.getValue()+ project.getLocalisationProjet()+ willRemain.getValue());
 
-        ButtonType confirm = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-        ButtonType cancel = new ButtonType("No", ButtonBar.ButtonData.NO);
+        ButtonType confirm = new ButtonType(oui.getValue(), ButtonBar.ButtonData.YES);
+        ButtonType cancel = new ButtonType(Non.getValue(), ButtonBar.ButtonData.NO);
 
         alert.getButtonTypes().setAll(confirm, cancel);
 
@@ -156,11 +159,11 @@ public class OpenProjet implements Initializable {
                     if (rowsAffected > 0) {
                         projectTable.getItems().remove(index);
                     } else {
-                        System.err.println("No project found to delete with identifier: " + project.getIdProjet());
+                        System.err.println(NoprjtFOUND.getValue() + project.getIdProjet());
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    System.err.println("Error deleting project: " + e.getMessage());
+                    System.err.println(ErrDELETE.getValue() + e.getMessage());
                 }
             }
         });

@@ -1,12 +1,14 @@
 package com.example.project7.model;
 
+import static com.example.project7.laguage.en.StringLang.*;
+
 public enum TypeDevoir {
 
-    Controle_Continue("Contrôle Continu"),
+    Controle_Continue( "Contrôle Continu"),
     Examen_Finale("Examen Final"),
     Test_Evaluation("Évaluation"),
     Examen_TP("Examen TP"),
-    Test_de_niveau("Test de Niveau");
+    Test_de_niveau("Test de Niveau"),;
 
     private final String nomDevoir;
 

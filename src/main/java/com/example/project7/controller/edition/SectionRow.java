@@ -11,6 +11,7 @@ public class SectionRow {
         this.type = new SimpleStringProperty(name);
     }
 
+
     public String  getId() {
         return id.get();
     }

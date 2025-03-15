@@ -5,6 +5,8 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 
+import static com.example.project7.laguage.en.StringLang.*;
+
 public class FxmlLoader {
     private FXMLLoader loader;
 

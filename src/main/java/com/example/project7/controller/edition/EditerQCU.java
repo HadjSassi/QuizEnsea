@@ -1,5 +1,6 @@
 package com.example.project7.controller.edition;
 
+import com.example.project7.laguage.en.StringLang;
 import com.example.project7.model.QCM;
 import com.example.project7.model.Reponse;
 import com.example.project7.model.Section;
@@ -30,6 +31,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import static com.example.project7.laguage.en.StringLang.*;
 
 public class EditerQCU implements Initializable {
 
@@ -72,12 +75,12 @@ public class EditerQCU implements Initializable {
         String question = enonceQuestion.getText().trim();
 
         if (question.isEmpty()) {
-            if (!enonceQuestion.getStyleClass().contains("text-field-danger")) {
-                enonceQuestion.getStyleClass().add("text-field-danger");
+            if (!enonceQuestion.getStyleClass().contains(Textdanger.getValue())) {
+                enonceQuestion.getStyleClass().add(Textdanger.getValue());
             }
             return false;
         } else {
-            enonceQuestion.getStyleClass().removeAll("text-field-danger");
+            enonceQuestion.getStyleClass().removeAll(Textdanger.getValue());
             return true;
         }
     }
@@ -86,12 +89,12 @@ public class EditerQCU implements Initializable {
         String question = reponseCorrect.getText().trim();
 
         if (question.isEmpty()) {
-            if (!reponseCorrect.getStyleClass().contains("text-field-danger")) {
-                reponseCorrect.getStyleClass().add("text-field-danger");
+            if (!reponseCorrect.getStyleClass().contains(Textdanger.getValue())) {
+                reponseCorrect.getStyleClass().add(Textdanger.getValue());
             }
             return false;
         } else {
-            reponseCorrect.getStyleClass().removeAll("text-field-danger");
+            reponseCorrect.getStyleClass().removeAll(Textdanger.getValue());
             return true;
         }
     }
@@ -121,7 +124,7 @@ public class EditerQCU implements Initializable {
 
     @FXML
     public void handleClicksAddWrongResponce(ActionEvent event) {
-        String defaultResponse = "Mauvaise réponse";
+        String defaultResponse =  WrongAnswer.getValue();
         int defaultScore;
         try {
             defaultScore = Integer.parseInt(baremeNegDefault.getText());
@@ -138,12 +141,12 @@ public class EditerQCU implements Initializable {
             if (checkSectionExists(this.section.getIdSection())) {
                 // Show confirmation alert
                 Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                confirmationAlert.setTitle("Section Exists");
-                confirmationAlert.setHeaderText("La section existe déjà");
-                confirmationAlert.setContentText("Section avec l'identifiant " + this.section.getIdSection() + " existe déjà, voulez vous l'écraser?");
+                confirmationAlert.setTitle(SectionExists.getValue());
+                confirmationAlert.setHeaderText(SectionAlreadyExist.getValue());
+                confirmationAlert.setContentText(SectionId.getValue() + this.section.getIdSection() + Sectionexistedeja.getValue());
 
-                ButtonType modifyButton = new ButtonType("Modifier");
-                ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+                ButtonType modifyButton = new ButtonType(Modifier.getValue());
+                ButtonType cancelButton = new ButtonType(cancel.getValue(), ButtonBar.ButtonData.CANCEL_CLOSE);
 
                 confirmationAlert.getButtonTypes().setAll(modifyButton, cancelButton);
 
@@ -174,7 +177,7 @@ public class EditerQCU implements Initializable {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error deleting section: " + e.getMessage());
+            System.err.println(ErrdltSec.getValue() + e.getMessage());
         }
     }
 
@@ -198,7 +201,7 @@ public class EditerQCU implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error checking section existence: " + e.getMessage());
+            System.err.println(ErrcheckExist.getValue() + e.getMessage());
         }
 
         return false; // Default to false if there's an error
@@ -217,7 +220,7 @@ public class EditerQCU implements Initializable {
             int rowsAffected = insertStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting Section data: " + e.getMessage());
+            System.err.println(Errinsert.getValue() + e.getMessage());
         }
     }
 
@@ -242,11 +245,11 @@ public class EditerQCU implements Initializable {
                     }
                 }
             } else {
-                System.err.println("Failed to insert QCU data.");
+                System.err.println(failInsrtQcudata.getValue());
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting QCU data: " + e.getMessage());
+            System.err.println(ErrInsrtQcudata.getValue() + e.getMessage());
         }
     }
 
@@ -273,7 +276,7 @@ public class EditerQCU implements Initializable {
             insertStatement.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting incorrect responses: " + e.getMessage());
+            System.err.println(ErrWrongAnsw.getValue()+ e.getMessage());
         }
     }
 
@@ -292,7 +295,7 @@ public class EditerQCU implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting correct response: " + e.getMessage());
+            System.err.println(ErrWrongAnsw.getValue() + e.getMessage());
         }
     }
 
@@ -316,12 +319,12 @@ public class EditerQCU implements Initializable {
         responseTextArea.setPrefSize(300, 150);
 
         TextField scoreTextField = new TextField(String.valueOf(reponse.getScore()));
-        scoreTextField.setPromptText("Entrez le barème");
+        scoreTextField.setPromptText(EntrBareme.getValue());
 
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button("Enregistrer");
+        Button saveButton = new Button(save.getValue());
         saveButton.setOnAction(event -> {
             reponse.setResponse(responseTextArea.getText());
             reponse.setScore(Integer.parseInt(scoreTextField.getText()));
@@ -331,18 +334,18 @@ public class EditerQCU implements Initializable {
             popupStage.close();
         });
 
-        Button closeButton = new Button("Fermer");
+        Button closeButton = new Button(close.getValue());
         closeButton.setOnAction(event -> {
             popupStage.close();
         });
 
         buttonBox.getChildren().addAll(saveButton, closeButton);
 
-        popupVBox.getChildren().addAll(new Label("Modifier la réponse et le barème:"), responseTextArea, scoreTextField, buttonBox);
+        popupVBox.getChildren().addAll(new Label(ChngAnswAndBareme.getValue()), responseTextArea, scoreTextField, buttonBox);
 
         Scene popupScene = new Scene(popupVBox, 350, 250);
         popupStage.setScene(popupScene);
-        popupStage.setTitle("Modifier la réponse");
+        popupStage.setTitle(ChangAnswr.getValue());
         popupStage.setOnShown(event -> {
             responseTextArea.requestFocus();
             responseTextArea.selectAll();
@@ -352,8 +355,8 @@ public class EditerQCU implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        baremePos.setText("1");
-        baremeNegDefault.setText("0");
+        baremePos.setText(NbrValue1.getValue());
+        baremeNegDefault.setText(NbrValue0.getValue());
 
         responseColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getResponse()));
         responseColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -371,8 +374,8 @@ public class EditerQCU implements Initializable {
         });
 
         actionColumn.setCellFactory(col -> new TableCell<>() {
-            private final Button deleteButton = new Button("Supprimer");
-            private final Button editButton = new Button("Modifier");
+            private final Button deleteButton = new Button(Supprimer.getValue());
+            private final Button editButton = new Button(Modifier.getValue());
 
 
             {
@@ -424,9 +427,9 @@ public class EditerQCU implements Initializable {
             ResultSet qcuResultSet = qcuStatement.executeQuery();
             if (qcuResultSet.next()) {
                 qcu = new QCM();
-                qcu.setIdSection(qcuResultSet.getString("idQCM"));
-                qcu.setQuestion(qcuResultSet.getString("question"));
-                qcu.setQCU(qcuResultSet.getBoolean("isQcu"));
+                qcu.setIdSection(qcuResultSet.getString(idqcm.getValue()));
+                qcu.setQuestion(qcuResultSet.getString(question.getValue()));
+                qcu.setQCU(qcuResultSet.getBoolean(isQCU.getValue()));
 
                 enonceQuestion.setText(qcu.getQuestion());
             }
@@ -438,9 +441,9 @@ public class EditerQCU implements Initializable {
                 ResultSet responseResultSet = responseStatement.executeQuery();
 
                 while (responseResultSet.next()) {
-                    String responseText = responseResultSet.getString("reponse");
-                    int score = responseResultSet.getInt("score");
-                    boolean isCorrect = responseResultSet.getBoolean("isCorrect");
+                    String responseText = responseResultSet.getString(response.getValue());
+                    int score = responseResultSet.getInt(StringLang.score.getValue());
+                    boolean isCorrect = responseResultSet.getBoolean(correct.getValue());
 
                     if (isCorrect) {
                         reponseCorrect.setText(responseText);
@@ -455,7 +458,7 @@ public class EditerQCU implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error loading QCU data: " + e.getMessage());
+            System.err.println(ErrloadingQCU.getValue() + e.getMessage());
         }
     }
 
@@ -473,14 +476,14 @@ public class EditerQCU implements Initializable {
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button("Modifier");
+        Button saveButton = new Button(Modifier.getValue());
         saveButton.setOnAction(event -> {
             reponseCorrect.setText(responseTextArea.getText());
 
             popupStage.close();
         });
 
-        Button closeButton = new Button("Fermer");
+        Button closeButton = new Button(close.getValue());
         closeButton.setOnAction(event -> {
             popupStage.close();
         });
@@ -491,7 +494,7 @@ public class EditerQCU implements Initializable {
 
         Scene popupScene = new Scene(popupVBox, 350, 250);
         popupStage.setScene(popupScene);
-        popupStage.setTitle("Edit the correct response");
+        popupStage.setTitle( EdtCorrAnswr.getValue());
         popupStage.show();
     }
 
@@ -509,14 +512,14 @@ public class EditerQCU implements Initializable {
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button("Modifier");
+        Button saveButton = new Button(Modifier.getValue());
         saveButton.setOnAction(event -> {
             enonceQuestion.setText(responseTextArea.getText());
 
             popupStage.close();
         });
 
-        Button closeButton = new Button("Fermer");
+        Button closeButton = new Button(close.getValue());
         closeButton.setOnAction(event -> {
             popupStage.close();
         });
@@ -527,7 +530,7 @@ public class EditerQCU implements Initializable {
 
         Scene popupScene = new Scene(popupVBox, 350, 250);
         popupStage.setScene(popupScene);
-        popupStage.setTitle("Edit the Question");
+        popupStage.setTitle(EdtQues.getValue());
         popupStage.show();
     }
 }

@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import static com.example.project7.laguage.en.StringLang.*;
 import static mysql_connection.MySqlConnection.getOracleConnection;
 
 public class DataBase {
@@ -184,7 +185,7 @@ public class DataBase {
             }
             System.out.println("TypeNumero data inserted successfully!");
         } catch (Exception e) {
-            System.err.println("Error inserting TypeNumero data: " + e.getMessage());
+            System.err.println("Error inserting TypeNumero data: "+ e.getMessage());
             e.printStackTrace();
         }
     }

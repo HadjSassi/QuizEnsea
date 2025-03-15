@@ -3,6 +3,7 @@ package com.example.project7.model;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+
 public class Reponse {
     private SimpleStringProperty response;
     private SimpleIntegerProperty score;

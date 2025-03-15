@@ -25,6 +25,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static com.example.project7.laguage.en.StringLang.*;
+
 public class EditerDescription implements Initializable {
 
 
@@ -62,7 +64,7 @@ public class EditerDescription implements Initializable {
         FileChooser fileChooser = new FileChooser();
 
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+                new FileChooser.ExtensionFilter(imgfiles.getValue(), png.getValue(), jpg.getValue(), jpeg.getValue())
         );
 
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -71,7 +73,7 @@ public class EditerDescription implements Initializable {
             String fullPath = selectedFile.getAbsolutePath();
             String fileName = selectedFile.getName();
 
-            int lastDotIndex = fileName.lastIndexOf(".");
+            int lastDotIndex = fileName.lastIndexOf(point.getValue());
             String legend = (lastDotIndex != -1) ? fileName.substring(0, lastDotIndex) : fileName;
 
             RowTableSection newRow = new RowTableSection(fullPath, legend,0);
@@ -83,12 +85,12 @@ public class EditerDescription implements Initializable {
     public void handleClickAddDescription(ActionEvent event) {
         if (checkSectionExists(this.section.getIdSection())) {
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmationAlert.setTitle("Section Exists");
-            confirmationAlert.setHeaderText("La section existe déjà");
-            confirmationAlert.setContentText("Section avec l'identifiant " + this.section.getIdSection() + " existe déjà, voulez vous l'écraser?");
+            confirmationAlert.setTitle(SectionExists.getValue());
+            confirmationAlert.setHeaderText(SectionAlreadyExist.getValue());
+            confirmationAlert.setContentText(SectionId.getValue() + this.section.getIdSection() +  Sectionexistedeja.getValue());
 
-            ButtonType modifyButton = new ButtonType("Modifier");
-            ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType modifyButton = new ButtonType(Modifier.getValue());
+            ButtonType cancelButton = new ButtonType(cancel.getValue(), ButtonBar.ButtonData.CANCEL_CLOSE);
 
             confirmationAlert.getButtonTypes().setAll(modifyButton, cancelButton);
 
@@ -145,7 +147,7 @@ public class EditerDescription implements Initializable {
         });
 
         actionCol.setCellFactory(col -> new TableCell<RowTableSection, Void>() {
-            private final Button supprimerButton = new Button("X");
+            private final Button supprimerButton = new Button(x.getValue());
 
             {
 
@@ -218,7 +220,7 @@ public class EditerDescription implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error checking section existence: " + e.getMessage());
+            System.err.println(ErrcheckExist.getValue() + e.getMessage());
         }
 
         return false;
@@ -233,7 +235,7 @@ public class EditerDescription implements Initializable {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error deleting section: " + e.getMessage());
+            System.err.println(ErrDELETE.getValue() + e.getMessage());
         }
     }
 
@@ -255,7 +257,7 @@ public class EditerDescription implements Initializable {
             insertStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting Section data: " + e.getMessage());
+            System.err.println(Errinsert.getValue() + e.getMessage());
         }
     }
 
@@ -293,13 +295,13 @@ public class EditerDescription implements Initializable {
                         }
                     }
                 } else {
-                    System.err.println("Échec de l'insertion de la description.");
+                    System.err.println(FailedInsertion.getValue());
                     connection.rollback();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Erreur lors de l'insertion : " + e.getMessage());
+            System.err.println(ErrInsert.getValue()+ e.getMessage());
         }
     }
 
@@ -314,9 +316,9 @@ public class EditerDescription implements Initializable {
             ResultSet resultSet = qcuStatement.executeQuery();
             if (resultSet.next()) {
                 description = new Description();
-                description.setIdSection(resultSet.getString("sectionID"));
-                description.setTexte(resultSet.getString("texte"));
-                idDescription = resultSet.getInt("idDescription");
+                description.setIdSection(resultSet.getString(idsec.getValue()));
+                description.setTexte(resultSet.getString(text.getValue()));
+                idDescription = resultSet.getInt(iddesp.getValue());
                 descriptionTextArea.setText(description.getTexte());
                 ArrayList<String> images = new ArrayList<>();
                 ArrayList<String> legends = new ArrayList<>();
@@ -325,9 +327,9 @@ public class EditerDescription implements Initializable {
                     imageStatement.setInt(1, idDescription);
                     ResultSet imageResultSet = imageStatement.executeQuery();
                     while (imageResultSet.next()) {
-                        String imagePath = imageResultSet.getString("imagePath");
-                        String imageLegend = imageResultSet.getString("legendText");
-                        Double imageWidth = imageResultSet.getDouble("imageWidth");
+                        String imagePath = imageResultSet.getString(imagpath.getValue());
+                        String imageLegend = imageResultSet.getString(legendtext.getValue());
+                        Double imageWidth = imageResultSet.getDouble(imgwidth.getValue());
                         images.add(imagePath);
                         legends.add(imageLegend);
                         widths.add(imageWidth);
@@ -349,7 +351,7 @@ public class EditerDescription implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error loading QCU data: " + e.getMessage());
+            System.err.println(ErrloadingQCU.getValue() + e.getMessage());
         }
     }
 

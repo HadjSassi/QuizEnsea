@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorpane3" prefHeight="620.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerSection">
+<AnchorPane fx:id="anchorpane3" prefHeight="620.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerSection">
     <children>
         <VBox prefHeight="709.0" prefWidth="794.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
             <HBox alignment="CENTER" prefHeight="49.0" prefWidth="794.0" spacing="10.0">
                <children>
-                        <Label text="Section Identifier">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="identifiantSection" onKeyTyped="#handleInputIdentifier" prefHeight="31.0" prefWidth="196.0" promptText="Please enter the section identifier!" />
-                        <SplitMenuButton fx:id="typeSection" mnemonicParsing="false" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #A3B18A;" text="Please Select type of the Section ">
+                        <SplitMenuButton fx:id="typeSection" mnemonicParsing="false" prefHeight="39.0" prefWidth="333.0" style="-fx-background-color: #D76C82;" text="Please Select type of the Section ">
                             <items>
                         <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeDescription" text="Description" />
                                 <MenuItem mnemonicParsing="false" onAction="#handleClicksAddQCU" text="QCU" />
@@ -25,6 +20,12 @@
                         <MenuItem mnemonicParsing="false" onAction="#handleClicksAddFreeQuestion" text="Free Question" />
                             </items>
                         </SplitMenuButton>
+                        <Label text="Section Identifier">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="identifiantSection" onKeyTyped="#handleInputIdentifier" prefHeight="39.0" prefWidth="235.0" promptText="Please enter the section identifier!" />
                </children>
                <VBox.margin>
                   <Insets left="5.0" />
