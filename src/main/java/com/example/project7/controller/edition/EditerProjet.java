@@ -832,7 +832,7 @@ public class EditerProjet implements Initializable {
         footer.append("\n");
         footer.append("\t\\exemplaire{").append(formatLatex(nombreExemplaire.getText().trim())).append("}{\n");
         footer.append("\t\t\n");
-        footer.append("\t\t\\noindent{\\large\\bf QUESTIONS  \\hfill ").append(formatLatex(typeDevoir.getText())).append(" du ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy"))).append("}\n");
+        footer.append("\t\t\\noindent{\\large\\bf QUESTIONS  \\hfill ").append(formatLatex(typeDevoir.getText())).append(" of ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy"))).append("}\n");
         footer.append("\t\t\n");
         footer.append("\t\t\\vspace*{.5cm}\n");
         footer.append("\t\t\\begin{minipage}{.4\\linewidth}\n");
@@ -855,7 +855,7 @@ public class EditerProjet implements Initializable {
         footer.append("\t\t\\AMCdebutFormulaire    \n");
         footer.append("\t\t\n");
         footer.append("\t\t\n");
-        footer.append("\t\t{\\large\\bf ").append(formatLatex(nomDevoir.getText().trim())).append(" REPONSES ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).append("} \n");
+        footer.append("\t\t{\\large\\bf ").append(formatLatex(nomDevoir.getText().trim())).append(" RESPONSES ").append(dateDevoir.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).append("} \n");
         footer.append("\t\t\\newline\n");
         footer.append("\t\t\\hfill \\champnom{\\fbox{    \n");
         footer.append("\t\t\t\t\\begin{minipage}{.5\\linewidth}\n");
@@ -936,7 +936,7 @@ public class EditerProjet implements Initializable {
             }
 
             texcontentBuilder.append("\n\t\\element{general}{\n");
-            texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}")
+            texcontentBuilder.append("\t\\begin{question}{").append(removeLatexSpecialCharacters(idSectionLatex)).append("}")
                     .append("\\bareme{b=").append(maxCorrect)
                     .append(",m=").append(maxIncorrect).append("}\n");
             texcontentBuilder.append("\t\t").append(formatLatex(question)).append("\n");
@@ -974,7 +974,7 @@ public class EditerProjet implements Initializable {
             int nombreScore = rsFreeQuestion.getInt("nombreScore");
 
             texcontentBuilder.append("\n\t\\element{general}{\n");
-            texcontentBuilder.append("\t\\begin{question}{").append(idSectionLatex).append("}\n");
+            texcontentBuilder.append("\t\\begin{question}{").append(removeLatexSpecialCharacters(idSectionLatex)).append("}\n");
             texcontentBuilder.append("\t\t").append(formatLatex(question)).append("\n");
             texcontentBuilder.append("\t\t\\AMCOpen{lines=").append(nombreLigne)
                     .append(",lineheight=").append(tailleLigne)
@@ -1005,7 +1005,7 @@ public class EditerProjet implements Initializable {
             String texte = rsDescription.getString("texte");
 
             texcontentBuilder.append("\n\t\\element{general}{\n");
-            if(!texte.trim().isEmpty())
+            if (!texte.trim().isEmpty())
                 texcontentBuilder.append("\t\t").append(formatLatex(texte)).append("\\\\\n");
 
             // Process images and legends
@@ -1042,7 +1042,7 @@ public class EditerProjet implements Initializable {
             texcontentBuilder.append("\\begin{figure}[H]\n");
             texcontentBuilder.append("    \\centering\n");
             texcontentBuilder.append("    \\includegraphics[width=").append(widths.get(i)).append("\\linewidth]{\\detokenize{").append(imagePath).append("}}\n");
-            texcontentBuilder.append("    \\caption{\\detokenize{").append(legends.get(i)).append("}}\n");
+            texcontentBuilder.append("    \\caption{").append(formatLatex(legends.get(i).replace("%", ""))).append("}\n");
             texcontentBuilder.append("\\end{figure}\n");
         }
     }
@@ -1132,7 +1132,7 @@ public class EditerProjet implements Initializable {
         try (Connection conn = MySqlConnection.getOracleConnection();
              PreparedStatement pstmt = conn.prepareStatement(updateProjectQuery)) {
 
-            pstmt.setInt(1,projet.getIdProjet() );
+            pstmt.setInt(1, projet.getIdProjet());
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -1179,6 +1179,15 @@ public class EditerProjet implements Initializable {
                 .replace("”", "''")
                 .replace(":¨:", "\\multiSymbole{}") // ♣
                 ;                 // Guillemet fermant
+    }
+
+    private String removeLatexSpecialCharacters(String input) {
+
+        // Define the regex pattern for LaTeX special characters
+        String regex = "[\\\\{}#%&$^_~]";
+
+        // Replace all occurrences of the special characters with an empty string
+        return input.replaceAll(regex, "");
     }
 
     @FXML
@@ -1239,7 +1248,7 @@ public class EditerProjet implements Initializable {
         if (!directory.exists()) {
             directory.mkdir();
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(directory, verifyNomDevoir()+ ".tex")))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(directory, verifyNomDevoir() + ".tex")))) {
             writer.write(content);
         } catch (IOException e) {
             e.printStackTrace();
