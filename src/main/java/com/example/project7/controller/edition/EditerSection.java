@@ -147,10 +147,10 @@ public class EditerSection implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {}
 
     private void initializeNumberOfSection() {
-        String fetchSectionsQuery = "SELECT idSection FROM section WHERE controleId = ? ORDER BY ordreSection";
-        String updateOrderQuery = "UPDATE section SET ordreSection = ? WHERE idSection = ?";
+        String fetchSectionsQuery = "SELECT idSection FROM Section WHERE controleID = ? ORDER BY ordreSection";
+        String updateOrderQuery = "UPDATE Section SET ordreSection = ? WHERE idSection = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement fetchStatement = connection.prepareStatement(fetchSectionsQuery);
              PreparedStatement updateStatement = connection.prepareStatement(updateOrderQuery)) {
 

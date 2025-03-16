@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Statement;
 
-import static mysql_connection.MySqlConnection.getOracleConnection;
+import static mysql_connection.MySqlConnection.getConnection;
 
 public class DataBase {
     private static String filePath = "./.init";
@@ -24,9 +24,9 @@ public class DataBase {
     }
 
     private static void initializeDatabase() {
-        try (Connection connection = getOracleConnection(); Statement statement = connection.createStatement()) {
+        try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
 
-            useSchema(statement);
+//            useSchema(statement);
             createTable(statement);
             createInitFile(filePath);
             insertTypeDevoirData(statement);
@@ -36,11 +36,11 @@ public class DataBase {
         }
     }
 
-    public static void useSchema(Statement statement) throws Exception {
+    /*public static void useSchema(Statement statement) throws Exception {
         String useSchemaQuery = "USE QuizENSEA;";
         statement.executeUpdate(useSchemaQuery);
 //        System.out.println("Switched to schema QuizENSEA.");
-    }
+    }*/
 
     private static void createTable(Statement statement) throws Exception {
         String createProjetQuery = "CREATE TABLE IF NOT EXISTS Projet (" +
@@ -189,7 +189,4 @@ public class DataBase {
         }
     }
 
-    public static void main(String[] args) {
-
-    }
 }

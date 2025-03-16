@@ -270,11 +270,11 @@ public class EditerQCM implements Initializable {
     }
 
     private void updateQCM() {
-        String updateQcmQuery = "UPDATE qcm SET question = ? WHERE idQCM = ?";
-        String deleteResponsesQuery = "DELETE FROM qcm_reponses WHERE qcmID = ?";
-        String insertResponseQuery = "INSERT INTO qcm_reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
+        String updateQcmQuery = "UPDATE QCM SET question = ? WHERE idQCM = ?";
+        String deleteResponsesQuery = "DELETE FROM QCM_Reponses WHERE qcmID = ?";
+        String insertResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection()) {
+        try (Connection connection = MySqlConnection.getConnection()) {
             connection.setAutoCommit(false);
 
             // Mise à jour du texte de la question dans la table qcm
@@ -326,9 +326,9 @@ public class EditerQCM implements Initializable {
     }
 
     private boolean checkSectionExists(String idSection) {
-        String checkQuery = "SELECT COUNT(*) FROM section WHERE idSection = ?";
+        String checkQuery = "SELECT COUNT(*) FROM Section WHERE idSection = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
 
             checkStatement.setString(1, idSection);
@@ -347,9 +347,9 @@ public class EditerQCM implements Initializable {
     }
 
     private void createSection() {
-        String insertSectionQuery = "INSERT INTO section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
+        String insertSectionQuery = "INSERT INTO Section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertSectionQuery)) {
 
             insertStatement.setString(1, this.section.getIdSection());
@@ -364,9 +364,9 @@ public class EditerQCM implements Initializable {
     }
 
     private void createQCM() {
-        String insertQCUQuery = "INSERT INTO qcm (question, isQcu, sectionID) VALUES (?, ?, ?)";
+        String insertQCUQuery = "INSERT INTO QCM (question, isQCU, sectionID) VALUES (?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertQCUQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             insertStatement.setString(1, enonceQuestion.getText());
@@ -398,9 +398,9 @@ public class EditerQCM implements Initializable {
     }
 
     private void createQCUInCorrectResponse() {
-        String insertIncorrectResponseQuery = "INSERT INTO qcm_reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
+        String insertIncorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertIncorrectResponseQuery)) {
 
             for (Reponse response : incorrectTableView.getItems()) {
@@ -420,9 +420,9 @@ public class EditerQCM implements Initializable {
     }
 
     private void createQCUCorrectResponse() {
-        String insertCorrectResponseQuery = "INSERT INTO qcm_reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
+        String insertCorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertCorrectResponseQuery)) {
 
             for (Reponse response : correctTableView.getItems()) {
@@ -503,10 +503,10 @@ public class EditerQCM implements Initializable {
     }
 
     private void loadQCMFromSectionId(String idSection) {
-        String fetchQCMQuery = "SELECT * FROM qcm WHERE sectionID = ?";
-        String fetchResponsesQuery = "SELECT * FROM qcm_reponses WHERE qcmID = ?";
+        String fetchQCMQuery = "SELECT * FROM QCM WHERE sectionID = ?";
+        String fetchResponsesQuery = "SELECT * FROM QCM_Reponses WHERE qcmID = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement qcuStatement = connection.prepareStatement(fetchQCMQuery);
              PreparedStatement responseStatement = connection.prepareStatement(fetchResponsesQuery)) {
 

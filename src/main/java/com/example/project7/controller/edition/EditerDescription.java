@@ -206,7 +206,7 @@ public class EditerDescription implements Initializable {
     private boolean checkSectionExists(String idSection) {
         String checkQuery = "SELECT COUNT(*) FROM Section WHERE idSection = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
 
             checkStatement.setString(1, idSection);
@@ -225,11 +225,11 @@ public class EditerDescription implements Initializable {
     }
 
     private void updateDescription() {
-        String updateDescriptionQuery = "UPDATE description SET texte = ? WHERE sectionID = ?";
-        String deleteImagesQuery = "DELETE FROM Description_Images WHERE descriptionID = (SELECT idDescription FROM description WHERE sectionID = ?)";
+        String updateDescriptionQuery = "UPDATE Description SET texte = ? WHERE sectionID = ?";
+        String deleteImagesQuery = "DELETE FROM Description_Images WHERE descriptionID = (SELECT idDescription FROM Description WHERE sectionID = ?)";
         String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath, legendText, imageWidth) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection()) {
+        try (Connection connection = MySqlConnection.getConnection()) {
             connection.setAutoCommit(false);
             // Mise à jour du texte de la description
             try (PreparedStatement updateStmt = connection.prepareStatement(updateDescriptionQuery)) {
@@ -247,7 +247,7 @@ public class EditerDescription implements Initializable {
             // Insertion des nouvelles images
             // On récupère l'idDescription correspondant à cette section
             int descriptionID = 0;
-            String fetchDescriptionIdQuery = "SELECT idDescription FROM description WHERE sectionID = ?";
+            String fetchDescriptionIdQuery = "SELECT idDescription FROM Description WHERE sectionID = ?";
             try (PreparedStatement fetchStmt = connection.prepareStatement(fetchDescriptionIdQuery)) {
                 fetchStmt.setString(1, this.section.getIdSection());
                 try (ResultSet rs = fetchStmt.executeQuery()) {
@@ -287,7 +287,7 @@ public class EditerDescription implements Initializable {
     private void createSection() {
         String insertSectionQuery = "INSERT INTO Section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertSectionQuery)) {
 
             insertStatement.setString(1, this.section.getIdSection());
@@ -302,10 +302,10 @@ public class EditerDescription implements Initializable {
     }
 
     private void createDescription() {
-        String insertDescriptionQuery = "INSERT INTO description (texte, sectionID) VALUES (?, ?)";
+        String insertDescriptionQuery = "INSERT INTO Description (texte, sectionID) VALUES (?, ?)";
         String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath,legendText,imageWidth) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection()) {
+        try (Connection connection = MySqlConnection.getConnection()) {
             connection.setAutoCommit(false);
 
             try (PreparedStatement insertDescriptionStmt = connection.prepareStatement(insertDescriptionQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -346,10 +346,10 @@ public class EditerDescription implements Initializable {
     }
 
     private void loadFieldFromSectionId(String idSection) {
-        String fetchQCUQuery = "SELECT * FROM description WHERE sectionID = ?";
+        String fetchQCUQuery = "SELECT * FROM Description WHERE sectionID = ?";
         String fetchImagesQuery = "SELECT imagePath,legendText,imageWidth FROM Description_Images WHERE descriptionID = ?";
         int idDescription = 0;
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement qcuStatement = connection.prepareStatement(fetchQCUQuery)){
 
             qcuStatement.setString(1, idSection);

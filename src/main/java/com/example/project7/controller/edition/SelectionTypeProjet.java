@@ -94,7 +94,7 @@ public class SelectionTypeProjet implements Initializable {
         String query = "INSERT INTO Projet (nomProjet, localisationProjet, typeProjet) VALUES (?, ?, ?)";
         int generatedId = -1;
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, projectName);
@@ -153,7 +153,7 @@ public class SelectionTypeProjet implements Initializable {
         boolean exists = false;
         String projectName = name.getText().trim();
         String query = "SELECT COUNT(*) FROM Projet WHERE nomProjet = ?";
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, projectName);

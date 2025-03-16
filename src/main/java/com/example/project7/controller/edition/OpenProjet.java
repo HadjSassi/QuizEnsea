@@ -103,11 +103,11 @@ public class OpenProjet implements Initializable {
     }
 
     public void fetchAndUpdateTableView() {
-        String query = "SELECT * FROM projet order by creationDate desc";
+        String query = "SELECT * FROM Projet order by creationDate desc";
 
         ObservableList<Projet> sectionData = FXCollections.observableArrayList();
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -145,8 +145,8 @@ public class OpenProjet implements Initializable {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == confirm) {
-                String deleteQuery = "DELETE FROM projet WHERE idProjet = ?";
-                try (Connection connection = MySqlConnection.getOracleConnection();
+                String deleteQuery = "DELETE FROM Projet WHERE idProjet = ?";
+                try (Connection connection = MySqlConnection.getConnection();
                      PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
 
                     statement.setInt(1, project.getIdProjet());

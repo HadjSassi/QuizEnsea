@@ -270,15 +270,15 @@ public class EditerProjet implements Initializable {
         String newSectionId = baseId + "__" + System.currentTimeMillis();
         String sectionType = sectionRow.getType();
         int newSectionOrdre = 0;
-        try (Connection conn = MySqlConnection.getOracleConnection()) {
-            String countQuery = "SELECT COUNT(*) as cnt FROM section WHERE controleID = ?";
+        try (Connection conn = MySqlConnection.getConnection()) {
+            String countQuery = "SELECT COUNT(*) as cnt FROM Section WHERE controleID = ?";
             try (PreparedStatement stmt = conn.prepareStatement(countQuery)) {
                 stmt.setInt(1, this.devoir.getIdControle());
                 try (ResultSet resultSet = stmt.executeQuery()) {
                     if (resultSet.next()) {
                         newSectionOrdre = resultSet.getInt("cnt") + 1;
                     }
-                    String insertQuery = "INSERT INTO section (idSection, controleID, ordreSection)" +
+                    String insertQuery = "INSERT INTO Section (idSection, controleID, ordreSection)" +
                             " values (?,?,?)";
                     try (PreparedStatement stmt2 = conn.prepareStatement(insertQuery)) {
                         stmt2.setString(1, newSectionId);
@@ -290,8 +290,8 @@ public class EditerProjet implements Initializable {
             }
             if ("QCU".equals(sectionType) || "QCM".equals(sectionType)) {
                 int newQcmID = -1;
-                String insertQcmQuery = "INSERT INTO qcm (sectionID, isQCU, question) " +
-                        "SELECT ?, isQCU, question FROM qcm WHERE sectionID = ?";
+                String insertQcmQuery = "INSERT INTO QCM (sectionID, isQCU, question) " +
+                        "SELECT ?, isQCU, question FROM QCM WHERE sectionID = ?";
 
                 try (PreparedStatement stmt = conn.prepareStatement(insertQcmQuery, Statement.RETURN_GENERATED_KEYS)) {
                     stmt.setString(1, newSectionId);
@@ -304,8 +304,8 @@ public class EditerProjet implements Initializable {
                     }
                 }
 
-                String insertQcmResponsesQuery = "INSERT INTO qcm_reponses (qcmID, reponse, score, isCorrect) " +
-                        "SELECT ?, reponse, score, isCorrect FROM qcm_reponses WHERE qcmID = ?";
+                String insertQcmResponsesQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) " +
+                        "SELECT ?, reponse, score, isCorrect FROM QCM_Reponses WHERE qcmID = ?";
 
                 try (PreparedStatement stmt = conn.prepareStatement(insertQcmResponsesQuery)) {
                     stmt.setInt(1, newQcmID);
@@ -314,10 +314,10 @@ public class EditerProjet implements Initializable {
                 }
 
             } else if ("QuestionLibre".equals(sectionType)) {
-                String insertQuestionQuery = "INSERT INTO questionlibre (sectionID, question, scoreTotal, nombreScore," +
+                String insertQuestionQuery = "INSERT INTO QuestionLibre (sectionID, question, scoreTotal, nombreScore," +
                         "nombreLigne, tailleLigne,rappel) " +
                         "SELECT ?,question, scoreTotal, nombreScore,nombreLigne, tailleLigne,rappel " +
-                        "FROM questionlibre WHERE sectionID = ?";
+                        "FROM QuestionLibre WHERE sectionID = ?";
 
                 try (PreparedStatement stmt = conn.prepareStatement(insertQuestionQuery)) {
                     stmt.setString(1, newSectionId);
@@ -327,8 +327,8 @@ public class EditerProjet implements Initializable {
             } else if ("Description".equals(sectionType)) {
                 int newDescriptionId = -1;
 
-                String insertDescriptionQuery = "INSERT INTO description (sectionID, texte) " +
-                        "SELECT ?, texte FROM description WHERE sectionID = ?";
+                String insertDescriptionQuery = "INSERT INTO Description (sectionID, texte) " +
+                        "SELECT ?, texte FROM Description WHERE sectionID = ?";
 
                 try (PreparedStatement stmt = conn.prepareStatement(insertDescriptionQuery, Statement.RETURN_GENERATED_KEYS)) {
                     stmt.setString(1, newSectionId);
@@ -342,8 +342,8 @@ public class EditerProjet implements Initializable {
                     }
 
                     if (newDescriptionId != -1) {
-                        String insertDescriptionImagesQuery = "INSERT INTO description_images (descriptionID, imagePath, legendText, imageWidth) " +
-                                "SELECT ?, imagePath, legendText, imageWidth FROM description_images WHERE descriptionID = ?";
+                        String insertDescriptionImagesQuery = "INSERT INTO Description_Images (descriptionID, imagePath, legendText, imageWidth) " +
+                                "SELECT ?, imagePath, legendText, imageWidth FROM Description_Images WHERE descriptionID = ?";
 
                         try (PreparedStatement stmt2 = conn.prepareStatement(insertDescriptionImagesQuery)) {
                             stmt2.setInt(1, newDescriptionId);
@@ -363,16 +363,16 @@ public class EditerProjet implements Initializable {
     private ObservableList<SectionRow> getSectionsFromDatabase() {
         ObservableList<SectionRow> sections = FXCollections.observableArrayList();
         String query = "SELECT idSection, " +
-                "CASE WHEN qcm.isQCU IS NOT NULL THEN (CASE WHEN qcm.isQCU = 1 THEN 'QCU' ELSE 'QCM' END) " +
-                "WHEN questionlibre.sectionID IS NOT NULL THEN 'QuestionLibre' " +
-                "WHEN description.sectionID IS NOT NULL THEN 'Description' " +
+                "CASE WHEN QCM.isQCU IS NOT NULL THEN (CASE WHEN QCM.isQCU = 1 THEN 'QCU' ELSE 'QCM' END) " +
+                "WHEN QuestionLibre.sectionID IS NOT NULL THEN 'QuestionLibre' " +
+                "WHEN Description.sectionID IS NOT NULL THEN 'Description' " +
                 "ELSE 'Unknown' END AS type " +
-                "FROM section " +
-                "LEFT JOIN qcm ON section.idSection = qcm.sectionID " +
-                "LEFT JOIN questionlibre ON section.idSection = questionlibre.sectionID " +
-                "LEFT JOIN description ON section.idSection = description.sectionID ";
+                "FROM Section " +
+                "LEFT JOIN QCM ON Section.idSection = QCM.sectionID " +
+                "LEFT JOIN QuestionLibre ON Section.idSection = QuestionLibre.sectionID " +
+                "LEFT JOIN Description ON Section.idSection = Description.sectionID ";
 
-        try (Connection conn = MySqlConnection.getOracleConnection();
+        try (Connection conn = MySqlConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -387,8 +387,8 @@ public class EditerProjet implements Initializable {
     }
 
     private int getOldQcmID(String sectionId) {
-        String query = "SELECT idQCM FROM qcm WHERE sectionID = ?";
-        try (Connection conn = MySqlConnection.getOracleConnection();
+        String query = "SELECT idQCM FROM QCM WHERE sectionID = ?";
+        try (Connection conn = MySqlConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, sectionId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -403,8 +403,8 @@ public class EditerProjet implements Initializable {
     }
 
     private int getOldDescriptionID(String sectionId) {
-        String query = "SELECT idDescription FROM description WHERE sectionID = ?";
-        try (Connection conn = MySqlConnection.getOracleConnection();
+        String query = "SELECT idDescription FROM Description WHERE sectionID = ?";
+        try (Connection conn = MySqlConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, sectionId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -443,9 +443,9 @@ public class EditerProjet implements Initializable {
     private void insertControleData() {
         devoir = new Controle();
 
-        String checkControleQuery = "SELECT idControle, nomDevoir, typeDevoir, nombreExemplaire, randomSeed, examHeader, reponseHeader, creationDate FROM Controle WHERE projetId = ?";
+        String checkControleQuery = "SELECT idControle, nomDevoir, typeDevoir, nombreExemplaire, randomSeed, examHeader, reponseHeader, creationDate FROM Controle WHERE projetID = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkControleQuery)) {
             checkStatement.setInt(1, projet.getIdProjet());
 
@@ -470,7 +470,7 @@ public class EditerProjet implements Initializable {
 
                 } else {
                     intializeHeaders();
-                    String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, examHeader, reponseHeader, projetId, creationDate) " +
+                    String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, examHeader, reponseHeader, projetID, creationDate) " +
                             "VALUES (?, ?, ?, ?, ?, CURRENT_DATE)";
 
                     try (PreparedStatement insertStatement = connection.prepareStatement(insertControleQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -598,8 +598,8 @@ public class EditerProjet implements Initializable {
     }
 
     private void updateRowTableSection(RowTableSection section) {
-        String updateQuery = "UPDATE section SET ordreSection = ? WHERE idSection = ?";
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        String updateQuery = "UPDATE Section SET ordreSection = ? WHERE idSection = ?";
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setInt(1, section.getOrdre());
             statement.setString(2, section.getIdSection());
@@ -664,8 +664,8 @@ public class EditerProjet implements Initializable {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == confirm) {
-                String deleteQuery = "DELETE FROM section WHERE idSection = ?";
-                try (Connection connection = MySqlConnection.getOracleConnection();
+                String deleteQuery = "DELETE FROM Section WHERE idSection = ?";
+                try (Connection connection = MySqlConnection.getConnection();
                      PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
 
                     statement.setString(1, section.getIdSection());
@@ -701,25 +701,26 @@ public class EditerProjet implements Initializable {
 
     private void loadSectionData() {
         if (this.devoir != null) {
-            String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection, 'QCU/QCM' AS type " +
-                    "FROM section " +
-                    "JOIN qcm ON section.idSection = qcm.sectionID " +
-                    "WHERE section.controleID = ? " +
+            String query = "SELECT Section.idSection, QCM.isQCU, QCM.question AS question, Section.ordreSection AS ordreSection, 'QCU/QCM' AS type " +
+                    "FROM Section " +
+                    "JOIN QCM ON Section.idSection = QCM.sectionID " +
+                    "WHERE Section.controleID = ? " +
                     "UNION " +
-                    "SELECT section.idSection, NULL AS isQCU, questionlibre.question AS question, section.ordreSection, 'QuestionLibre' AS type " +
-                    "FROM section " +
-                    "JOIN questionlibre ON section.idSection = questionlibre.sectionID " +
-                    "WHERE section.controleID = ? " +
+                    "SELECT Section.idSection, NULL AS isQCU, QuestionLibre.question AS question, Section.ordreSection AS ordreSection, 'QuestionLibre' AS type " +
+                    "FROM Section " +
+                    "JOIN QuestionLibre ON Section.idSection = QuestionLibre.sectionID " +
+                    "WHERE Section.controleID = ? " +
                     "UNION " +
-                    "SELECT section.idSection, NULL AS isQCU, section.idSection AS question, section.ordreSection, 'Description' AS type " +
-                    "FROM section " +
-                    "JOIN description ON section.idSection = description.sectionID " +
-                    "WHERE section.controleID = ? " +
+                    "SELECT Section.idSection, NULL AS isQCU, Section.idSection AS question, Section.ordreSection AS ordreSection, 'Description' AS type " +
+                    "FROM Section " +
+                    "JOIN Description ON Section.idSection = Description.sectionID " +
+                    "WHERE Section.controleID = ? " +
                     "ORDER BY ordreSection";
+
 
             ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
 
-            try (Connection connection = MySqlConnection.getOracleConnection();
+            try (Connection connection = MySqlConnection.getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
 
                 statement.setInt(1, devoir.getIdControle());
@@ -756,26 +757,27 @@ public class EditerProjet implements Initializable {
     }
 
     public void fetchAndUpdateTableView() {
-        String query = "SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection, 'QCU/QCM' AS type " +
-                "FROM section " +
-                "JOIN qcm ON section.idSection = qcm.sectionID " +
-                "WHERE section.controleID = ? " +
+        String query = "SELECT Section.idSection, QCM.isQCU, QCM.question AS question, Section.ordreSection AS ordreSection, 'QCU/QCM' AS type " +
+                "FROM Section " +
+                "JOIN QCM ON Section.idSection = QCM.sectionID " +
+                "WHERE Section.controleID = ? " +
                 "UNION " +
-                "SELECT section.idSection, NULL AS isQCU, questionlibre.question AS question, section.ordreSection, 'QuestionLibre' AS type " +
-                "FROM section " +
-                "JOIN questionlibre ON section.idSection = questionlibre.sectionID " +
-                "WHERE section.controleID = ? " +
+                "SELECT Section.idSection, NULL AS isQCU, QuestionLibre.question AS question, Section.ordreSection AS ordreSection, 'QuestionLibre' AS type " +
+                "FROM Section " +
+                "JOIN QuestionLibre ON Section.idSection = QuestionLibre.sectionID " +
+                "WHERE Section.controleID = ? " +
                 "UNION " +
-                "SELECT section.idSection, NULL AS isQCU, section.idSection AS question, section.ordreSection, 'Description' AS type " +
-                "FROM section " +
-                "JOIN description ON section.idSection = description.sectionID " +
-                "WHERE section.controleID = ? " +
+                "SELECT Section.idSection, NULL AS isQCU, Section.idSection AS question, Section.ordreSection AS ordreSection, 'Description' AS type " +
+                "FROM Section " +
+                "JOIN Description ON Section.idSection = Description.sectionID " +
+                "WHERE Section.controleID = ? " +
                 "ORDER BY ordreSection";
+
 
         ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
 
         // Execute the query and load data into the ObservableList
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, devoir.getIdControle());
@@ -963,7 +965,7 @@ public class EditerProjet implements Initializable {
     }
 
     private void processFreeQuestion(Connection conn, String idSection, String question, String idSectionLatex, StringBuilder texcontentBuilder) throws SQLException {
-        PreparedStatement psFreeQuestion = conn.prepareStatement("SELECT nombreLigne, tailleLigne, rappel, scoreTotal, nombreScore FROM questionlibre WHERE sectionID = ?");
+        PreparedStatement psFreeQuestion = conn.prepareStatement("SELECT nombreLigne, tailleLigne, rappel, scoreTotal, nombreScore FROM QuestionLibre WHERE sectionID = ?");
         psFreeQuestion.setString(1, idSection);
         ResultSet rsFreeQuestion = psFreeQuestion.executeQuery();
         if (rsFreeQuestion.next()) {
@@ -1095,9 +1097,9 @@ public class EditerProjet implements Initializable {
         String updateQuery = "UPDATE Controle SET nomDevoir = ?, typeDevoir = ?, nombreExemplaire = ?, randomSeed = ?, " +
                 "examHeader = ?, reponseHeader = ?, creationDate = ? WHERE idControle = ?";
 
-        String updateProjectQuery = "UPDATE projet SET creationDate = CURRENT_TIMESTAMP WHERE idProjet = ? ";
+        String updateProjectQuery = "UPDATE Projet SET creationDate = CURRENT_TIMESTAMP WHERE idProjet = ? ";
 
-        try (Connection conn = MySqlConnection.getOracleConnection();
+        try (Connection conn = MySqlConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
 
             pstmt.setString(1, nomDevoir.getText());
@@ -1129,7 +1131,7 @@ public class EditerProjet implements Initializable {
             e.printStackTrace();
         }
 
-        try (Connection conn = MySqlConnection.getOracleConnection();
+        try (Connection conn = MySqlConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(updateProjectQuery)) {
 
             pstmt.setInt(1, projet.getIdProjet());
@@ -1203,7 +1205,7 @@ public class EditerProjet implements Initializable {
 
         Connection conn = null;
         try {
-            conn = MySqlConnection.getOracleConnection();
+            conn = MySqlConnection.getConnection();
             for (RowTableSection row : sections) {
                 String type = row.getType();
                 String question = row.getQuestion();

@@ -166,11 +166,11 @@ public class EditerQCU implements Initializable {
     }
 
     private void updateQCU() {
-        String updateQcmQuery = "UPDATE qcm SET question = ? WHERE idQCM = ?";
-        String deleteResponsesQuery = "DELETE FROM qcm_reponses WHERE qcmID = ?";
-        String insertResponseQuery = "INSERT INTO qcm_reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
+        String updateQcmQuery = "UPDATE QCM SET question = ? WHERE idQCM = ?";
+        String deleteResponsesQuery = "DELETE FROM QCM_Reponses WHERE qcmID = ?";
+        String insertResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection()) {
+        try (Connection connection = MySqlConnection.getConnection()) {
             connection.setAutoCommit(false);
 
             // Mise à jour du texte de la question dans la table qcm
@@ -224,7 +224,7 @@ public class EditerQCU implements Initializable {
     private boolean checkSectionExists(String idSection) {
         String checkQuery = "SELECT COUNT(*) FROM Section WHERE idSection = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
 
             checkStatement.setString(1, idSection);
@@ -245,7 +245,7 @@ public class EditerQCU implements Initializable {
     private void createSection() {
         String insertSectionQuery = "INSERT INTO Section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertSectionQuery)) {
 
             insertStatement.setString(1, this.section.getIdSection());
@@ -260,9 +260,9 @@ public class EditerQCU implements Initializable {
     }
 
     private void createQCU() {
-        String insertQCUQuery = "INSERT INTO QCM (question, isQcu, sectionID) VALUES (?, ?, ?)";
+        String insertQCUQuery = "INSERT INTO QCM (question, isQCU, sectionID) VALUES (?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertQCUQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             insertStatement.setString(1, enonceQuestion.getText());
@@ -296,7 +296,7 @@ public class EditerQCU implements Initializable {
     private void createQCUInCorrectResponse() {
         String insertIncorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertIncorrectResponseQuery)) {
 
             for (Reponse response : incorrectTableView.getItems()) {
@@ -318,7 +318,7 @@ public class EditerQCU implements Initializable {
     private void createQCUCorrectResponse() {
         String insertCorrectResponseQuery = "INSERT INTO QCM_Reponses (qcmID, reponse, score, isCorrect) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertCorrectResponseQuery)) {
 
             insertStatement.setInt(1, Integer.parseInt(qcu.getIdSection()));
@@ -457,7 +457,7 @@ public class EditerQCU implements Initializable {
         String fetchQCUQuery = "SELECT * FROM QCM WHERE sectionID = ?";
         String fetchResponsesQuery = "SELECT * FROM QCM_Reponses WHERE qcmID = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement qcuStatement = connection.prepareStatement(fetchQCUQuery);
              PreparedStatement responseStatement = connection.prepareStatement(fetchResponsesQuery)) {
 

@@ -208,7 +208,7 @@ public class EditerQuestion implements Initializable {
     private boolean checkSectionExists(String idSection) {
         String checkQuery = "SELECT COUNT(*) FROM Section WHERE idSection = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
 
             checkStatement.setString(1, idSection);
@@ -227,8 +227,8 @@ public class EditerQuestion implements Initializable {
     }
 
     private void removeSection() {
-        String deleteQuery = "DELETE FROM section WHERE idSection = ?";
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        String deleteQuery = "DELETE FROM Section WHERE idSection = ?";
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
 
             statement.setString(1, section.getIdSection());
@@ -240,9 +240,9 @@ public class EditerQuestion implements Initializable {
     }
 
     private void updateQuestion() {
-        String updateQuery = "UPDATE questionlibre SET question = ?, scoreTotal = ?, nombreScore = ?, nombreLigne = ?, tailleLigne = ?, rappel = ? WHERE sectionID = ?";
+        String updateQuery = "UPDATE QuestionLibre SET question = ?, scoreTotal = ?, nombreScore = ?, nombreLigne = ?, tailleLigne = ?, rappel = ? WHERE sectionID = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
 
             // Prépare les valeurs en récupérant les données saisies par l'utilisateur
@@ -306,7 +306,7 @@ public class EditerQuestion implements Initializable {
     private void createSection() {
         String insertSectionQuery = "INSERT INTO Section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertSectionQuery)) {
 
             insertStatement.setString(1, this.section.getIdSection());
@@ -321,9 +321,9 @@ public class EditerQuestion implements Initializable {
     }
 
     private void createQuestion() {
-        String insertQCUQuery = "INSERT INTO questionlibre (question, scoreTotal,nombreScore, nombreLigne, tailleLigne, rappel, sectionID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertQCUQuery = "INSERT INTO QuestionLibre (question, scoreTotal,nombreScore, nombreLigne, tailleLigne, rappel, sectionID) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertQCUQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             insertStatement.setString(1, questionLibre.getQuestion());
@@ -358,9 +358,9 @@ public class EditerQuestion implements Initializable {
     }
 
     private void loadQuestionFromSectionId(String idSection) {
-        String fetchQCUQuery = "SELECT * FROM questionlibre WHERE sectionID = ?";
+        String fetchQCUQuery = "SELECT * FROM QuestionLibre WHERE sectionID = ?";
 
-        try (Connection connection = MySqlConnection.getOracleConnection();
+        try (Connection connection = MySqlConnection.getConnection();
              PreparedStatement qcuStatement = connection.prepareStatement(fetchQCUQuery)){
 
             qcuStatement.setString(1, idSection);

@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Project7:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Project7_jar</output-path>
+    <root id="archive" name="Project7.jar">
+      <element id="module-output" name="Project7" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.11.4/protobuf-java-3.11.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/19.0.2/javafx-controls-19.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/de/jensd/fontawesomefx/8.9/fontawesomefx-8.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations/26.0.2/annotations-26.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/mysql/mysql-connector-java/8.0.26/mysql-connector-java-8.0.26.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/jfoenix/jfoenix/9.0.10/jfoenix-9.0.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/19.0.2/javafx-base-19.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/19.0.2/javafx-fxml-19.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/19.0.2/javafx-fxml-19.0.2-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/19.0.2/javafx-base-19.0.2-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/19.0.2/javafx-graphics-19.0.2-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/19.0.2/javafx-controls-19.0.2-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/19.0.2/javafx-graphics-19.0.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
