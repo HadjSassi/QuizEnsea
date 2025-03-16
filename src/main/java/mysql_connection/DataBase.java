@@ -3,32 +3,32 @@ package mysql_connection;
 import com.example.project7.model.TypeDevoir;
 import com.example.project7.model.TypeNumero;
 
+import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.Statement;
 
 import static mysql_connection.MySqlConnection.getConnection;
 
 public class DataBase {
-    private static String filePath = "./.init";
 
     public static void createDatabaseIfDoesNotExist() {
-        if (!Files.exists(Paths.get(filePath))) {
-            try {
-                initializeDatabase();
-            } catch (Exception e) {
-                System.err.println("Error during setup: " + e.getMessage());
-            }
+
+        try {
+            initializeDatabase();
+        } catch (Exception e) {
+            System.err.println("Error during setup: " + e.getMessage());
         }
+
     }
 
     private static void initializeDatabase() {
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
 
-//            useSchema(statement);
             createTable(statement);
-            createInitFile(filePath);
             insertTypeDevoirData(statement);
             insertTypeNumeroData(statement);
         } catch (Exception e) {
@@ -36,11 +36,6 @@ public class DataBase {
         }
     }
 
-    /*public static void useSchema(Statement statement) throws Exception {
-        String useSchemaQuery = "USE QuizENSEA;";
-        statement.executeUpdate(useSchemaQuery);
-//        System.out.println("Switched to schema QuizENSEA.");
-    }*/
 
     private static void createTable(Statement statement) throws Exception {
         String createProjetQuery = "CREATE TABLE IF NOT EXISTS Projet (" +
@@ -113,7 +108,7 @@ public class DataBase {
                 "descriptionID INT, " +
                 "imagePath VARCHAR(255), " +
                 "legendText VARCHAR(255), " +
-                "imageWidth FLOAT,"+
+                "imageWidth FLOAT," +
                 "FOREIGN KEY (descriptionID) REFERENCES Description(idDescription) ON DELETE CASCADE);";
         statement.executeUpdate(createDescriptionImagesQuery);
 
@@ -150,14 +145,6 @@ public class DataBase {
         System.out.println("Tables created successfully!");
     }
 
-    private static void createInitFile(String filePath) {
-        try {
-            Files.createFile(Paths.get(filePath));
-            System.out.println("Initialization file created.");
-        } catch (Exception e) {
-            System.err.println("Error creating the initialization file: " + e.getMessage());
-        }
-    }
 
     public static void insertTypeDevoirData(Statement statement) {
         TypeDevoir[] typeDevoirs = TypeDevoir.values();
@@ -184,7 +171,7 @@ public class DataBase {
             }
             System.out.println("TypeNumero data inserted successfully!");
         } catch (Exception e) {
-            System.err.println("Error inserting TypeNumero data: "+ e.getMessage());
+            System.err.println("Error inserting TypeNumero data: " + e.getMessage());
             e.printStackTrace();
         }
     }
