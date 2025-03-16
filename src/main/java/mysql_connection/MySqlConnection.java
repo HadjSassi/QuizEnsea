@@ -9,8 +9,9 @@ import java.sql.Statement;
 public class MySqlConnection {
 
     private static final String DEFAULT_URL = "jdbc:mysql://localhost:3306/";
+    /*
     private static final String ROOT_USERNAME = "root";
-    private static final String ROOT_PASSWORD = Password.password;
+    private static final String ROOT_PASSWORD = Password.password;*/
 
     private static final String DATABASE_NAME = "QuizENSEA";
     private static final String USERNAME = "quiz_user";
@@ -35,13 +36,13 @@ public class MySqlConnection {
     }
 
     private static void ensureDatabaseAndUserExist() throws SQLException {
-        try (Connection connection = DriverManager.getConnection(DEFAULT_URL, ROOT_USERNAME, ROOT_PASSWORD);
+        try (Connection connection = DriverManager.getConnection(DEFAULT_URL, USERNAME, PASSWORD);
              Statement statement = connection.createStatement()) {
 
             String createDatabaseQuery = "CREATE DATABASE IF NOT EXISTS " + DATABASE_NAME + ";";
             statement.executeUpdate(createDatabaseQuery);
 
-            String createUserQuery = String.format(
+            /*String createUserQuery = String.format(
                     "CREATE USER IF NOT EXISTS '%s'@'localhost' IDENTIFIED BY '%s';",
                     USERNAME, PASSWORD
             );
@@ -52,7 +53,7 @@ public class MySqlConnection {
                     DATABASE_NAME, USERNAME
             );
             statement.executeUpdate(grantPrivilegesQuery);
-            statement.executeUpdate("FLUSH PRIVILEGES;");
+            statement.executeUpdate("FLUSH PRIVILEGES;");*/
         } catch (SQLException e) {
             System.err.println("Erreur lors de la vérification/création de la base ou de l'utilisateur.");
             e.printStackTrace();
