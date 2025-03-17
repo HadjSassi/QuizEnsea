@@ -8,6 +8,12 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+out
+.idea
+.mvn
+database
+lib
+target
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
