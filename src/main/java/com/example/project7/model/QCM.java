@@ -31,19 +31,4 @@ public class QCM  extends Section{
         isQCU = QCU;
     }
 
-    public ArrayList<Reponse> getReponsesCorrecte() {
-        return reponsesCorrecte;
-    }
-
-    public void setReponsesCorrecte(ArrayList<Reponse> reponsesCorrecte) {
-        this.reponsesCorrecte = reponsesCorrecte;
-    }
-
-    public ArrayList<Reponse> getReponsesIncorrecte() {
-        return reponsesIncorrecte;
-    }
-
-    public void setReponsesIncorrecte(ArrayList<Reponse> reponsesIncorrecte) {
-        this.reponsesIncorrecte = reponsesIncorrecte;
-    }
 }

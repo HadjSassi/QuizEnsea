@@ -110,10 +110,9 @@ public class EditerSection implements Initializable {
                 identifiantSection.setText(currentId);
 
             } else {
-                System.err.println("Le contenu pour " + fxmlFileName + " n'a pas pu être chargé.");
+                System.err.println("Content of " + fxmlFileName + " couldn't be loaded.");
             }
         } catch (Exception e) {
-            System.err.println("Erreur lors du chargement de " + fxmlFileName + ".fxml");
             e.printStackTrace();
         }
     }
@@ -179,7 +178,6 @@ public class EditerSection implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error updating section order: " + e.getMessage());
         }
     }
 

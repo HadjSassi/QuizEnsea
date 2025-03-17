@@ -50,22 +50,6 @@ public class Controle {
         this.formatQuestion = formatQuestion;
     }
 
-    public FontDevoir getFontDevoir() {
-        return fontDevoir;
-    }
-
-    public void setFontDevoir(FontDevoir fontDevoir) {
-        this.fontDevoir = fontDevoir;
-    }
-
-    public void addSection(Section section) {
-        this.sections.add(section);
-    }
-
-    public void removeSection (Section section) {
-        this.sections.remove(section);
-    }
-
     public int getIdControle() {
         return idControle;
     }

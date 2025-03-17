@@ -67,9 +67,6 @@ public class EditerQCM implements Initializable {
     private TableColumn<Reponse, Void> actionNegColumn;
 
     @FXML
-    private Button ajouterQcm;
-
-    @FXML
     private Button cancelQcm;
 
     private Section section;
@@ -94,10 +91,9 @@ public class EditerQCM implements Initializable {
         }
     }
 
-
     @FXML
     public void handleClicksAddGoodResponce(ActionEvent event) {
-        String defaultResponse = "Bonne réponse";
+        String defaultResponse = "Correct Answer";
         int defaultScore;
         try {
             defaultScore = Integer.parseInt(baremePosDefault.getText());
@@ -107,10 +103,9 @@ public class EditerQCM implements Initializable {
         ObservableList<Reponse> items = correctTableView.getItems();
         items.add(new Reponse(defaultResponse, defaultScore));    }
 
-
     @FXML
     public void handleClicksAddWrongResponce(ActionEvent event) {
-        String defaultResponse = "Mauvaise réponse";
+        String defaultResponse = "Wrong Answer";
         int defaultScore;
         try {
             defaultScore = Integer.parseInt(baremeNegDefault.getText());
@@ -121,7 +116,6 @@ public class EditerQCM implements Initializable {
         items.add(new Reponse(defaultResponse, defaultScore));
     }
 
-
     @FXML
     public void handleClicksAddQCM(ActionEvent event) {
         if (verifyQuesstion()) {
@@ -129,11 +123,11 @@ public class EditerQCM implements Initializable {
                 // Show confirmation alert
                 Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 confirmationAlert.setTitle("Section Exists");
-                confirmationAlert.setHeaderText("La section existe déjà");
-                confirmationAlert.setContentText("Section avec l'identifiant " + this.section.getIdSection() + " existe déjà, voulez vous l'écraser?");
+                confirmationAlert.setHeaderText("This section already exists");
+                confirmationAlert.setContentText("Section with the identifier " + this.section.getIdSection() + " already exists, Would you like to overwrite it?");
 
-                ButtonType modifyButton = new ButtonType("Modifier");
-                ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+                ButtonType modifyButton = new ButtonType("Modify");
+                ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
                 confirmationAlert.getButtonTypes().setAll(modifyButton, cancelButton);
 
@@ -181,8 +175,8 @@ public class EditerQCM implements Initializable {
         });
 
         actionNegColumn.setCellFactory(col -> new TableCell<>() {
-            private final Button deleteButton = new Button("Supprimer");
-            private final Button editButton = new Button("Modifier");
+            private final Button deleteButton = new Button("Delete");
+            private final Button editButton = new Button("Modify");
 
 
             {
@@ -232,8 +226,8 @@ public class EditerQCM implements Initializable {
         });
 
         actionPosColumn.setCellFactory(col -> new TableCell<>() {
-            private final Button deleteButton = new Button("Supprimer");
-            private final Button editButton = new Button("Modifier");
+            private final Button deleteButton = new Button("Delete");
+            private final Button editButton = new Button("Modify");
 
 
             {
@@ -314,7 +308,6 @@ public class EditerQCM implements Initializable {
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error updating QCM: " + e.getMessage());
         }
     }
 
@@ -340,7 +333,6 @@ public class EditerQCM implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error checking section existence: " + e.getMessage());
         }
 
         return false; // Default to false if there's an error
@@ -359,7 +351,6 @@ public class EditerQCM implements Initializable {
             int rowsAffected = insertStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting Section data: " + e.getMessage());
         }
     }
 
@@ -388,7 +379,6 @@ public class EditerQCM implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting QCU data: " + e.getMessage());
         }
     }
 
@@ -415,7 +405,6 @@ public class EditerQCM implements Initializable {
             insertStatement.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting incorrect responses: " + e.getMessage());
         }
     }
 
@@ -437,7 +426,6 @@ public class EditerQCM implements Initializable {
             insertStatement.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting incorrect responses: " + e.getMessage());
         }
     }
 
@@ -462,12 +450,12 @@ public class EditerQCM implements Initializable {
         responseTextArea.setPrefSize(300, 150);
 
         TextField scoreTextField = new TextField(String.valueOf(reponse.getScore()));
-        scoreTextField.setPromptText("Entrez le barème");
+        scoreTextField.setPromptText("Enter the score");
 
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button("Enregistrer");
+        Button saveButton = new Button("Save");
         saveButton.setOnAction(event -> {
             reponse.setResponse(responseTextArea.getText());
             reponse.setScore(Integer.parseInt(scoreTextField.getText()));
@@ -477,18 +465,18 @@ public class EditerQCM implements Initializable {
             popupStage.close();
         });
 
-        Button closeButton = new Button("Fermer");
+        Button closeButton = new Button("Close");
         closeButton.setOnAction(event -> {
             popupStage.close();
         });
 
         buttonBox.getChildren().addAll(saveButton, closeButton);
 
-        popupVBox.getChildren().addAll(new Label("Modifier la réponse et le barème:"), responseTextArea, scoreTextField, buttonBox);
+        popupVBox.getChildren().addAll(new Label("Modify the answer and the score:"), responseTextArea, scoreTextField, buttonBox);
 
         Scene popupScene = new Scene(popupVBox, 350, 250);
         popupStage.setScene(popupScene);
-        popupStage.setTitle("Modifier la réponse");
+        popupStage.setTitle("Modify the answer");
         popupStage.setOnShown(event -> {
             responseTextArea.requestFocus();
             responseTextArea.selectAll();
@@ -546,7 +534,6 @@ public class EditerQCM implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error loading QCU data: " + e.getMessage());
         }
     }
 
@@ -564,14 +551,14 @@ public class EditerQCM implements Initializable {
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button("Modifier");
+        Button saveButton = new Button("Modify");
         saveButton.setOnAction(event -> {
             enonceQuestion.setText(responseTextArea.getText());
 
             popupStage.close();
         });
 
-        Button closeButton = new Button("Fermer");
+        Button closeButton = new Button("Close");
         closeButton.setOnAction(event -> {
             popupStage.close();
         });

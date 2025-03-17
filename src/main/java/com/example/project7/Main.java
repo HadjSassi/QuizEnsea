@@ -30,31 +30,14 @@ public class Main extends Application {
         this.stage = primaryStage;
         Scene scene = new Scene(root);
         window.setScene(scene);
-        //set stage borderless
         window.initStyle(StageStyle.TRANSPARENT);
-        /*root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                primaryStage.setX(event.getScreenX() - x);
-                primaryStage.setY(event.getScreenY() - y);
-            }
-        });*/
-        //primaryStage.setFullScreen(true);
         scene.getStylesheets().add(getClass().getResource("/com/example/project7/css/styles.css").toExternalForm());
 
         primaryStage.setMaximized(false);
         primaryStage.getIcons().add((new Image(getClass().getResource("/com/example/project7/images/ensea2.png").toURI().toString())));
         primaryStage.show();
         scene.setFill(Color.TRANSPARENT);
-        //scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
-        //Application.setUserAgentStylesheet(getClass().getResource("css/styles.css").toExternalForm());
+
     }
 
 }

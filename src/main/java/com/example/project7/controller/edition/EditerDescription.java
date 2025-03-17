@@ -84,11 +84,11 @@ public class EditerDescription implements Initializable {
         if (checkSectionExists(this.section.getIdSection())) {
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Section Exists");
-            confirmationAlert.setHeaderText("La section existe déjà");
-            confirmationAlert.setContentText("Section avec l'identifiant " + this.section.getIdSection() + " existe déjà, voulez vous l'écraser?");
+            confirmationAlert.setHeaderText("The section already exists");
+            confirmationAlert.setContentText("Section with the identifier " + this.section.getIdSection() + " already exists, do you want to overwrite it?");
 
-            ButtonType modifyButton = new ButtonType("Modifier");
-            ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType modifyButton = new ButtonType("Modify");
+            ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
             confirmationAlert.getButtonTypes().setAll(modifyButton, cancelButton);
 
@@ -273,7 +273,7 @@ public class EditerDescription implements Initializable {
             // Vous pouvez rafraîchir la vue ou notifier l'utilisateur ici
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Erreur lors de la mise à jour de la description : " + e.getMessage());
+            System.err.println("Error updating the description: " + e.getMessage());
         }
     }
 
@@ -297,7 +297,7 @@ public class EditerDescription implements Initializable {
             insertStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting Section data: " + e.getMessage());
+            System.err.println("Error during insertion: " + e.getMessage());
         }
     }
 
@@ -335,13 +335,13 @@ public class EditerDescription implements Initializable {
                         }
                     }
                 } else {
-                    System.err.println("Échec de l'insertion de la description.");
+                    System.err.println("Failed to insert the description");
                     connection.rollback();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Erreur lors de l'insertion : " + e.getMessage());
+            System.err.println("Error during insertion: " + e.getMessage());
         }
     }
 
@@ -391,7 +391,7 @@ public class EditerDescription implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error loading QCU data: " + e.getMessage());
+            System.err.println("Erreur lors du chargement des données QCU: " + e.getMessage());
         }
     }
 

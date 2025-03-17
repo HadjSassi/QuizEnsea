@@ -22,20 +22,12 @@ public class Reponse {
         return response.get();
     }
 
-    public SimpleStringProperty responseProperty() {
-        return response;
-    }
-
     public void setResponse(String response) {
         this.response.set(response);
     }
 
     public int getScore() {
         return score.get();
-    }
-
-    public SimpleIntegerProperty scoreProperty() {
-        return score;
     }
 
     public void setScore(int score) {

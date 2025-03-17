@@ -22,17 +22,13 @@ public class InterfaceController implements Initializable {
     @FXML
     public Label name;
 
-
     @FXML
     void handleClicksAccueil(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
         Parent view = object.getPane("Home");
-        //view.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         anchorpane3.getChildren().removeAll();
         anchorpane3.getChildren().setAll(view);
-
     }
-
 
     @FXML
     void handleClicksNew(ActionEvent event) {
@@ -64,7 +60,6 @@ public class InterfaceController implements Initializable {
     void handleClicksSetting(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
         Parent view = object.getPane("SettingInterf");
-        //view.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         anchorpane3.getChildren().removeAll();
         anchorpane3.getChildren().setAll(view);
     }
@@ -74,7 +69,6 @@ public class InterfaceController implements Initializable {
     void handleClicksHelp(ActionEvent event) {
         FxmlLoader object = new FxmlLoader();
         Parent view = object.getPane("HelpInterf");
-        //view.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         anchorpane3.getChildren().removeAll();
         anchorpane3.getChildren().setAll(view);
     }
@@ -83,10 +77,8 @@ public class InterfaceController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         FxmlLoader object = new FxmlLoader();
         Parent view = object.getPane("Home");
-        //view.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         anchorpane3.getChildren().removeAll();
         anchorpane3.getChildren().setAll(view);
     }
-
 
 }

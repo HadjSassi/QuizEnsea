@@ -64,10 +64,6 @@ public class Projet {
         return devoir;
     }
 
-    public void setIdProjet(int idProjet) {
-        this.idProjet = idProjet;
-    }
-
     public void setNomProjet(String nomProjet) {
         this.nomProjet = nomProjet;
     }

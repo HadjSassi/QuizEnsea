@@ -61,7 +61,6 @@ public class EditerQuestion implements Initializable {
         this.section = identifierSection;
     }
 
-
     @FXML
     public void cancelQuestion(ActionEvent event) {
         EditerSection.cancelSection();
@@ -161,11 +160,11 @@ public class EditerQuestion implements Initializable {
                 // Show confirmation alert
                 Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 confirmationAlert.setTitle("Section Exists");
-                confirmationAlert.setHeaderText("La section existe déjà");
-                confirmationAlert.setContentText("Section avec l'identifiant " + this.section.getIdSection() + " existe déjà, voulez vous l'écraser?");
+                confirmationAlert.setHeaderText("This section already exists");
+                confirmationAlert.setContentText("Section with the identifier " + this.section.getIdSection() + " already exists, Would you like to overwrite it?");
 
-                ButtonType modifyButton = new ButtonType("Modifier");
-                ButtonType cancelButton = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+                ButtonType modifyButton = new ButtonType("Modify");
+                ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
                 confirmationAlert.getButtonTypes().setAll(modifyButton, cancelButton);
 
@@ -220,23 +219,9 @@ public class EditerQuestion implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error checking section existence: " + e.getMessage());
         }
 
         return false; // Default to false if there's an error
-    }
-
-    private void removeSection() {
-        String deleteQuery = "DELETE FROM Section WHERE idSection = ?";
-        try (Connection connection = SqlConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
-
-            statement.setString(1, section.getIdSection());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Error deleting section: " + e.getMessage());
-        }
     }
 
     private void updateQuestion() {
@@ -256,14 +241,12 @@ public class EditerQuestion implements Initializable {
 
             int rowsAffected = updateStmt.executeUpdate();
             if (rowsAffected <= 0) {
-                System.err.println("Aucun enregistrement mis à jour pour cette section.");
+                System.err.println("No update for this Section");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Erreur lors de la mise à jour de la question: " + e.getMessage());
         }
     }
-
 
     private void updateSection() {
         updateQuestion();
@@ -316,7 +299,6 @@ public class EditerQuestion implements Initializable {
             insertStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting Section data: " + e.getMessage());
         }
     }
 
@@ -347,7 +329,6 @@ public class EditerQuestion implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error inserting QCU data: " + e.getMessage());
         }
     }
 
@@ -386,7 +367,6 @@ public class EditerQuestion implements Initializable {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error loading QCU data: " + e.getMessage());
         }
     }
 
@@ -404,14 +384,14 @@ public class EditerQuestion implements Initializable {
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button("Modifier");
+        Button saveButton = new Button("Modify");
         saveButton.setOnAction(event -> {
             enonceQuestion.setText(responseTextArea.getText());
 
             popupStage.close();
         });
 
-        Button closeButton = new Button("Fermer");
+        Button closeButton = new Button("Close");
         closeButton.setOnAction(event -> {
             popupStage.close();
         });

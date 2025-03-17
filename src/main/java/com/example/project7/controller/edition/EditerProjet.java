@@ -126,14 +126,14 @@ public class EditerProjet implements Initializable {
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button("Modifier");
+        Button saveButton = new Button("Modify");
         saveButton.setOnAction(event -> {
             examHeader.setText(responseTextArea.getText());
 
             popupStage.close();
         });
 
-        Button closeButton = new Button("Fermer");
+        Button closeButton = new Button("Close");
         closeButton.setOnAction(event -> {
             popupStage.close();
         });
@@ -163,14 +163,14 @@ public class EditerProjet implements Initializable {
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
 
-        Button saveButton = new Button("Modifier");
+        Button saveButton = new Button("Modify");
         saveButton.setOnAction(event -> {
             reponseHeader.setText(responseTextArea.getText());
 
             popupStage.close();
         });
 
-        Button closeButton = new Button("Fermer");
+        Button closeButton = new Button("Close");
         closeButton.setOnAction(event -> {
             popupStage.close();
         });
@@ -194,7 +194,7 @@ public class EditerProjet implements Initializable {
             Scene popupScene = new Scene(view);
             Stage popupStage = new Stage();
 
-            popupStage.setTitle("Ajouter une Section");
+            popupStage.setTitle("Add Section");
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.initStyle(StageStyle.TRANSPARENT);
             popupStage.initOwner(terminer.getScene().getWindow());
@@ -212,7 +212,6 @@ public class EditerProjet implements Initializable {
 
             popupStage.showAndWait();
         } catch (Exception e) {
-            System.out.println("Erreur lors de l'ouverture de la popup : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -356,7 +355,6 @@ public class EditerProjet implements Initializable {
             fetchAndUpdateTableView();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error while inserting imported section: " + e.getMessage());
         }
     }
 
@@ -425,8 +423,8 @@ public class EditerProjet implements Initializable {
         alert.setHeaderText("Are you sure to cancel the modifications ?");
         alert.setContentText("All modifications will be lost!");
 
-        ButtonType buttonTypeYes = new ButtonType("Oui");
-        ButtonType buttonTypeNo = new ButtonType("Non");
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
 
         alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
@@ -469,7 +467,7 @@ public class EditerProjet implements Initializable {
                     this.dateDevoir.setValue(devoir.getCreationDate().toLocalDate());
 
                 } else {
-                    intializeHeaders();
+                    intializeFirstValues();
                     String insertControleQuery = "INSERT INTO Controle (nomDevoir, typeDevoir, examHeader, reponseHeader, projetID, creationDate) " +
                             "VALUES (?, ?, ?, ?, ?, CURRENT_DATE)";
 
@@ -493,13 +491,11 @@ public class EditerProjet implements Initializable {
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
-                        System.err.println("Error inserting data into Controle table: " + e.getMessage());
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error checking Controle table: " + e.getMessage());
         }
     }
 
@@ -557,7 +553,7 @@ public class EditerProjet implements Initializable {
         loadSectionData();
     }
 
-    private void intializeHeaders() {
+    private void intializeFirstValues() {
         String examHeaderText =
                 "Dans ce document, vous trouverez d'abord les questions puis ensuite les feuilles de réponses (à rendre). " +
                         "In this document, you will first find the questions then the pages for the answers.\n" +
@@ -609,7 +605,6 @@ public class EditerProjet implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error updating section: " + e.getMessage());
         }
     }
 
@@ -626,7 +621,7 @@ public class EditerProjet implements Initializable {
             Scene popupScene = new Scene(view);
             Stage popupStage = new Stage();
 
-            popupStage.setTitle("Modifier Section QCU");
+            popupStage.setTitle("Modify QCU Section");
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.initStyle(StageStyle.TRANSPARENT);
             popupStage.initOwner(terminer.getScene().getWindow());
@@ -644,7 +639,6 @@ public class EditerProjet implements Initializable {
 
             popupStage.showAndWait();
         } catch (Exception e) {
-            System.out.println("Erreur lors de l'ouverture de la popup : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -678,7 +672,6 @@ public class EditerProjet implements Initializable {
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    System.err.println("Error deleting section: " + e.getMessage());
                 }
             }
         });
@@ -749,7 +742,6 @@ public class EditerProjet implements Initializable {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                System.err.println("Error loading section data: " + e.getMessage());
             }
 
             tableSection.setItems(sectionData);
@@ -806,7 +798,6 @@ public class EditerProjet implements Initializable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error loading section data: " + e.getMessage());
         }
 
         // Set the ObservableList to the TableView to refresh the data
@@ -1114,7 +1105,7 @@ public class EditerProjet implements Initializable {
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows > 0) {
-                showAlert("Succès", "Le contrôle a été ajouté avec succès.");
+                showAlert("Success", "Exam well created.");
                 this.devoir.setNomDevoir(nomDevoir.getText());
                 this.devoir.setTypeDevoir(typeDevoir.getText());
                 this.devoir.setNombreExemplaire(exemplaire);
@@ -1123,11 +1114,11 @@ public class EditerProjet implements Initializable {
                 this.devoir.setReponseHeader(reponseHeader.getText());
                 this.devoir.setCreationDate(Date.valueOf(dateDevoir.getValue().toString()));
             } else {
-                showAlert("Erreur", "Échec de la mise à jour du contrôle.");
+                showAlert("Error", "Cannot update the Exam");
             }
 
         } catch (SQLException e) {
-            showAlert("Erreur", "Erreur lors de la mise à jour du contrôle : " + e.getMessage());
+            showAlert("Error", "Error happened when updating the Exam : " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -1139,11 +1130,11 @@ public class EditerProjet implements Initializable {
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows <= 0) {
-                showAlert("Erreur", "Il y'a un erreur de mise à jour de projet!");
+                showAlert("Error", "Project update Error!");
             }
 
         } catch (SQLException e) {
-            showAlert("Erreur", "Erreur lors de la mise à jour du contrôle : " + e.getMessage());
+            showAlert("Error", "Error happened when updating the Project " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -21,28 +21,12 @@ public class FormatQuestion {
         this.premierTexte = premierTexte;
     }
 
-    public Boolean getNumerated() {
-        return isNumerated;
-    }
-
-    public void setNumerated(Boolean numerated) {
-        isNumerated = numerated;
-    }
-
     public TypeNumero getNumeroIncremente() {
         return numeroIncremente;
     }
 
     public void setNumeroIncremente(TypeNumero numeroIncremente) {
         this.numeroIncremente = numeroIncremente;
-    }
-
-    public String getDeuxiemeTexte() {
-        return DeuxiemeTexte;
-    }
-
-    public void setDeuxiemeTexte(String deuxiemeTexte) {
-        DeuxiemeTexte = deuxiemeTexte;
     }
 
 }

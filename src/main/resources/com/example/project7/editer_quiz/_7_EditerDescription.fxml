@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerDescription">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.project7.controller.edition.EditerDescription">
    <children>
       <VBox layoutX="-6.0" layoutY="-1.0" prefHeight="600.0" prefWidth="803.0">
          <children>
             <HBox alignment="CENTER" prefHeight="354.0" prefWidth="803.0">
                <children>
-                  <Label prefHeight="190.0" prefWidth="214.0" text="Enter the description : &#10;&quot; Put before and after &#10;the text #### if you &#10;want to write code in &#10;your description &quot;" textFill="#970d0d">
+                  <Label prefHeight="190.0" prefWidth="234.0" text="Enter the description : &#10;&quot;In the next update you&#10;can put before @: and &#10;after :@ the text if you &#10;want to write code in &#10;your description &quot;" textFill="#970d0d">
                      <font>
                         <Font size="19.0" />
                      </font></Label>

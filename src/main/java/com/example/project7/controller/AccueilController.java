@@ -8,9 +8,6 @@ import java.util.ResourceBundle;
 
 public class AccueilController implements Initializable {
 
-
-
-    //ImageView imageView;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

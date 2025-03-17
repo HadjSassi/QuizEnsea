@@ -10,20 +10,5 @@ public class FontDevoir {
         this.sizePolice = 12;
     }
 
-    public String getNomPolice() {
-        return nomPolice;
-    }
-
-    public void setNomPolice(String nomPolice) {
-        this.nomPolice = nomPolice;
-    }
-
-    public int getSizePolice() {
-        return sizePolice;
-    }
-
-    public void setSizePolice(int sizePolice) {
-        this.sizePolice = sizePolice;
-    }
 }
 
