@@ -1,36 +1,38 @@
-use quizensea;
+show tables;
+
+select *
+from Projet;
+insert into projet
+values (1, 'Test1', 'C:\Users\mahdi\Desktop\ENSEA\2024-2025\Project\Nissrine', 'Basic Model', '2025-01-20');
 
 create schema IF NOT EXISTS quizensea;
 
-select * from projet;
-select * from Controle;
-select * from Section;
-select * from QCM;
-select * from QCM_Reponses;
-select * from QuestionLibre;
-select * from Description;
-select * from Description_Images;
-select * from FontDevoir;
-select * from FormatQuestion;
-select * from Reponse;
-select * from TypeDevoir;
-select * from TypeNumero;
-
-
-desc projet;
-desc Controle;
-desc Section;
-desc QCM;
-desc QCM_Reponses;
-desc QuestionLibre;
-desc Description;
-desc Description_Images;
-desc FontDevoir;
-desc FormatQuestion;
-desc Reponse;
-desc TypeDevoir;
-desc TypeNumero;
-
+select *
+from Projet;
+select *
+from Controle;
+select *
+from Section;
+select *
+from QCM;
+select *
+from QCM_Reponses;
+select *
+from QuestionLibre;
+select *
+from Description;
+select *
+from Description_Images;
+select *
+from FontDevoir;
+select *
+from FormatQuestion;
+select *
+from Reponse;
+select *
+from TypeDevoir;
+select *
+from TypeNumero;
 
 
 CREATE TABLE IF NOT EXISTS Projet
@@ -44,15 +46,15 @@ CREATE TABLE IF NOT EXISTS Projet
 
 CREATE TABLE IF NOT EXISTS Controle
 (
-    idControle           INT AUTO_INCREMENT PRIMARY KEY,
-    nomDevoir            VARCHAR(255) NOT NULL,
-    typeDevoir           VARCHAR(255),
-    nombreExemplaire INT DEFAULT (1),
-    randomSeed           INT  DEFAULT (12345678),
-    examHeader           TEXT,
-    reponseHeader        TEXT,
-    creationDate         DATE DEFAULT (CURRENT_DATE),
-    projetID             INT,
+    idControle       INT AUTO_INCREMENT PRIMARY KEY,
+    nomDevoir        VARCHAR(255) NOT NULL,
+    typeDevoir       VARCHAR(255),
+    nombreExemplaire INT  default (1),
+    randomSeed       INT  DEFAULT (12345678),
+    examHeader       TEXT,
+    reponseHeader    TEXT,
+    creationDate     DATE DEFAULT (CURRENT_DATE),
+    projetID         INT,
     FOREIGN KEY (projetID) REFERENCES Projet (idProjet) ON DELETE CASCADE
 );
 
@@ -87,33 +89,30 @@ CREATE TABLE IF NOT EXISTS QCM_Reponses
 CREATE TABLE IF NOT EXISTS QuestionLibre
 (
     idQuestionLibre INT AUTO_INCREMENT PRIMARY KEY,
-    question TEXT NOT NULL,
-    scoreTotal FLOAT,
-    nombreScore INT,
-    nombreLigne INT,
-    tailleLigne FLOAT,
-    rappel TEXT,
-    sectionID VARCHAR(255),
-    FOREIGN KEY (sectionID) REFERENCES Section (idSection) ON DELETE CASCADE);
+    question        TEXT NOT NULL,
+    scoreTotal      FLOAT,
+    nombreScore     INT,
+    nombreLigne     INT,
+    tailleLigne     FLOAT,
+    rappel          TEXT,
+    sectionID       VARCHAR(255),
+    FOREIGN KEY (sectionID) REFERENCES Section (idSection) ON DELETE CASCADE
+);
 
 
 CREATE TABLE IF NOT EXISTS Description
 (
     idDescription INT AUTO_INCREMENT PRIMARY KEY,
     texte         TEXT,
-    sectionID    VARCHAR(255),
+    sectionID     VARCHAR(255),
     FOREIGN KEY (sectionID) REFERENCES Section (idSection) ON DELETE CASCADE
 );
-
-drop table description_images;
 
 CREATE TABLE IF NOT EXISTS Description_Images
 (
     idImage       INT AUTO_INCREMENT PRIMARY KEY,
     descriptionID INT,
     imagePath     VARCHAR(255),
-    legendText    VARCHAR(255),
-    imageWidth      FLOAT,
     FOREIGN KEY (descriptionID) REFERENCES Description (idDescription) ON DELETE CASCADE
 );
 
@@ -154,17 +153,16 @@ CREATE TABLE IF NOT EXISTS TypeNumero
 
 
 
-
-
-
-
-
 SELECT section.idSection, qcm.isQCU, qcm.question AS question, section.ordreSection, 'QCU/QCM' AS type
 FROM section
          JOIN qcm ON section.idSection = qcm.sectionID
 WHERE section.controleID = 1
 UNION
-SELECT section.idSection, NULL AS isQCU, questionlibre.question AS question, section.ordreSection, 'QuestionLibre' AS type
+SELECT section.idSection,
+       NULL                   AS isQCU,
+       questionlibre.question AS question,
+       section.ordreSection,
+       'QuestionLibre'        AS type
 FROM section
          JOIN questionlibre ON section.idSection = questionlibre.sectionID
 WHERE section.controleID = 1
@@ -176,7 +174,8 @@ WHERE section.controleID = 1
 ORDER BY ordreSection;
 
 
-select * from description;
+select *
+from description;
 
 
 
@@ -184,3 +183,14 @@ truncate table projet;
 
 drop table projet;
 drop schema quizensea;
+
+SELECT idSection,
+       CASE
+           WHEN QCM.isQCU IS NOT NULL THEN (CASE WHEN QCM.isQCU = 1 THEN 'QCU' ELSE 'QCM' END)
+           WHEN QuestionLibre.sectionID IS NOT NULL THEN 'QuestionLibre'
+           WHEN Description.sectionID IS NOT NULL THEN 'Description'
+           ELSE 'Unknown' END AS type
+FROM Section
+         LEFT JOIN QCM ON Section.idSection = QCM.sectionID
+         LEFT JOIN QuestionLibre ON Section.idSection = QuestionLibre.sectionID
+         LEFT JOIN Description ON Section.idSection = Description.sectionID;

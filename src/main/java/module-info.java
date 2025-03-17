@@ -13,6 +13,6 @@ module com.example.project7 {
     exports com.example.project7;
     exports com.example.project7.model;
     exports com.example.project7.controller.edition;
-    exports mysql_connection;
-    opens mysql_connection to javafx.fxml;
+    exports sql_connection;
+    opens sql_connection to javafx.fxml;
 }

@@ -1,22 +1,16 @@
-package mysql_connection;
+package sql_connection;
 
 import com.example.project7.model.TypeDevoir;
 import com.example.project7.model.TypeNumero;
 
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.Statement;
 
-import static mysql_connection.MySqlConnection.getConnection;
+import static sql_connection.SqlConnection.getConnection;
 
 public class DataBase {
 
     public static void createDatabaseIfDoesNotExist() {
-
         try {
             initializeDatabase();
         } catch (Exception e) {
@@ -27,17 +21,19 @@ public class DataBase {
 
     private static void initializeDatabase() {
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
-
+            System.out.println("Database connected successfully!");
             createTable(statement);
             insertTypeDevoirData(statement);
             insertTypeNumeroData(statement);
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("SQL error: " + e.getMessage());
         }
     }
 
 
     private static void createTable(Statement statement) throws Exception {
+        System.out.println("Creating tables...");
         String createProjetQuery = "CREATE TABLE IF NOT EXISTS Projet (" +
                 "idProjet INT AUTO_INCREMENT PRIMARY KEY, " +
                 "nomProjet VARCHAR(255) NOT NULL, " +

@@ -9,14 +9,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import static mysql_connection.DataBase.createDatabaseIfDoesNotExist;
+import static sql_connection.DataBase.createDatabaseIfDoesNotExist;
 
 
 public class Main extends Application {
 
     public static void main(String[] args) {
-
-        createDatabaseIfDoesNotExist();
         launch(args);
     }
 
@@ -26,6 +24,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        createDatabaseIfDoesNotExist();
         Parent root = FXMLLoader.load(getClass().getResource("Boarder.fxml"));
         window = primaryStage;
         this.stage = primaryStage;

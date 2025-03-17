@@ -14,7 +14,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import mysql_connection.MySqlConnection;
+import sql_connection.SqlConnection;
 
 import java.io.File;
 import java.net.URL;
@@ -206,7 +206,7 @@ public class EditerDescription implements Initializable {
     private boolean checkSectionExists(String idSection) {
         String checkQuery = "SELECT COUNT(*) FROM Section WHERE idSection = ?";
 
-        try (Connection connection = MySqlConnection.getConnection();
+        try (Connection connection = SqlConnection.getConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
 
             checkStatement.setString(1, idSection);
@@ -229,7 +229,7 @@ public class EditerDescription implements Initializable {
         String deleteImagesQuery = "DELETE FROM Description_Images WHERE descriptionID = (SELECT idDescription FROM Description WHERE sectionID = ?)";
         String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath, legendText, imageWidth) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getConnection()) {
+        try (Connection connection = SqlConnection.getConnection()) {
             connection.setAutoCommit(false);
             // Mise à jour du texte de la description
             try (PreparedStatement updateStmt = connection.prepareStatement(updateDescriptionQuery)) {
@@ -287,7 +287,7 @@ public class EditerDescription implements Initializable {
     private void createSection() {
         String insertSectionQuery = "INSERT INTO Section (idSection, ordreSection, controleID) VALUES (?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getConnection();
+        try (Connection connection = SqlConnection.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(insertSectionQuery)) {
 
             insertStatement.setString(1, this.section.getIdSection());
@@ -305,7 +305,7 @@ public class EditerDescription implements Initializable {
         String insertDescriptionQuery = "INSERT INTO Description (texte, sectionID) VALUES (?, ?)";
         String insertImageQuery = "INSERT INTO Description_Images (descriptionID, imagePath,legendText,imageWidth) VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = MySqlConnection.getConnection()) {
+        try (Connection connection = SqlConnection.getConnection()) {
             connection.setAutoCommit(false);
 
             try (PreparedStatement insertDescriptionStmt = connection.prepareStatement(insertDescriptionQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -349,7 +349,7 @@ public class EditerDescription implements Initializable {
         String fetchQCUQuery = "SELECT * FROM Description WHERE sectionID = ?";
         String fetchImagesQuery = "SELECT imagePath,legendText,imageWidth FROM Description_Images WHERE descriptionID = ?";
         int idDescription = 0;
-        try (Connection connection = MySqlConnection.getConnection();
+        try (Connection connection = SqlConnection.getConnection();
              PreparedStatement qcuStatement = connection.prepareStatement(fetchQCUQuery)){
 
             qcuStatement.setString(1, idSection);

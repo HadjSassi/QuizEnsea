@@ -1,7 +1,7 @@
 ./src/main/java/mysql_connection/Password.java
 Password.java
 src/main/resources/.init
-src/main/java/mysql_connection/Password.java
+src/main/java/sql_connection/Password.java
 mysql_connection/Password.java
 target/
 

@@ -12,7 +12,7 @@ import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import mysql_connection.MySqlConnection;
+import sql_connection.SqlConnection;
 
 
 import java.net.URL;
@@ -150,7 +150,7 @@ public class EditerSection implements Initializable {
         String fetchSectionsQuery = "SELECT idSection FROM Section WHERE controleID = ? ORDER BY ordreSection";
         String updateOrderQuery = "UPDATE Section SET ordreSection = ? WHERE idSection = ?";
 
-        try (Connection connection = MySqlConnection.getConnection();
+        try (Connection connection = SqlConnection.getConnection();
              PreparedStatement fetchStatement = connection.prepareStatement(fetchSectionsQuery);
              PreparedStatement updateStatement = connection.prepareStatement(updateOrderQuery)) {
 

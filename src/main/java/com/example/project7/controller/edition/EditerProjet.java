@@ -24,7 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import mysql_connection.MySqlConnection;
+import sql_connection.SqlConnection;
 
 import java.awt.*;
 import java.io.*;
@@ -270,7 +270,7 @@ public class EditerProjet implements Initializable {
         String newSectionId = baseId + "__" + System.currentTimeMillis();
         String sectionType = sectionRow.getType();
         int newSectionOrdre = 0;
-        try (Connection conn = MySqlConnection.getConnection()) {
+        try (Connection conn = SqlConnection.getConnection()) {
             String countQuery = "SELECT COUNT(*) as cnt FROM Section WHERE controleID = ?";
             try (PreparedStatement stmt = conn.prepareStatement(countQuery)) {
                 stmt.setInt(1, this.devoir.getIdControle());
@@ -372,7 +372,7 @@ public class EditerProjet implements Initializable {
                 "LEFT JOIN QuestionLibre ON Section.idSection = QuestionLibre.sectionID " +
                 "LEFT JOIN Description ON Section.idSection = Description.sectionID ";
 
-        try (Connection conn = MySqlConnection.getConnection();
+        try (Connection conn = SqlConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -388,7 +388,7 @@ public class EditerProjet implements Initializable {
 
     private int getOldQcmID(String sectionId) {
         String query = "SELECT idQCM FROM QCM WHERE sectionID = ?";
-        try (Connection conn = MySqlConnection.getConnection();
+        try (Connection conn = SqlConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, sectionId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -404,7 +404,7 @@ public class EditerProjet implements Initializable {
 
     private int getOldDescriptionID(String sectionId) {
         String query = "SELECT idDescription FROM Description WHERE sectionID = ?";
-        try (Connection conn = MySqlConnection.getConnection();
+        try (Connection conn = SqlConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, sectionId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -445,7 +445,7 @@ public class EditerProjet implements Initializable {
 
         String checkControleQuery = "SELECT idControle, nomDevoir, typeDevoir, nombreExemplaire, randomSeed, examHeader, reponseHeader, creationDate FROM Controle WHERE projetID = ?";
 
-        try (Connection connection = MySqlConnection.getConnection();
+        try (Connection connection = SqlConnection.getConnection();
              PreparedStatement checkStatement = connection.prepareStatement(checkControleQuery)) {
             checkStatement.setInt(1, projet.getIdProjet());
 
@@ -599,7 +599,7 @@ public class EditerProjet implements Initializable {
 
     private void updateRowTableSection(RowTableSection section) {
         String updateQuery = "UPDATE Section SET ordreSection = ? WHERE idSection = ?";
-        try (Connection connection = MySqlConnection.getConnection();
+        try (Connection connection = SqlConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setInt(1, section.getOrdre());
             statement.setString(2, section.getIdSection());
@@ -665,7 +665,7 @@ public class EditerProjet implements Initializable {
         alert.showAndWait().ifPresent(response -> {
             if (response == confirm) {
                 String deleteQuery = "DELETE FROM Section WHERE idSection = ?";
-                try (Connection connection = MySqlConnection.getConnection();
+                try (Connection connection = SqlConnection.getConnection();
                      PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
 
                     statement.setString(1, section.getIdSection());
@@ -720,7 +720,7 @@ public class EditerProjet implements Initializable {
 
             ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
 
-            try (Connection connection = MySqlConnection.getConnection();
+            try (Connection connection = SqlConnection.getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
 
                 statement.setInt(1, devoir.getIdControle());
@@ -777,7 +777,7 @@ public class EditerProjet implements Initializable {
         ObservableList<RowTableSection> sectionData = FXCollections.observableArrayList();
 
         // Execute the query and load data into the ObservableList
-        try (Connection connection = MySqlConnection.getConnection();
+        try (Connection connection = SqlConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, devoir.getIdControle());
@@ -1099,7 +1099,7 @@ public class EditerProjet implements Initializable {
 
         String updateProjectQuery = "UPDATE Projet SET creationDate = CURRENT_TIMESTAMP WHERE idProjet = ? ";
 
-        try (Connection conn = MySqlConnection.getConnection();
+        try (Connection conn = SqlConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
 
             pstmt.setString(1, nomDevoir.getText());
@@ -1131,7 +1131,7 @@ public class EditerProjet implements Initializable {
             e.printStackTrace();
         }
 
-        try (Connection conn = MySqlConnection.getConnection();
+        try (Connection conn = SqlConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(updateProjectQuery)) {
 
             pstmt.setInt(1, projet.getIdProjet());
@@ -1205,7 +1205,7 @@ public class EditerProjet implements Initializable {
 
         Connection conn = null;
         try {
-            conn = MySqlConnection.getConnection();
+            conn = SqlConnection.getConnection();
             for (RowTableSection row : sections) {
                 String type = row.getType();
                 String question = row.getQuestion();

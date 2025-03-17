@@ -14,7 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import mysql_connection.MySqlConnection;
+import sql_connection.SqlConnection;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -107,7 +107,7 @@ public class OpenProjet implements Initializable {
 
         ObservableList<Projet> sectionData = FXCollections.observableArrayList();
 
-        try (Connection connection = MySqlConnection.getConnection();
+        try (Connection connection = SqlConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -146,7 +146,7 @@ public class OpenProjet implements Initializable {
         alert.showAndWait().ifPresent(response -> {
             if (response == confirm) {
                 String deleteQuery = "DELETE FROM Projet WHERE idProjet = ?";
-                try (Connection connection = MySqlConnection.getConnection();
+                try (Connection connection = SqlConnection.getConnection();
                      PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
 
                     statement.setInt(1, project.getIdProjet());
