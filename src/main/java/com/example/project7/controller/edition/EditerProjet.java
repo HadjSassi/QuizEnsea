@@ -810,6 +810,7 @@ public class EditerProjet implements Initializable {
         header.append("\\usepackage[utf8x]{inputenc}\n");
         header.append("\\usepackage[T1]{fontenc}\n");
         header.append("\\usepackage{graphics}\n");
+        header.append("\\usepackage{listings}\n");
         header.append("\\usepackage{float}\n");
         header.append("\\usepackage[francais,bloc,completemulti,ensemble]{automultiplechoice}\n");
         header.append("\\begin{document}\n");
@@ -997,9 +998,13 @@ public class EditerProjet implements Initializable {
             int idDescription = rsDescription.getInt("idDescription");
             String texte = rsDescription.getString("texte");
 
+            // Split text into normal text and code blocks
+            String processedTexte = processTextWithCodeBlocks(texte);
+
             texcontentBuilder.append("\n\t\\element{general}{\n");
-            if (!texte.trim().isEmpty())
-                texcontentBuilder.append("\t\t").append(formatLatex(texte)).append("\\\\\n");
+            if (!processedTexte.trim().isEmpty()) {
+                texcontentBuilder.append("\t\t").append(processedTexte).append("\n");
+            }
 
             // Process images and legends
             processImagesAndLegends(conn, idDescription, texcontentBuilder);
@@ -1008,6 +1013,68 @@ public class EditerProjet implements Initializable {
         }
         rsDescription.close();
         psDescription.close();
+    }
+
+    private String processTextWithCodeBlocks(String texte) {
+        // Temporarily replace code block markers
+        texte = texte.replaceAll("@:", "12345678900CODEBLOCKBEGIN00987654321");
+        texte = texte.replaceAll(":@", "00987654321CODEBLOCKEND12345678900");
+
+        // Format normal LaTeX text (this will handle all non-code block text)
+        texte = formatLatex(texte);
+
+        // Process code blocks separately
+        StringBuilder result = new StringBuilder();
+        String[] parts = texte.split("12345678900CODEBLOCKBEGIN00987654321");
+        result.append(parts[0]); // Append normal text before first code block
+
+        for (int i = 1; i < parts.length; i++) {
+            String[] subParts = parts[i].split("00987654321CODEBLOCKEND12345678900", 2);
+            if (subParts.length > 1) {
+                String codeBlock = formatCodeBlock(subParts[0]); // Process the code separately
+                result.append(codeBlock);
+                result.append(subParts[1]); // Append remaining normal text
+            } else {
+                result.append(formatCodeBlock(subParts[0])); // Edge case: last part is code
+            }
+        }
+        return result.toString();
+    }
+
+    private String formatCodeBlock(String code) {
+        //code = " \\newline public class Main\\{\\newline \tpublic static void main(String args[])\\{\\newline \t\tSystem.out.println(\"Hello World\");\\newline \t\\}\\newline \\}\\newline \n";
+        StringBuilder formattedCode = new StringBuilder();
+
+        // Start the LaTeX block with tt family and tabbing environment
+        formattedCode.append("  {\\ttfamily\n")
+                .append("  \\begin{tabbing}\n")
+                .append("    \\hspace{1cm}\\=\\kill\n");
+
+        // Split code into lines and process each line
+        String[] lines = code.split("\\\\newline");
+        for (String line : lines) {
+            int indentLevel = countIndentation(line);
+
+            // Use LaTeX tabs and indentations
+            formattedCode.append("    ".repeat(indentLevel))
+                    .append("\\quad ".repeat(indentLevel))
+                    .append(line.trim()) // Code line without leading/trailing spaces
+                    .append(" \\\\\n"); // LaTeX new line for each code line
+        }
+
+        // End the LaTeX tabbing environment
+        formattedCode.append("  \\end{tabbing}\n")
+                .append("  }\n");
+
+        return formattedCode.toString();
+    }
+
+    private int countIndentation(String line) {
+        int count = 0;
+        while (count < line.length() && (line.charAt(count) == ' ' || line.charAt(count) == '\t')) {
+            count++;
+        }
+        return count ; // Assuming 1 indentation level = 4 spaces or 1 tab
     }
 
     private void processImagesAndLegends(Connection conn, int idDescription, StringBuilder texcontentBuilder) throws SQLException {

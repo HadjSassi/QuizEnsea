@@ -21,7 +21,6 @@ public class DataBase {
 
     private static void initializeDatabase() {
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
-            System.out.println("Database connected successfully!");
             createTable(statement);
             insertTypeDevoirData(statement);
             insertTypeNumeroData(statement);
@@ -33,7 +32,6 @@ public class DataBase {
 
 
     private static void createTable(Statement statement) throws Exception {
-        System.out.println("Creating tables...");
         String createProjetQuery = "CREATE TABLE IF NOT EXISTS Projet (" +
                 "idProjet INT AUTO_INCREMENT PRIMARY KEY, " +
                 "nomProjet VARCHAR(255) NOT NULL, " +
@@ -138,7 +136,6 @@ public class DataBase {
                 "nomTypeNumero VARCHAR(255) NOT NULL);";
         statement.executeUpdate(createTypeNumeroQuery);
 
-        System.out.println("Tables created successfully!");
     }
 
 
@@ -150,7 +147,6 @@ public class DataBase {
                 String insertQuery = "INSERT INTO TypeDevoir (nomTypeDevoir) VALUES ('" + typeDevoir.getNomDevoir() + "');";
                 statement.executeUpdate(insertQuery);
             }
-            System.out.println("TypeDevoir data inserted successfully!");
         } catch (Exception e) {
             System.err.println("Error inserting TypeDevoir data: " + e.getMessage());
             e.printStackTrace();
@@ -165,7 +161,6 @@ public class DataBase {
                 String insertQuery = "INSERT INTO TypeNumero (nomTypeNumero) VALUES ('" + typeNumero.getValue() + "');";
                 statement.executeUpdate(insertQuery);
             }
-            System.out.println("TypeNumero data inserted successfully!");
         } catch (Exception e) {
             System.err.println("Error inserting TypeNumero data: " + e.getMessage());
             e.printStackTrace();
