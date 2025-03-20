@@ -1026,19 +1026,24 @@ public class EditerProjet implements Initializable {
         // Process code blocks separately
         StringBuilder result = new StringBuilder();
         String[] parts = texte.split("12345678900CODEBLOCKBEGIN00987654321");
-        result.append(parts[0]); // Append normal text before first code block
+        result.append(removeLeadingLatexNewlines(parts[0])); // Append normal text before first code block
 
         for (int i = 1; i < parts.length; i++) {
             String[] subParts = parts[i].split("00987654321CODEBLOCKEND12345678900", 2);
             if (subParts.length > 1) {
                 String codeBlock = formatCodeBlock(subParts[0]); // Process the code separately
                 result.append(codeBlock);
-                result.append(subParts[1]); // Append remaining normal text
+                result.append(removeLeadingLatexNewlines(subParts[1])); // Append remaining normal text
             } else {
                 result.append(formatCodeBlock(subParts[0])); // Edge case: last part is code
             }
         }
         return result.toString();
+    }
+
+    private static String removeLeadingLatexNewlines(String input) {
+        // Remove leading \newline before the actual content starts
+        return input.replaceAll("^(\\\\newline\\s*)+", "");
     }
 
     private String formatCodeBlock(String code) {
